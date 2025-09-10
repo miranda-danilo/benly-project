@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Docente - Benly</title>
+    <script type="module" src="../app/docente_interface.js"></script>
+</head>
+<body class="cuerpo-admin">
+    <div class="contenedor-admin">
+        <!-- Hamburguesa móvil -->
+        <button id="mobile-hamburger-btn" class="mobile-hamburger-btn" aria-label="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="mobile-hamburger-menu" class="mobile-hamburger-menu">
+            <ul id="mobile-menu-list" class="mobile-menu-list"></ul>
+        </nav>
+        <!-- Menú lateral (solo desktop) -->
+        <aside class="barra-lateral-admin">
+            <div class="barra-lateral__encabezado-admin">
+                <img id="admin-photo" class="barra-lateral__foto-admin" alt="Foto de docente">
+                <h2 class="barra-lateral__titulo-admin">¡Hola, <span id="admin-name">Docente</span>!</h2>
+                <div id="admin-role"></div>
+            </div>
+            <nav>
+                <ul id="module-list-admin" class="lista-modulos-admin"></ul>
+            </nav>
+            <button id="logout-btn-admin" class="boton-logout-admin">Cerrar Sesión</button>
+        </aside>
+        <main class="contenido-principal-admin" id="admin-panel">
+            <section id="modulo-section-admin" class="seccion-admin">
+                <h1 class="titulo-admin">Panel de Módulos Interactivos</h1>
+                <div id="modulo-content-admin"></div>
+            </section>
+            <section id="estudiantes-section-admin" class="seccion-admin seccion-admin--hidden">
+                <h2 class="titulo-admin">Gestión de Estudiantes</h2>
+                <div id="estudiantes-content-admin"></div>
+            </section>
+            <section id="progreso-section-admin" class="seccion-admin seccion-admin--hidden">
+                <h2 class="titulo-admin">Monitoreo de Progreso</h2>
+                <div id="progreso-content-admin"></div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

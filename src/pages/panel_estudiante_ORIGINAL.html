@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Estudiante</title>
+    <script type="module" src="../app/user_interface.js"></script>
+</head>
+
+<body class="cuerpo">
+    <div class="contenedor">
+
+<!-- Botón Módulos y menú móvil para móviles -->
+      <!-- Menú hamburguesa móvil centrado -->
+        <button id="mobile-hamburger-btn" class="mobile-hamburger-btn" aria-label="Menú de módulos">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <!-- Menú lateral hamburguesa para móviles -->
+        <nav id="mobile-hamburger-menu" class="mobile-hamburger-menu">
+            <ul id="mobile-unit-list" class="mobile-unit-list"></ul>
+        </nav>
+
+        <aside class="barra-lateral">
+            <div class="barra-lateral__encabezado">
+                <!--  <svg class="barra-lateral__icono" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.433 9.458 5 8 5c-3.141 0-5.707 2.05-5.707 4.79S4.859 14.58 8 14.58c1.458 0 2.832-.433 4-1.253m0 1.253v13m0-13C13.168 5.433 14.542 5 16 5c3.141 0 5.707 2.05 5.707 4.79S19.141 14.58 16 14.58c-1.458 0-2.832-.433-4-1.253"></path></svg> -->
+
+                <img id="sidebar-photo" class="barra-lateral__foto" alt="Foto de bienvenida"
+                    style="width:48px;height:48px;border-radius:50%;margin-right:8px;">
+                <h2 class="barra-lateral__titulo">¡Hola, <span id="sidebar-student-name"></span>!</h2>
+
+                <div id="sidebar-student-role"></div>
+
+            </div>
+
+
+            <nav class="barra-lateral__nav">
+                <ul id="unit-list" class="lista-unidades"></ul>
+            </nav>
+        </aside>
+        <main class="contenido-principal">
+            <section id="user-panel" class="panel-usuario">
+                <div class="panel-usuario__tarjeta">
+                    <img id="user-photo" class="panel-usuario__foto" alt="Foto de perfil">
+                    <div class="panel-usuario__info">
+                        <h1 class="panel-usuario__titulo">¡Hola, <span id="user-email">Estudiante</span>!</h1>
+                        <p class="panel-usuario__texto">Tu rol es: <span id="user-role"
+                                class="panel-usuario__rol"></span></p>
+                        <p class="panel-usuario__texto panel-usuario__texto--pequeño">Bienvenido a tu herramienta de
+                            aprendizaje de inglés A1.</p>
+
+                    </div>
+                </div>
+                <div id="main-content" class="seccion-contenido">
+                    <section id="hangman-section" class="seccion-unidad seccion-unidad--oculta">
+                        <h2 class="tarjeta-leccion__titulo">Juego de Ahorcado</h2>
+                        <div id="hangman-game">
+                            <p id="hangman-word"></p>
+                            <div id="hangman-letters"></div>
+                            <button id="hangman-guess-button">Adivinar</button>
+                            <input type="text" id="hangman-letter-input" maxlength="1"
+                                placeholder="Ingresa una letra" />
+                            <p id="hangman-message"></p>
+                        </div>
+                    </section>
+                    <h1 class="seccion-contenido__titulo">Selecciona una unidad</h1>
+                    <p class="seccion-contenido__subtitulo">Usa el menú lateral para comenzar a aprender y practicar.
+                    </p>
+                    <div class="seccion-contenido__ilustracion">
+                        <video src="assets/benlyy.mp4" autoplay muted loop width="640" Weight="360"
+                            style="border-radius:12px;"></video>
+                    </div>
+                </div>
+            </section>
+            <section id="grades-section" class="seccion-unidad seccion-unidad--oculta">
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Calificaciones por Unidad</h2>
+                    <table class="tabla-calificaciones">
+                        <thead>
+                            <tr>
+                                <th>Unidad</th>
+                                <th>Puntaje más alto</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grades-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Secciones de las unidades: el contenido se mantiene pero los tests ahora están en todas las unidades -->
+            <section id="unit-UT1" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut1" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut1" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut1" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: To Be & Greetings</h2>
+                    <p class="tarjeta-leccion__texto">Aprende a usar el verbo "To Be" y los saludos básicos. Ejercicios
+                        y ejemplos incluidos.</p>
+                    <ul>
+                        <li><b>I am</b> a student.</li>
+                        <li><b>He is</b> a teacher.</li>
+                        <li><b>She is</b> a teacher.</li>
+                        <li><b>It is</b> a teacher.</li>
+                        <li><b>You are</b> friends.</li>
+                        <li><b>We are</b> friends.</li>
+                        <li><b>They are</b> friends.</li>
+                    </ul>
+                </div>
+                <!-- Ejemplo dentro de la sección de vocabulario o lección -->
+
+
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario Básico</h2>
+                    <ul>
+                        <li>Hello: <span>Hola</span></li>
+                        <li>Goodbye: <span>Adiós</span></li>
+                        <li>Good morning: Buenos días</li>
+                        <li>Good afternoon: Buenas tardes</li>
+                        <li>Good evening: Buenas noches (al llegar)</li>
+                        <li>Good night: Buenas noches (al despedirse)</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-video">
+                    <h2 class="tarjeta-video__titulo">Video: Greetings en inglés</h2>
+                    <div class="video-responsive">
+                        <iframe width="560" height="315"
+                            src="https://www.youtube.com/embed/uim7QYa8Ado?si=s_2bQwclA054rPMe"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!--     <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">Escribe una presentación usando "To Be".</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I am Juan.">
+                </div>  -->
+
+
+                <!-- Nueva sección para el corrector de oraciones -->
+
+
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT1" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT1"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-UT1" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+            <!-- Repite la estructura para UT2 a UT6, cambiando el contenido y el test -->
+            <section id="unit-UT2" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut2" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut2" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut2" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: People and Places</h2>
+                    <p class="tarjeta-leccion__texto">Describe personas y lugares usando adjetivos posesivos.</p>
+                    <ul>
+                        <li>My book</li>
+                        <li>Your car</li>
+                        <li>His name</li>
+                        <li>Her phone</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de la Familia</h2>
+                    <ul>
+                        <li>Father: Padre</li>
+                        <li>Dad: Papá</li>
+                        <li>Mother: Madre</li>
+                        <li>Mom: Mamá</li>
+                        <li>Brother: Hermano</li>
+                        <li>Sister: Hermana</li>
+                        <li>Son: Hijo</li>
+                        <li>Daughter: Hija</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">Escribe una oración sobre tu familia usando adjetivos
+                        posesivos.</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: Her name is Sofia.">
+                </div>
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT2" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT2"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-UT2" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unit-UT3" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut13" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut3" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut3" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: Daily Life</h2>
+                    <p class="tarjeta-leccion__texto">Rutinas diarias y adverbios de frecuencia.</p>
+                    <ul>
+                        <li>I wake up at 7.</li>
+                        <li>I always eat breakfast.</li>
+                        <li>She never goes to bed late.</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Rutinas</h2>
+                    <ul>
+                        <li>Wake up: Despertarse</li>
+                        <li>Go to bed: Acostarse</li>
+                        <li>Eat breakfast: Desayunar</li>
+                        <li>Always: Siempre</li>
+                        <li>Never: Nunca</li>
+                        <li>Sometimes: A veces</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">Describe tu rutina diaria usando adverbios de frecuencia.</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I always wake up at 7.">
+                </div>
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT3" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT3"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-UT3" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unit-UT4" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut4" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut4" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut4" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: Foods and Drinks</h2>
+                    <p class="tarjeta-leccion__texto">Aprende vocabulario sobre comidas y bebidas.</p>
+                    <ul>
+                        <li>Apple, Banana, Bread, Water, Milk, Juice, Eggs</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Comidas</h2>
+                    <ul>
+                        <li>Fruit: Fruta</li>
+                        <li>Bread: Pan</li>
+                        <li>Milk: Leche</li>
+                        <li>Eggs: Huevos</li>
+                        <li>Juice: Jugo</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">Escribe una lista de tus comidas favoritas en inglés.</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I like apples and bread.">
+                </div>
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT4" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT4"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-UT4" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unit-UT5" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut5" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut5" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut5" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: Things I Have</h2>
+                    <p class="tarjeta-leccion__texto">Vocabulario de objetos personales y posesión.</p>
+                    <ul>
+                        <li>I have a phone.</li>
+                        <li>My keys</li>
+                        <li>Her bag</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Objetos</h2>
+                    <ul>
+                        <li>Phone: Teléfono</li>
+                        <li>Keys: Llaves</li>
+                        <li>Bag: Bolsa</li>
+                        <li>Notebook: Cuaderno</li>
+                        <li>Wallet: Cartera</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">Escribe qué objetos tienes contigo hoy.</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I have my phone and wallet.">
+                </div>
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT5" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT5"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-UT5" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="unit-UT6" class="seccion-unidad seccion-unidad--oculta">
+                <!-- Ejemplo para todas las unidades, pon esto dentro de cada <section id="unit-UTx" ...> -->
+                <div class="audio-controls">
+                    <button id="audio-play-ut6" class="boton-audio">▶️ Reproducir</button>
+                    <button id="audio-pause-ut6" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
+                    <button id="audio-stop-ut6" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+                </div>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Lección: Around Town - Free Time</h2>
+                    <p class="tarjeta-leccion__texto">Lugares en la ciudad y actividades de tiempo libre.</p>
+                    <ul>
+                        <li>Bank, Park, Cinema, Restaurant, Library</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-vocabulario">
+                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Lugares</h2>
+                    <ul>
+                        <li>Bank: Banco</li>
+                        <li>Park: Parque</li>
+                        <li>Cinema: Cine</li>
+                        <li>Restaurant: Restaurante</li>
+                        <li>Library: Biblioteca</li>
+                    </ul>
+                </div>
+                <div class="tarjeta-ejercicios">
+                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
+                    <p class="tarjeta-ejercicios__texto">¿Qué haces en tu tiempo libre? Escribe una oración.</p>
+                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I go to the park.">
+                </div>
+                <div class="tarjeta-actividad">
+                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+                    <div id="quiz-container-UT6" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-UT6"></p>
+                        <div class="contenedor-quiz__botones">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">False</button>
+                        </div>
+                        <p id="feedback-UT6" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXAMEN 1: FIRST TERM EXAMEN - Solo test -->
+            <section id="unit-EXAM1" class="seccion-unidad seccion-unidad--oculta">
+                <div class="tarjeta-actividad">
+                    <h2 class="tarjeta-actividad__subtitulo">FIRST TERM EXAMEN</h2>
+                    <p class="tarjeta-actividad__texto">Examen del primer término - Unidades 1-3</p>
+                    <div id="quiz-container-EXAM1" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-EXAM1"></p>
+                        <div class="contenedor-quiz__botones-vertical">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-EXAM1" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXAMEN 2: SECOND TERM EXAMEN - Solo test -->
+            <section id="unit-EXAM2" class="seccion-unidad seccion-unidad--oculta">
+                <div class="tarjeta-actividad">
+                    <h2 class="tarjeta-actividad__subtitulo">SECOND TERM EXAMEN</h2>
+                    <p class="tarjeta-actividad__texto">Examen del segundo término - Unidades 4-6</p>
+                    <div id="quiz-container-EXAM2" class="contenedor-quiz">
+                        <p class="contenedor-quiz__pregunta" id="question-EXAM2"></p>
+                        <div class="contenedor-quiz__botones-vertical">
+                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        </div>
+                        <p id="feedback-EXAM2" class="contenedor-quiz__retroalimentacion"></p>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+            <section id="unit-WRITING" class="seccion-unidad seccion-unidad--oculta">
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Práctica de Escritura</h2>
+                    <p class="tarjeta-leccion__texto">Escribe una oración en inglés y la IA de Gemini la corregirá por
+                        ti.</p>
+                    <div class="form-group">
+                        <label for="sentenceInput" class="input-label">Escribe tu oración aquí:</label>
+                        <textarea id="sentenceInput" rows="4" class="input-field"
+                            placeholder="Ej: The cat sat on the table."></textarea>
+                    </div>
+                    <button id="correctButton" class="action-button">Verificar Oración</button>
+                    <div id="alertPlaceholder"></div>
+                    <div id="feedbackContainer" class="feedback-container hidden">
+                        <div id="loadingIndicator" class="loading-indicator hidden">
+                            <div class="loading-spinner"></div>
+                            <span class="loading-text">Analizando...</span>
+                        </div>
+                        <div id="feedbackContent" class="feedback-content"></div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+        </main>
+    </div>
+</body>
+
+</html>

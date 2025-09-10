@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benly - Aprende Inglés de forma divertida</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./css/panel_estudiante.css">
+    <link rel="stylesheet" href="./css/panel_docente.css">
+    
+    
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+   <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" /> -->
+    <style>
+        .d-none {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container container">
+            <a href="#" class="header__logo">Benly</a>
+
+ <!-- Menú hamburguesa de unidades SOLO móvil -->
+        <button id="student-hamburger-btn" class="student-hamburger-btn" aria-label="Módulos">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="student-hamburger-menu" class="student-hamburger-menu">
+            <ul id="student-unit-list" class="student-unit-list"></ul>
+        </nav>
+
+
+            <button class="header__burger-menu" aria-label="Menú principal">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="header__nav">
+                <ul class="header__list">
+                    <li class="header__item"><a href="#home" class="header__link">Inicio</a></li>
+                    <li class="header__item"><a href="#features" class="header__link">Características</a></li>
+                    <li class="header__item"><a href="#about" class="header__link">Acerca de</a></li>
+                    <li class="header__item"><a href="#faq" class="header__link">FAQ</a></li>
+                    <li class="header__item"><a href="#contacto" class="header__link">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                <a href="#" class="header__button header__button--login stateHome" id="login-link">Iniciar Sesión</a>
+                <a href="#" class="header__button header__button--register stateHome" id="register-link">Registrarse</a>
+                <a href="#" class="header__button header__button--logout stateLogin d-none" id="logout-link">Cerrar
+                    sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main"></main>
+
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__brand">
+                <a href="#" class="footer__logo">Benly</a>
+                <p class="footer__copy">&copy; 2025 Benly. Todos los derechos reservados.</p>
+            </div>
+            <div class="footer__links">
+                <h4 class="footer__title">Enlaces rápidos</h4>
+                <ul class="footer__list">
+                    <li class="footer__item"><a href="#home" class="footer__link">Inicio</a></li>
+                    <li class="footer__item"><a href="#features" class="footer__link">Características</a></li>
+                    <li class="footer__item"><a href="#about" class="footer__link">Acerca de</a></li>
+                </ul>
+            </div>
+            <div class="footer__social">
+                <h4 class="footer__title">Síguenos</h4>
+                <ul class="footer__list">
+                    <li class="footer__item"><a href="#" class="footer__link">Facebook</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Twitter</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <dialog class="modal" id="signup-modal">
+        <section class="container-modal">
+            <form method="dialog">
+                <button class="close-modal close-modal-signup">X</button>
+            </form>
+            <div class="container-modal__header">
+                <h3>Registrarse</h3>
+            </div>
+            <div class="container-modal__body">
+                <form id="signup-form" class="modal-form">
+                    <p>
+                        <label for="signup-email">Correo Electronico:</label>
+                    </p>
+                    <p>
+                        <input type="email" name="email" id="signup-email" placeholder="Email..." required>
+                    </p>
+                    <p>
+                        <label for="signup-password">Contraseña:</label>
+                    </p>
+                    <p>
+                        <input type="password" name="password" placeholder="*******" id="signup-password" required>
+                    </p>
+                    <p>
+                        <label for="signup-name">Nombre y Apellido:</label>
+                    </p>
+                    <p>
+                        <input type="text" name="name" placeholder="Danilo Miranda..." id="signup-name" required>
+                    </p>
+                    <p>
+                        <button type="submit">Registrarse</button>
+                    </p>
+                    <p>
+                        O inicia sesión con <strong><a class="googleBtn" href="#">Google</a></strong>
+                    </p>
+                </form>
+            </div>
+        </section>
+    </dialog>
+
+    <dialog class="modal" id="signin-modal">
+        <section class="container-modal">
+            <form method="dialog">
+                <button class="close-modal close-modal-login">X</button>
+            </form>
+            <div class="container-modal__header">
+                <h3>Iniciar Sesión</h3>
+            </div>
+            <div class="container-modal__body">
+                <form class="modal-form" id="signin-form">
+                    <p>
+                        <label for="signin-email">Correo Electronico:</label>
+                    </p>
+                    <p>
+                        <input type="email" name="email" id="signin-email" placeholder="Email..." required>
+                    </p>
+                    <p>
+                        <label for="signin-password">Contraseña:</label>
+                    </p>
+                    <p>
+                        <input type="password" name="password" id="signin-password" placeholder="********" required>
+                    </p>
+
+                    <!-- NUEVO ENLACE PARA RECUPERAR CONTRASEÑA -->
+                    <p class="text-center mt-2">
+                        <a href="#" id="forgot-password-link">¿Olvidaste
+                            tu contraseña?</a>
+                    </p>
+
+                    <p>
+                        <button type="submit">Iniciar Sesión</button>
+                    </p>
+                </form>
+            </div>
+        </section>
+    </dialog>
+
+
+
+    <script src="./index.js" type="module"></script>
+     <!-- Enlace al CDN de Tailwind CSS -->
+  
+
+</body>
+
+</html>
