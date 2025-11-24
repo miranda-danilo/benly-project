@@ -41,7 +41,7 @@ const modules = [
         ],
         dialogo: {
             text: "A: Where is your father?\nB: He is at home.\nA: Do you live in this city?\nB: Yes, I do.",
-            img: "https://img.freepik.com/foto-gratis/hembras-felices-descansan-pausa-cafe-discuten-su-proyecto-futuro-usan-computadora-portatil-moderna-mejores-amigos-encuentran-cafeteria-miran-alegria-tienen-conversacion-agradable_273609-2620.jpg?t=st=1756573395~exp=1756576995~hmac=13c456264783482026c40758fddfdcf4e25f1032a34e3649e421d9586964c4dc&w=1480"
+            img: "https://img.freepik.com/foto-gratis/hemales-felices-descansan-pausa-cafe-discuten-su-proyecto-futuro-usan-computadora-portatil-moderna-mejores-amigos-encuentran-cafeteria-miran-alegria-tienen-conversacion-agradable_273609-2620.jpg?t=st=1756573395~exp=1756576995~hmac=13c456264783482026c40758fddfdcf4e25f1032a34e3649e421d9586964c4dc&w=1480"
         }
     },
     {
@@ -50,7 +50,7 @@ const modules = [
         icon: '⏰',
         img: 'assets/vocab_wakeup.png',
         vocabulario: [
-            { word: 'Wake up', translatxion: 'Despertarse', img: 'https://cdn.pixabay.com/photo/2016/03/31/19/19/alarm-1294909_1280.png' },
+            { word: 'Wake up', translation: 'Despertarse', img: 'https://cdn.pixabay.com/photo/2016/03/31/19/19/alarm-1294909_1280.png' },
             { word: 'Breakfast', translation: 'Desayuno', img: 'https://img.freepik.com/fotos-premium/plato-desayuno-fresco-saludable-huevos-tocino-tostadas-salchichas-comenzar-dia_817921-2778.jpg?w=740' },
             { word: 'Never', translation: 'Nunca', img: 'https://img.freepik.com/foto-gratis/mujer-joven-da-retroalimentacion-negativa-muestra-pulgar-abajo-desaprueba-producto-no-gusta-algo-malo-esta_1258-218639.jpg?t=st=1756575023~exp=1756578623~hmac=01d016325a8afb4bf9dbeb6e4fe5cac30968670ad93f15538bf5d676603163ba&w=740' }
         ],
@@ -76,7 +76,7 @@ const modules = [
         ],
         ejemplos: [
             { sentence: 'I like fruit juice.', img: 'https://img.freepik.com/psd-gratis/jugos-frutas-refrescantes-deliciosa-mezcla-citricos-opcion-estilo-vida-saludable_191095-90526.jpg?t=st=1756575826~exp=1756579426~hmac=7173db0ebb01b453fe2e08245607af259df849c8cf40fc2f40b5d0fdfef22832&w=740https://img.freepik.com/foto-gratis/variedad-batidos-coloridos-ingredientes-frescos_23-2151989778.jpg?t=st=1756575905~exp=1756579505~hmac=7a9de9167f2f5b86af50109e71af4958673f2816bcd0dd23651dd67b4c38d53c&w=740' },
-            { sentence: 'She eats bread.', img: 'https://img.freepik.com/foto-gratis/persona-autentica-comiendo-queso-fresco_23-2150220460.jpg?t=st=1756575951~exp=1756579551~hmac=920b6f2f78b747052f399a4f3012476e16ab91f521eb87dcb79d0a5106ea2274&w=740' },
+            { sentence: 'She eats bread.', img: 'https://img.freepik.com/foto-gratis/persona-autentica-comiendo-queso-fresco_23-2150220460.jpg?t=st=1756579551~exp=1756579551~hmac=920b6f2f78b747052f399a4f3012476e16ab91f521eb87dcb79d0a5106ea2274&w=740' },
             { sentence: 'Banana is a fruit.', img: 'https://img.freepik.com/vector-gratis/vector-racimo-platano-amarillo-maduro-aislado-sobre-fondo-blanco_1284-45456.jpg?t=st=1756576112~exp=1756579712~hmac=e7c17da13c56311cc3fed7378ca1f09da26b4d3054e84d4847ff65ecac528b2d&w=740' }
         ],
         dialogo: {
@@ -125,6 +125,74 @@ const modules = [
         }
     }
 ];
+
+// Variable global para mantener la referencia del audio actual
+let currentUtterance = null;
+
+function speakText(text) {
+    if (window.speechSynthesis.speaking && currentUtterance) {
+        window.speechSynthesis.cancel();
+    }
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+
+    let voices = speechSynthesis.getVoices();
+
+    // Lista de voces recomendadas (más humanas) EN ORDEN DE PREFERENCIA
+    const preferredVoices = [
+        "Microsoft Aria Online (Natural)",
+        "Microsoft Jenny Online (Natural)",
+        "Microsoft Guy Online (Natural)",
+        "Google US English",
+        "Samantha",
+        "Alex"
+    ];
+
+    // 1. Buscar una voz preferida que NO sea Mark
+    let selectedVoice = voices.find(v =>
+        preferredVoices.includes(v.name) && v.name !== "Microsoft Mark - English (United States)"
+    );
+
+    // 2. Si NO existe ninguna preferida, elegir cualquier voz en inglés excepto Mark
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v =>
+            v.lang === "en-US" && v.name !== "Microsoft Mark - English (United States)"
+        );
+    }
+
+    // 3. Si por algún caso extremo solo existe Mark (muy raro), usar lo que haya
+    if (!selectedVoice) {
+        console.warn("⚠ No hay voces alternativas, usando Microsoft Mark porque es la única disponible.");
+        selectedVoice = voices[0];
+    }
+
+    // Asignar la voz elegida
+    utter.voice = selectedVoice;
+
+    // Mostrar en consola la voz elegida
+    utter.onstart = () => {
+        console.log("🟢 Voz usada:", utter.voice.name);
+        console.log("📝 Detalles de la voz:", utter.voice);
+    };
+
+    currentUtterance = utter;
+    speechSynthesis.speak(utter);
+}
+
+// Mostrar voces al cargar
+speechSynthesis.onvoiceschanged = () => {
+    console.log("🔊 Voces disponibles:", speechSynthesis.getVoices());
+};
+
+
+
+// Función para detener la reproducción
+function stopSpeaking() {
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+}
+
 
 export function setupAdminPanelLogic(panelElement, adminRole) {
     // DOM refs
@@ -226,8 +294,10 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
     // ----------- GRID DE MÓDULOS -----------
     function renderModulosGrid() {
+        // Detener cualquier audio que esté sonando al cambiar de vista
+        stopSpeaking(); 
+        
         moduloContent.innerHTML = `<div class="modulos-grid-admin">` +
-         /*   <img src="${mod.img}" alt="${mod.title}" class="modulo-card-admin__img"/>  */   
         modules.map(mod => `
                 <div class="modulo-card-admin" data-module-id="${mod.id}">
                     
@@ -245,6 +315,9 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
     // ----------- DETALLE DE MÓDULO -----------
     function renderModuloDetalle(moduleId) {
+        // Detener cualquier audio que esté sonando al cambiar de vista
+        stopSpeaking();
+
         const mod = modules.find(m => m.id === moduleId);
         if (!mod) {
             moduloContent.innerHTML = `<p>Módulo no encontrado.</p>`;
@@ -261,11 +334,18 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                                 <img src="${v.img}" alt="${v.word}" class="vocab-img-admin"/>
                                 <div class="vocab-word-admin">${v.word}</div>
                                 <div class="vocab-translation-admin">${v.translation}</div>
+                                <!-- Botón individual de reproducción agregado aquí -->
+                                <button class="play-word-btn" data-word="${v.word}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                    </svg>
+                                </button>
                             </div>
                         `).join('')}
                     </div>
-                    <button class="vocab-audio-btn-admin" id="vocab-audio-btn-all-${mod.id}">🔊 Reproducir Vocabulario</button>
-                    <button class="vocab-audio-btn-admin" id="vocab-audio-btn-stop-${mod.id}">⏹️ Detener</button>
+                    <button class="vocab-audio-btn-admin" id="vocab-audio-btn-all-${mod.id}">🔊 Reproducir Vocabulario Completo</button>
+                    <button class="vocab-audio-btn-admin" id="vocab-audio-btn-stop-${mod.id}">⏹️ Detener Todo</button>
                 </div>
                 <div class="modulo-detalle__apartado">
                     <h3>Ejemplos</h3>
@@ -292,36 +372,44 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
         `;
         document.getElementById('volver-modulos').onclick = renderModulosGrid;
 
-        // --- AUDIO VOCABULARIO ---
-        let vocabUtter;
+        // --- MANEJO DE AUDIO INDIVIDUAL (NUEVA IMPLEMENTACIÓN) ---
+        moduloContent.querySelectorAll('.play-word-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const wordToSpeak = btn.dataset.word;
+                speakText(wordToSpeak);
+            });
+        });
+
+        // --- AUDIO VOCABULARIO COMPLETO ---
+        // Se reutiliza la función speakText global
         document.getElementById(`vocab-audio-btn-all-${mod.id}`).onclick = () => {
-            vocabUtter = new window.SpeechSynthesisUtterance(mod.vocabulario.map(v => v.word).join('. '));
-            vocabUtter.lang = 'en-US';
-            window.speechSynthesis.speak(vocabUtter);
+            const allWords = mod.vocabulario.map(v => v.word).join('. ');
+            speakText(allWords);
         };
-        document.getElementById(`vocab-audio-btn-stop-${mod.id}`).onclick = () => window.speechSynthesis.cancel();
+        document.getElementById(`vocab-audio-btn-stop-${mod.id}`).onclick = () => stopSpeaking();
 
         // --- AUDIO EJEMPLOS ---
-        let ejemplosUtter;
+        // Se reutiliza la función speakText global
         document.getElementById(`ejemplo-audio-btn-all-${mod.id}`).onclick = () => {
-            ejemplosUtter = new window.SpeechSynthesisUtterance(mod.ejemplos.map(e => e.sentence).join('. '));
-            ejemplosUtter.lang = 'en-US';
-            window.speechSynthesis.speak(ejemplosUtter);
+            const allSentences = mod.ejemplos.map(e => e.sentence).join('. ');
+            speakText(allSentences);
         };
-        document.getElementById(`ejemplo-audio-btn-stop-${mod.id}`).onclick = () => window.speechSynthesis.cancel();
+        document.getElementById(`ejemplo-audio-btn-stop-${mod.id}`).onclick = () => stopSpeaking();
 
         // --- AUDIO DIÁLOGO ---
-        let dialogoUtter;
+        // Se reutiliza la función speakText global
         document.getElementById(`dialogo-audio-btn-${mod.id}`).onclick = () => {
-            dialogoUtter = new window.SpeechSynthesisUtterance(mod.dialogo.text.replace(/\n/g, '. '));
-            dialogoUtter.lang = 'en-US';
-            window.speechSynthesis.speak(dialogoUtter);
+            const dialogText = mod.dialogo.text.replace(/\n/g, '. ');
+            speakText(dialogText);
         };
-        document.getElementById(`dialogo-audio-btn-stop-${mod.id}`).onclick = () => window.speechSynthesis.cancel();
+        document.getElementById(`dialogo-audio-btn-stop-${mod.id}`).onclick = () => stopSpeaking();
     }
 
     // ----------- GESTIÓN DE ESTUDIANTES -----------
     async function renderEstudiantesContent() {
+        // Detener cualquier audio que esté sonando al cambiar de vista
+        stopSpeaking();
+        
         estudiantesContent.innerHTML = '<p style="color:#2563eb;">Cargando estudiantes...</p>';
         const usuariosRef = collection(db, 'usuarios');
         const snapshot = await getDocs(usuariosRef);
@@ -374,6 +462,9 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
     // ----------- MONITOREAR PROGRESO -----------
     async function renderProgresoContent() {
+        // Detener cualquier audio que esté sonando al cambiar de vista
+        stopSpeaking();
+
         progresoContent.innerHTML = `
             <label for="curso-progreso" style="font-weight:700;color:#2563eb;">Selecciona curso:</label>
             <select id="curso-progreso" style="border:1px solid #58CC02;">

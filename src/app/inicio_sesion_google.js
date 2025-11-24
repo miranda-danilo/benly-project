@@ -39,7 +39,7 @@ export const setupGoogleLogin = () => {
 
                 // ⚠️ Tu lógica para asignar el rol
                 let roleUser = "user";
-                if (email === "miranda-roberth0691@unesum.edu.ec") {
+                if (email === "miranda-roberth0691@unesum.edu.ec" || email === "marlon.barcia@unesum.edu.ec") {
                     roleUser = "admin";
                 }
 
