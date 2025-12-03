@@ -1,14 +1,7 @@
 # netlify.toml
 
 # ===============================================
-# A. Configuracion de Despliegue (Ruta de tu Frontend)
-# ===============================================
-[build]
-  # Indica la carpeta raíz donde se encuentra tu index.html
-  publish = "src" 
-
-# ===============================================
-# B. Configuracion de las Funciones (Ruta de tu Backend)
+# Configuracion de las Funciones (Ruta de tu Backend)
 # ===============================================
 [functions]
   # Indica la carpeta donde se encuentra tu código Node.js
