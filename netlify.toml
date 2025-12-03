@@ -1,8 +1,4 @@
 # netlify.toml
-[build]
-  publish = "src" 
-  # Base directory (src) ya está configurado en el panel.
-
 [functions]
   # Nueva ruta relativa a la raíz del proyecto
   directory = "src/netlify/functions"
