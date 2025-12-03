@@ -25,32 +25,38 @@ export function setupRegistrationForm() {
 
                 const user = response.user;
 
+                console.log("Usuario creado en Authentication:", user);
                 // Paso 2: Guarda el nombre en el perfil del usuario de Auth
                 await updateProfile(user, {
                     displayName: name
                 });
 
                 // Paso 3: Crea un documento en Firestore con el UID como ID
-                const uid = user.uid;
-                const docRef = doc(db, "usuarios", uid);
-
-                // Define el rol inicial y los datos que quieres guardar
-                const userData = {
-                    email: email,
-                    role: "user", // Asignar un rol por defecto
-                    name: name // <-- Aquí se agrega el nombre al documento de Firestore
-                };
-
-
-                
-                // Guarda los datos en Firestore
-                await setDoc(docRef, userData, { merge: true }); // <-- Esto mantiene los puntajes y otros campos existentes
-
+                /*   const uid = user.uid;
+                  const docRef = doc(db, "usuarios", uid);
+  
+                  // Define el rol inicial y los datos que quieres guardar
+                  const userData = {
+                      email: email,
+                      role: "user", // Asignar un rol por defecto
+                      name: name // <-- Aquí se agrega el nombre al documento de Firestore
+                  };
+  
+  
+                  console.log("Preparado para guardar en Firestore", userData);
+                  console.log("todo bien hasta aqui");
+                  console.log("autentificado del usuario:", response);
+                  // Guarda los datos en Firestore
+                  await setDoc(docRef, userData, { merge: true }); */ // <-- Esto mantiene los puntajes y otros campos existentes
+                console.log("todo bien hasta aqui 2");
                 // Paso 4: Envía el email de verificación
                 await sendEmailVerification(user);
 
                 $signupModal.close();
                 $signupForm.reset();
+
+                // Paso 5: Cierra la sesión (Para forzar el inicio de sesión posterior)
+                await signOut(auth);
 
                 showMessage("¡Registro exitoso! Por favor, verifica tu correo.");
 
@@ -65,7 +71,7 @@ export function setupRegistrationForm() {
                     showMessage("CORREO YA REGISTRADO", "error");
                 } else {
                     showMessage("OCURRIÓ UN ERROR INESPERADO", "error");
-                    console.error("Error completo:", error);
+                    console.error("Error completo:", error, errorCode);
                 }
             }
         }

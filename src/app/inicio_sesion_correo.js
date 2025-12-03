@@ -35,13 +35,65 @@ export function setupSignInForm() {
                     return;
                 }
                 // --------------------------------------------------------
+
+
+
+                /*   const uid = user.uid;
+                                const docRef = doc(db, "usuarios", uid);
+                                // Define el rol inicial y los datos que quieres guardar
+                                const userData = {
+                                    email: email,
+                                    role: "user", // Asignar un rol por defecto
+                                    name: name // <-- Aquí se agrega el nombre al documento de Firestore
+                                };
                 
+                                // Guarda los datos en Firestore
+                                await setDoc(docRef, userData, { merge: true }); */
+
+
+
+
                 // Paso 2: Obtén el documento del usuario desde Firestore
                 const uid = user.uid;
                 const docRef = doc(db, "usuarios", uid);
                 const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
+
+
+            
+
+                // Si el documento NO existe, lo creamos AHORA que la sesión está estable.
+                if (!docSnap.exists()) {
+                    console.log("Perfil de usuario no encontrado. Creando inicialización...");
+
+                    let roldeuser = null;
+                    if(user.email === "miranda-roberth0691@unesum.edu.ec" || user.email === "marlon.barcia@unesum.edu.ec") {
+                        roldeuser = "admin";
+                    }
+
+                    const userData = {
+                        email: user.email,
+                        name: user.displayName || 'Sin Nombre', // Usamos el nombre de Auth
+                        // 2. Nos aseguramos de devolver un valor en todos los casos.
+                        role: roldeuser || "user" // Asignar un rol por defecto
+                        }
+    
+
+                        console.log("myrol ",userData.role)
+                        await setDoc(docRef, userData);
+                        console.log("Perfil de usuario creado exitosamente.");
+
+                    } else {
+                        console.log("El perfil de usuario ya existe en Firestore.");
+
+                }
+
+          /*       const userData = docSnap.data();
+                const userName = userData.name;
+
+                showMessage(`¡Bienvenido, ${userName}!`); */
+
+                /* if (docSnap.exists()) {
                     const userData = docSnap.data();
                     const userName = userData.name;
                     // Ahora puedes usar userName en tu aplicación
@@ -49,7 +101,7 @@ export function setupSignInForm() {
                 } else {
                     showMessage("¡Bienvenido! (Datos de perfil no encontrados)", "info");
                 }
-
+ */
 
             } catch (error) {
                 const errorCode = error.code;

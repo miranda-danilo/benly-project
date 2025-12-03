@@ -93,6 +93,8 @@ export const updateUI = async (user) => {
                 // buscar sus propios elementos hijos (como #user-email)
 
                 // Llama a la lógica correspondiente según el rol del usuario
+                
+                console.log("El rol del usuario es:", role);
                 if (role === 'admin') {
                     const adminPanel = mainContent.querySelector("#admin-panel");
                     if (adminPanel) {
