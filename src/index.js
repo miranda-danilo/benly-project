@@ -4,9 +4,6 @@ import { setupGoogleLogin } from "./app/inicio_sesion_google.js";
 import { setupSignInForm } from "./app/inicio_sesion_correo.js";
 import { stateChanged } from "./app/checkLogin.js";
 
-const functions = require('firebase-functions');
-const { GoogleGenAI } = require("@google/genai");
-
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -144,90 +141,4 @@ document.addEventListener('DOMContentLoaded', () => {
             signUpModal.close();
         }
     });
-});
-
-
-
-
-// La clave de API se obtiene de forma segura de las variables de entorno de Firebase.
-// Ejecuta: firebase functions:config:set gemini.key="TU_NUEVA_API_KEY_AQUI"
-const apiKey = functions.config().gemini.key; 
-
-if (!apiKey) {
-    functions.logger.error("La clave de API de Gemini no está configurada en las variables de entorno.");
-}
-
-const ai = new GoogleGenAI({ apiKey });
-
-/**
- * Endpoint HTTP para corregir la escritura utilizando la API de Gemini.
- * Se ejecuta de forma segura en el lado del servidor.
- */
-exports.correctWriting = functions.https.onRequest(async (request, response) => {
-    // 1. Configuración de CORS (si tu frontend está en un dominio diferente)
-    response.set('Access-Control-Allow-Origin', '*'); 
-    if (request.method === 'OPTIONS') {
-        response.set('Access-Control-Allow-Methods', 'POST');
-        response.set('Access-Control-Allow-Headers', 'Content-Type');
-        response.set('Access-Control-Max-Age', '3600');
-        return response.status(204).send('');
-    }
-
-    if (request.method !== 'POST') {
-        return response.status(405).send({ error: "Método no permitido" });
-    }
-
-    const { sentence } = request.body;
-
-    if (!sentence) {
-        return response.status(400).send({ error: "Falta la oración (sentence)." });
-    }
-
-    const prompt = `Actúa como un corrector de oraciones en inglés. Analiza la siguiente oración y determina si es gramaticalmente correcta. Si es correcta, devuelve un JSON con el estado "Correcta". Si es incorrecta, devuelve un JSON con el estado "Incorrecta", la versión corregida de la oración y una explicación clara y concisa de los errores en español.
-        Oración: "${sentence}"
-        Ejemplo de JSON correcto:
-        {
-            "status": "Correcta"
-        }
-        Ejemplo de JSON incorrecto:
-        {
-            "status": "Incorrecta",
-            "corrected_sentence": "The man goes to the store.",
-            "explanation": "El verbo 'go' debe estar en su forma 'goes' para concordar con el sujeto 'the man' en tercera persona del singular."
-        }`;
-
-    const payload = {
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        config: { // Usar 'config' en el SDK de JS, no 'generationConfig'
-            responseMimeType: "application/json",
-            responseSchema: {
-                type: "OBJECT",
-                properties: {
-                    status: { type: "STRING" },
-                    corrected_sentence: { type: "STRING", description: "Only required if status is 'Incorrecta'" },
-                    explanation: { type: "STRING", description: "Only required if status is 'Incorrecta'" }
-                },
-                required: ["status"]
-            }
-        }
-    };
-
-    try {
-        const genaiResponse = await ai.models.generateContent({
-            model: "gemini-2.5-flash", // Modelo estable
-            ...payload // Incluye contents y config
-        });
-        
-        // 3. Parsear y devolver el resultado limpio al frontend
-        const rawResult = genaiResponse.text;
-        const parsedResult = JSON.parse(rawResult);
-        
-        // Devolver el JSON directamente al frontend
-        return response.status(200).json(parsedResult);
-
-    } catch (error) {
-        functions.logger.error("Error al llamar a la API de Gemini:", error);
-        // Devolver un error 500 al frontend si falla la llamada a la API
-        return response.status(500).send({ error: "Error interno del servidor al procesar la corrección.", details: error.message });
-    }
 });
