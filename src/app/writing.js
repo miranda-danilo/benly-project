@@ -8,7 +8,7 @@ import { showMessage } from "./notificaciones.js";
 
 // Usaremos un punto final fijo para la función de corrección:
 // (Asegúrate de reemplazar esta URL con la URL de tu Firebase Function después de desplegarla)
-const CORRECTION_FUNCTION_URL = ".netlify/functions/correctWriting.js";
+const CORRECTION_FUNCTION_URL = "/.netlify/functions/correctWriting";
 
 
 /**
