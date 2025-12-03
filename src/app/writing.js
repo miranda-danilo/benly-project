@@ -4,6 +4,13 @@ import { auth, db } from "./conexion_firebase.js";
 import { getDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { showMessage } from "./notificaciones.js";
 
+// La API Key ha sido ELIMINADA y ahora vive en el backend (Firebase Function)
+
+// Usaremos un punto final fijo para la función de corrección:
+// (Asegúrate de reemplazar esta URL con la URL de tu Firebase Function después de desplegarla)
+const CORRECTION_FUNCTION_URL = ".netlify/functions/correctWriting.js";
+
+
 /**
  * Realiza una llamada a la API con reintentos y retroceso exponencial.
  * @param {string} url - La URL de la API.
@@ -93,51 +100,24 @@ export const handleWritingCorrection = async (sentence, feedbackContainer, feedb
     loadingIndicator?.classList.remove('hidden');
 
     try {
-        const prompt = `Actúa como un corrector de oraciones en inglés. Analiza la siguiente oración y determina si es gramaticalmente correcta. Si es correcta, devuelve un JSON con el estado "Correcta". Si es incorrecta, devuelve un JSON con el estado "Incorrecta", la versión corregida de la oración y una explicación clara y concisa de los errores en español.
-            Oración: "${sentence}"
-            Ejemplo de JSON correcto:
-            {
-                "status": "Correcta"
-            }
-            Ejemplo de JSON incorrecto:
-            {
-                "status": "Incorrecta",
-                "corrected_sentence": "The man goes to the store.",
-                "explanation": "El verbo 'go' debe estar en su forma 'goes' para concordar con el sujeto 'the man' en tercera persona del singular."
-            }`;
-
-        const payload = {
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "OBJECT",
-                    properties: {
-                        status: { type: "STRING" },
-                        corrected_sentence: { type: "STRING", description: "Only required if status is 'Incorrecta'" },
-                        explanation: { type: "STRING", description: "Only required if status is 'Incorrecta'" }
-                    },
-                    required: ["status"]
-                }
-            }
-        };
-
-        const apiKey = "AIzaSyDwazLN5ZXY61X8m3s8eMtt4AqBJSBjPVw";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
-        const response = await fetchWithRetry(apiUrl, {
+        // En lugar de construir el payload de la API de Gemini, enviamos la oración al backend
+        // AHORA (Llamada a tu Función Segura)
+        const response = await fetchWithRetry(CORRECTION_FUNCTION_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            // Envías solo la oración, el resto del prompt se construye en el backend
+            body: JSON.stringify({ sentence: sentence })
         });
 
-        const result = response.candidates[0].content.parts[0].text;
-        const parsedResult = JSON.parse(result);
+        // La respuesta JSON que viene de la función ya es el resultado parseado
+        const parsedResult = response;
 
         let outputHtml = '';
+        // ... el resto del código es igual.
         const user = auth.currentUser;
         let currentScore = 0;
 
+        // ... (El resto de tu lógica de scoring y UI permanece IGUAL)
         // Determina el puntaje del intento actual
         if (parsedResult.status === 'Correcta') {
             playSound("correct");
