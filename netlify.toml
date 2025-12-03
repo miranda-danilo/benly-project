@@ -1,8 +1,8 @@
 # netlify.toml
+[build]
+  publish = "src" 
+  # Base directory (src) ya está configurado en el panel.
 
-# ===============================================
-# Configuracion de las Funciones (Ruta de tu Backend)
-# ===============================================
 [functions]
-  # Indica la carpeta donde se encuentra tu código Node.js
-  directory = "netlify/functions"
+  # Nueva ruta relativa a la raíz del proyecto
+  directory = "src/netlify/functions"
