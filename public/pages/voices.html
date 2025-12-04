@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Speech Móvil</title>
 </head>
-<body>
-    <h2>Hola Amber 😁</h2>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus, ea? Perspiciatis quos ducimus, reprehenderit recusandae tempora et laudantium! Dignissimos explicabo sequi reprehenderit modi praesentium amet sit eligendi adipisci ex nostrum.S</p>
-    <input type="text" placeholder="Escribe algo en inglés">
-    <select id="voiceSelect"></select>
-<button id="testVoice">🔊 Probar voz</button>
+<body style="display: flex; background-color: plum; justify-content: center; align-items: center; height: 100vh; flex-direction: column; font-family: Arial, sans-serif; gap: 1rem;">
+<h2>Hola Amber 😁</h2>
+<p style="font-weight: bold; font-size: 1.2rem;">Bienvenida!</p>
+<img src="https://cdn.prod.website-files.com/5fdb2fcbe8cb905cd95d758f/6780aa0e17a09012b62ee2f4_Karla%20Bustillos.png" alt="" width="200" height="200" loading="lazy" style="border-radius: 50%;">
 
-</body>
-</html>
+<input style="background-color: aliceblue; padding: 0.4rem 0.8rem; width: 40%;" type="text" id="textInput" placeholder="Escribe algo en inglés" >
+<select style="padding: 1rem;" id="voiceSelect"></select>
+<button style="padding: 0.4rem 0.8rem; background-color: rgb(255, 98, 124); color: white; font-size: 1.25rem; font-style: italic; font-weight: bold; " id="testVoice">🔊 Probar voz</button>
+
 <script>
-    
-/* ============================================================
-    OPTIMIZACIÓN: speechSynthesis.getVoices() a veces viene vacío.
-    Se asegura que haya voces cargadas antes de elegir.
-============================================================ */
+let voicesLoaded = false;
+
+// ============================================================
+// Función para cargar voces disponibles
+// ============================================================
 function loadVoices() {
     return new Promise(resolve => {
-        const voices = speechSynthesis.getVoices();
-        if (voices.length) return resolve(voices);
+        let voices = speechSynthesis.getVoices();
+        if (voices.length) {
+            voicesLoaded = true;
+            return resolve(voices);
+        }
 
         speechSynthesis.onvoiceschanged = () => {
-            resolve(speechSynthesis.getVoices());
+            voices = speechSynthesis.getVoices();
+            voicesLoaded = true;
+            resolve(voices);
         };
     });
 }
 
+// ============================================================
+// Llenar el selector con voces EN-US
+// ============================================================
 async function populateVoiceSelector() {
     const select = document.getElementById("voiceSelect");
-    const voices = await loadVoices();
+    select.innerHTML = ''; // Limpiar opciones previas
 
-    // Solo voces EN-US
-    const usVoices = voices.filter(v => v.lang === "en-US");
+    const voices = await loadVoices();
+    const usVoices = voices.filter(v => v.lang.startsWith("en-US"));
 
     usVoices.forEach((voice, index) => {
         const option = document.createElement("option");
@@ -45,38 +53,49 @@ async function populateVoiceSelector() {
         select.appendChild(option);
     });
 
-    console.log("Voces EN-US cargadas:", usVoices);
+    if (usVoices.length > 0) select.value = usVoices[0].name;
+
+    console.log("Voces EN-US cargadas:", usVoices.map(v => v.name));
 }
 
+// ============================================================
+// Función para reproducir texto con voz seleccionada
+// ============================================================
 async function speakWithSelectedVoice() {
+    if (!voicesLoaded) await populateVoiceSelector();
+
     const select = document.getElementById("voiceSelect");
-    const selectedName = select.value;
+    const textInput = document.getElementById("textInput");
+    const text = textInput.value.trim() || "Hello, this is a test of the speech synthesis feature.";
 
-    const voices = await loadVoices();
-    const selectedVoice = voices.find(v => v.name === selectedName);
-    let textInput = document.querySelector("input[type='text']");
-    let text = textInput.value || "Hello, this is a test of the speech synthesis feature.";
-    const utterance = new SpeechSynthesisUtterance(
-        text
-    );
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(v => v.name === select.value);
 
-    if (selectedVoice) {
-        utterance.voice = selectedVoice;
+    if (!selectedVoice) {
+        alert("La voz seleccionada no está disponible. Intenta otra.");
+        return;
     }
 
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = selectedVoice;
     utterance.rate = 1;
     utterance.pitch = 1;
     utterance.volume = 1;
 
-    console.log("Reproduciendo voz:", selectedVoice.name);
-
+    // Cancelar cualquier reproducción previa
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
+
+    console.log("Reproduciendo voz:", selectedVoice.name);
 }
 
-document.getElementById("testVoice").onclick = speakWithSelectedVoice;
+// ============================================================
+// Evento de botón
+// ============================================================
+document.getElementById("testVoice").addEventListener("click", speakWithSelectedVoice);
 
-// Carga las voces al iniciar
+// Inicializar selector al cargar página
 populateVoiceSelector();
-
 </script>
+</body>
+</html>
