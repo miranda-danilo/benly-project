@@ -13,7 +13,7 @@ exports.handler = async (event) => {
 
     const client = new GoogleGenerativeAI(apiKey);
 
-    const model = client.getGenerativeModel({   
+    const model = client.getGenerativeModel({
         model: "gemini-2.0-flash-lite",
         generationConfig: {
             responseMimeType: "application/json"
@@ -29,15 +29,20 @@ exports.handler = async (event) => {
         const { sentence } = JSON.parse(event.body);
 
         // obligatorio: JSON.stringify dentro del prompt
-        const prompt = JSON.stringify({
-            instruction: "Actua como un corrector de oraciones en inglés.",
-            input_sentence: sentence,
-            output_format: {
-                status: "Correcta o Incorrecta",
-                corrected_sentence: "string",
-                explanation: "string"
-            }
-        });
+        const prompt = `
+RESPONDE ÚNICAMENTE con un JSON válido.
+Sin texto adicional. Sin arrays. Sin repetir el input.
+
+Formato OBLIGATORIO:
+{
+  "status": "Correcta" | "Incorrecta",
+  "corrected_sentence": "string",
+  "explanation": "string"
+}
+
+Corrige la siguiente oración en inglés, proporcionando una explicación breve de los errores si los hay. Además, si el usuario digital una oracion o palabra usado en inglés formal sugiere una más cotidiana. La oración es:
+"${sentence}"
+`;
 
         // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
         const result = await model.generateContent([
@@ -45,36 +50,31 @@ exports.handler = async (event) => {
         ]);
 
 
-
-       
-        console.warn("RESULT EN FUNCTION:", result);
-        console.warn("RESULT EN FUNCTION:", result.response.text());
-
         const text = result.response.text();
 
-        console.warn("TEXT EN FUNCTION:", text);
+
 
         // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
 
-       // Si devuelve un array, extraemos el objeto real
-let finalObj = parsed;
+        // Si devuelve un array, extraemos el objeto real
+        let finalObj = parsed;
 
-// Si vino como array
-if (Array.isArray(parsed)) {
-    const item = parsed[0];
+        // Si vino como array
+        if (Array.isArray(parsed)) {
+            const item = parsed[0];
 
-    if (item.output_format) {
-        finalObj = item.output_format;
-    } else {
-        finalObj = item;
-    }
-}
+            if (item.output_format) {
+                finalObj = item.output_format;
+            } else {
+                finalObj = item;
+            }
+        }
 
-return {
-    statusCode: 200,
-    body: JSON.stringify(finalObj)
-};
+        return {
+            statusCode: 200,
+            body: JSON.stringify(finalObj)
+        };
 
     } catch (error) {
         console.error("ERROR EN FUNCTION:", error);
