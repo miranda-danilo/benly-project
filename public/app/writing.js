@@ -10,17 +10,6 @@ import { showMessage } from "./notificaciones.js";
     OPTIMIZACIÓN: speechSynthesis.getVoices() a veces viene vacío.
     Se asegura que haya voces cargadas antes de elegir.
 ============================================================ */
-/* ============================================================
-    CONFIG: voz primaria + fallback ordenado
-============================================================ */
-const MAIN_VOICE = "Microsoft Andrew Online (Natural) - English (United States)";
-
-const FALLBACK_INDEXES = [3, 5, 6, 8, 9, 10, 15, 18, 19]; 
-// (corrección por base 0)
-
-/* ============================================================
-    Cargar voces (esperar si aún no están disponibles)
-============================================================ */
 function loadVoices() {
     return new Promise(resolve => {
         const voices = speechSynthesis.getVoices();
@@ -32,42 +21,48 @@ function loadVoices() {
     });
 }
 
-/* ============================================================
-    Selección automática de la mejor voz
-============================================================ */
-async function getBestVoice() {
+async function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
     const voices = await loadVoices();
-    const usVoices = voices.filter(v => v.lang === "en-US");
 
-    // 1) SÍ EXISTE ANDREW → usarlo
-    const andrew = usVoices.find(v => v.name === MAIN_VOICE);
-    if (andrew) return andrew;
+    // Voz principal
+    const MAIN_VOICE = "Microsoft Andrew Online (Natural) - English (United States)";
 
-    // 2) Fallback en el orden especificado
-    for (const index of FALLBACK_INDEXES) {
-        if (usVoices[index]) return usVoices[index];
+    // Fallback (posiciones solicitadas: 4,6,7,9,10,11,16,19,20 → base 0)
+    const FALLBACK_INDEXES = [3, 5, 6, 8, 9, 10, 15, 18, 19];
+
+    let selectedVoice = null;
+
+    // 1) Buscar Andrew primero
+    selectedVoice = voices.find(v => v.name === MAIN_VOICE);
+
+    // 2) Si no está Andrew, usar fallback en el orden dado
+    if (!selectedVoice) {
+        for (const index of FALLBACK_INDEXES) {
+            if (voices[index]) {
+                selectedVoice = voices[index];
+                break;
+            }
+        }
     }
 
-    // 3) Último recurso si nada coincide
-    return usVoices[0] || voices[0];
-}
+    // 3) Último recurso: cualquier voz en-US
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang === "en-US") || voices[0];
+    }
 
-/* ============================================================
-    Función speak() usando la voz seleccionada automáticamente
-============================================================ */
-export async function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    const bestVoice = await getBestVoice();
+    utterance.voice = selectedVoice;
 
-    utterance.voice = bestVoice;
+    console.warn("Using voice:", selectedVoice ? selectedVoice.name : "default");
+
     utterance.rate = 1;
     utterance.pitch = 1;
-
-    console.log("🔊 Usando voz:", bestVoice.name);
+    utterance.volume = 1;
 
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
 /* ============================================================
     Cargar progreso WRITING
