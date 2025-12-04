@@ -33,7 +33,7 @@ async function speak(text) {
     const FALLBACK_INDEXES = [3, 5, 6, 8, 9, 10, 15, 18, 19];
 
     // Filtrar voces en inglés
-    const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("en") || v.name.toLowerCase().includes("english"));
+    const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("en_US") || v.name.toLowerCase().includes("english"));
 
     // 1) Buscar voz principal
     let selectedVoice = voices.find(v => v.name === MAIN_VOICE);
@@ -51,6 +51,7 @@ async function speak(text) {
     // 3) Primer voz en inglés disponible
     if (!selectedVoice && englishVoices.length > 0) {
         selectedVoice = englishVoices[0];
+        console.log("Selected first available English voice as fallback.");
     }
 
     // 4) Último recurso: cualquier voz disponible
