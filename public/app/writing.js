@@ -45,24 +45,6 @@ async function speak(text) {
     speechSynthesis.speak(utterance);
 }
 
-/* ============================================================
-    fetchWithRetry — Optimizado
-============================================================ */
-async function fetchWithRetry(url, options, retries = 3, delay = 800) {
-    try {
-        const response = await fetch(url, options);
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        if (retries > 0) {
-            await new Promise(r => setTimeout(r, delay));
-            return fetchWithRetry(url, options, retries - 1, delay * 1.8);
-        }
-        throw error;
-    }
-}
 
 /* ============================================================
     Cargar progreso WRITING
@@ -139,7 +121,7 @@ export const handleWritingCorrection = async    (
 
     try {
         // Llamada segura al backend
-        const response = await fetchWithRetry("/.netlify/functions/correctWriting", {
+        const response = await fetch("/.netlify/functions/correctWriting", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sentence })
