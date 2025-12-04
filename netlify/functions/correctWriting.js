@@ -1,7 +1,7 @@
-// Nuevo SDK recomendado por Google (2025)
-const { GoogleGenAI } = require("@google/genai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 exports.handler = async (event) => {
+
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -11,10 +11,8 @@ exports.handler = async (event) => {
         };
     }
 
-    // Cliente oficial actualizado
-    const client = new GoogleGenAI({ apiKey });
+    const client = new GoogleGenerativeAI(apiKey);
 
-    // Carga del modelo
     const model = client.getGenerativeModel({
         model: "gemini-2.5-flash",
         generationConfig: {
@@ -27,11 +25,12 @@ exports.handler = async (event) => {
     }
 
     try {
+
         const { sentence } = JSON.parse(event.body);
 
-        // IMPORTANTE: siempre stringify cuando esperas JSON puro
+        // obligatorio: JSON.stringify dentro del prompt
         const prompt = JSON.stringify({
-            instruction: "Actúa como un corrector de oraciones en inglés.",
+            instruction: "Actua como un corrector de oraciones en inglés.",
             input_sentence: sentence,
             output_format: {
                 status: "Correcta o Incorrecta",
@@ -40,14 +39,17 @@ exports.handler = async (event) => {
             }
         });
 
-        // Nuevo método del SDK
+        // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
         const result = await model.generateContent([
             { text: prompt }
         ]);
 
+
+        console.warn("RESULT EN FUNCTION:", result);
+
         const text = result.response.text();
 
-        // Parseamos porque pedimos JSON explícito
+        // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
 
         return {

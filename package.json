@@ -18,6 +18,7 @@
   "homepage": "https://github.com/miranda-danilo/benly-project#readme",
   "description": "",
   "dependencies": {
-    "@google/genai": "^1.31.0"
+    "@google/genai": "^1.31.0",
+    "@google/generative-ai": "^0.24.1"
   }
 }
