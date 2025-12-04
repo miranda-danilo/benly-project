@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -103,6 +103,116 @@ async function speakWithSelectedVoice() {
 document.getElementById("testVoice").addEventListener("click", speakWithSelectedVoice);
 
 // Inicializar selector al cargar página
+populateVoiceSelector();
+</script>
+</body>
+</html>
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Speech Multivoices</title>
+</head>
+<body style="display: flex; background-color: plum; justify-content: center; align-items: center; height: 100vh; flex-direction: column; font-family: Arial, sans-serif; gap: 1rem;">
+<h2>Hola Amber 😁</h2>
+<p style="font-weight: bold; font-size: 1.2rem;">Bienvenida!</p>
+<img src="https://cdn.prod.website-files.com/5fdb2fcbe8cb905cd95d758f/6780aa0e17a09012b62ee2f4_Karla%20Bustillos.png" alt="" width="200" height="200" loading="lazy" style="border-radius: 50%;">
+
+<input style="background-color: aliceblue; padding: 0.4rem 0.8rem; width: 40%;" type="text" id="textInput" placeholder="Escribe algo en inglés" >
+<select style="padding: 1rem;" id="voiceSelect"></select>
+<button style="padding: 0.4rem 0.8rem; background-color: rgb(255, 98, 124); color: white; font-size: 1.25rem; font-style: italic; font-weight: bold; " id="testVoice">🔊 Probar voz</button>
+
+<script>
+let voicesLoaded = false;
+
+// ============================================================
+// Cargar voces con wake-up para móviles
+// ============================================================
+async function loadVoicesWithFallback() {
+    return new Promise(resolve => {
+        let voices = speechSynthesis.getVoices();
+        if (voices.length) {
+            voicesLoaded = true;
+            return resolve(voices);
+        }
+
+        // Forzar wake-up del motor
+        const dummy = new SpeechSynthesisUtterance(" ");
+        speechSynthesis.speak(dummy);
+
+        speechSynthesis.onvoiceschanged = () => {
+            voices = speechSynthesis.getVoices();
+            voicesLoaded = true;
+            resolve(voices);
+        };
+
+        setTimeout(() => {
+            voices = speechSynthesis.getVoices();
+            voicesLoaded = true;
+            resolve(voices);
+        }, 2000);
+    });
+}
+
+// ============================================================
+// Llenar selector con todas las voces en inglés
+// ============================================================
+async function populateVoiceSelector() {
+    const select = document.getElementById("voiceSelect");
+    select.innerHTML = '';
+
+    const voices = await loadVoicesWithFallback();
+    const englishVoices = voices.filter(v => v.lang.startsWith("en"));
+
+    englishVoices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = voice.name; // usar name exacto
+        option.textContent = `${index + 1}. ${voice.name} (${voice.lang})`;
+        select.appendChild(option);
+    });
+
+    if (englishVoices.length > 0) select.value = englishVoices[0].name;
+    console.log("Voces ingles cargadas:", englishVoices.map(v => `${v.name} (${v.lang})`));
+}
+
+// ============================================================
+// Reproducir texto con voz seleccionada
+// ============================================================
+async function speakWithSelectedVoice() {
+    if (!voicesLoaded) await populateVoiceSelector();
+
+    const select = document.getElementById("voiceSelect");
+    const textInput = document.getElementById("textInput");
+    const text = textInput.value.trim() || "Hello, this is a test.";
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(v => v.name === select.value);
+
+    if (!selectedVoice) {
+        alert("La voz seleccionada no está disponible. Intenta otra.");
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = selectedVoice;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+
+    console.log("Reproduciendo voz:", selectedVoice.name, selectedVoice.lang);
+}
+
+// ============================================================
+// Eventos
+// ============================================================
+document.getElementById("testVoice").addEventListener("click", speakWithSelectedVoice);
+
+// Inicializar selector
 populateVoiceSelector();
 </script>
 </body>
