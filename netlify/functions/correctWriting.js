@@ -45,9 +45,14 @@ exports.handler = async (event) => {
         ]);
 
 
+
+       
         console.warn("RESULT EN FUNCTION:", result);
+        console.warn("RESULT EN FUNCTION:", result.response.text());
 
         const text = result.response.text();
+
+        console.warn("TEXT EN FUNCTION:", text);
 
         // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
