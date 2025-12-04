@@ -51,7 +51,7 @@ async function populateVoiceSelector() {
     const select = document.getElementById("voiceSelect");
     select.innerHTML = ''; // Limpiar opciones previas
 
-    const voices = await loadVoices();
+    const voices = await loadVoicesWithFallback();
     const usVoices = voices.filter(v => v.lang.startsWith("en-US"));
 
     usVoices.forEach((voice, index) => {
