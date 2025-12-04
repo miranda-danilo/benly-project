@@ -1,4 +1,0 @@
-# netlify.toml
-[functions]
-  # Nueva ruta relativa a la raíz del proyecto
-  directory = "src/netlify/functions"
