@@ -132,7 +132,7 @@ export const handleWritingCorrection = async (sentence, feedbackContainer, feedb
                 <p class="feedback-explanation">Tu oración es gramaticalmente correcta. Has obtenido <b>${currentScore}</b> puntos.</p>
             `;
         } else {
-            playSound("incorrect");
+            playSound("wrong");
             currentScore = 0;
             outputHtml = `
                 <p class="feedback-message feedback-message--incorrect">
