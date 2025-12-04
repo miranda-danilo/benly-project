@@ -11,7 +11,12 @@ exports.handler = async (event) => {
     }
 
     const ai = new GoogleGenerativeAI(apiKey);
-    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = ai.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        generationConfig: {
+            responseMimeType: "application/json"
+        }
+    });
 
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Método no permitido" };
@@ -20,15 +25,28 @@ exports.handler = async (event) => {
     try {
         const { sentence } = JSON.parse(event.body);
 
-        const prompt = `
-            Actúa como un corrector...
-            Texto del usuario: "${sentence}"
-        `;
+        const promptJSON = {
+            instruction: "Corrige la oración y responde SOLO en JSON.",
+            input_sentence: sentence,
+            format: {
+                status: "Correcta o Incorrecta",
+                corrected_sentence: "string",
+                explanation: "string"
+            }
+        };
 
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent([
+            {
+                role: "user",
+                parts: [
+                    { text: JSON.stringify(promptJSON) }
+                ]
+            }
+        ]);
 
-        // Gemini devuelve un objeto -> debes obtener el texto así:
         const text = result.response.text();
+
+        // AHORA SÍ: Gemini RETORNA JSON PURO
         const parsed = JSON.parse(text);
 
         return {
