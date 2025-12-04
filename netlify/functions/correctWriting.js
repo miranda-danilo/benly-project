@@ -13,8 +13,7 @@ exports.handler = async (event) => {
 
     const client = new GoogleGenerativeAI(apiKey);
 
-    // 🔥 MODELO ACTUALIZADO — MÁS SOLICITUDES POR MINUTO
-    const model = client.getGenerativeModel({
+    const model = client.getGenerativeModel({   
         model: "gemini-2.0-flash-lite",
         generationConfig: {
             responseMimeType: "application/json"
@@ -40,14 +39,17 @@ exports.handler = async (event) => {
             }
         });
 
-        // SDK NUEVO (2025)
+        // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
         const result = await model.generateContent([
             { text: prompt }
         ]);
 
+
+        console.warn("RESULT EN FUNCTION:", result);
+
         const text = result.response.text();
 
-        // como pedimos JSON puro, ahora sí se puede parsear
+        // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
 
         return {
