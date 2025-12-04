@@ -52,7 +52,7 @@ async function populateVoiceSelector() {
     select.innerHTML = ''; // Limpiar opciones previas
 
     const voices = await loadVoicesWithFallback();
-    const usVoices = voices.filter(v => v.lang.startsWith("en-US"));
+    const usVoices = voices.filter(v => v.lang.startsWith("en"));
 
     usVoices.forEach((voice, index) => {
         const option = document.createElement("option");
