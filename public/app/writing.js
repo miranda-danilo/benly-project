@@ -12,11 +12,12 @@ import { showMessage } from "./notificaciones.js";
 ============================================================ */
 function loadVoices() {
     return new Promise(resolve => {
-        const voices = speechSynthesis.getVoices();
+        let voices = speechSynthesis.getVoices();
         if (voices.length) return resolve(voices);
 
         speechSynthesis.onvoiceschanged = () => {
-            resolve(speechSynthesis.getVoices());
+            voices = speechSynthesis.getVoices();
+            resolve(voices);
         };
     });
 }
@@ -28,33 +29,39 @@ async function speak(text) {
     // Voz principal
     const MAIN_VOICE = "Microsoft Andrew Online (Natural) - English (United States)";
 
-    // Fallback (posiciones solicitadas: 4,6,7,9,10,11,16,19,20 → base 0)
+    // Fallback: posiciones antiguas (solo si existen)
     const FALLBACK_INDEXES = [3, 5, 6, 8, 9, 10, 15, 18, 19];
 
-    let selectedVoice = null;
+    // Filtrar voces en inglés
+    const englishVoices = voices.filter(v => v.lang.toLowerCase().startsWith("en") || v.name.toLowerCase().includes("english"));
 
-    // 1) Buscar Andrew primero
-    selectedVoice = voices.find(v => v.name === MAIN_VOICE);
+    // 1) Buscar voz principal
+    let selectedVoice = voices.find(v => v.name === MAIN_VOICE);
 
-    // 2) Si no está Andrew, usar fallback en el orden dado
+    // 2) Fallback por índices antiguos
     if (!selectedVoice) {
         for (const index of FALLBACK_INDEXES) {
-            if (voices[index]) {
+            if (voices[index] && (voices[index].lang.toLowerCase().startsWith("en") || voices[index].name.toLowerCase().includes("english"))) {
                 selectedVoice = voices[index];
                 break;
             }
         }
     }
 
-    // 3) Último recurso: cualquier voz en-US
+    // 3) Primer voz en inglés disponible
+    if (!selectedVoice && englishVoices.length > 0) {
+        selectedVoice = englishVoices[0];
+    }
+
+    // 4) Último recurso: cualquier voz disponible
     if (!selectedVoice) {
-        selectedVoice = voices.find(v => v.lang === "en-US") || voices[0];
+        selectedVoice = voices[0];
     }
 
     utterance.voice = selectedVoice;
 
     console.warn("Using voice:", selectedVoice ? selectedVoice.name : "default");
-    console.log(speechSynthesis.getVoices().map(v => `${v.name} (${v.lang})`));
+    console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
 
     utterance.rate = 1;
     utterance.pitch = 1;
