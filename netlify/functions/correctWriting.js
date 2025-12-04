@@ -65,19 +65,22 @@ exports.handler = async (event) => {
     // ---- Fun. de generación con 1 retry máximo ----
     async function generateWithRetry(retries = 1, delay = 800) {
         try {
-            const prompt = `
-RESPONDE ÚNICAMENTE con un JSON válido y sin texto extra.
+           const prompt = `
+Respond ONLY with a valid JSON and no extra text.
+Respond ONLY in ENGLISH.
+Additionally, if a word or phrase is formal, mark it as "Correct" but provide a more informal suggestion in "corrected_sentence".
 
-Formato obligatorio:
+Mandatory format:
 {
-  "status": "Correcta" | "Incorrecta",
+  "status": "Correcto" | "Incorrecto",
   "corrected_sentence": "string",
   "explanation": "string"
 }
 
-Corrige la siguiente oración en inglés:
+Correct the following English sentence:
 "${sentence.replace(/"/g, '\\"')}"
 `;
+
 
             const result = await model.generateContent([{ text: prompt }]);
             const text = result.response.text().trim();
