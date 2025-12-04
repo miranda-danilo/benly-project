@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 exports.handler = async (event) => {
+
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -10,8 +11,9 @@ exports.handler = async (event) => {
         };
     }
 
-    const ai = new GoogleGenerativeAI(apiKey);
-    const model = ai.getGenerativeModel({
+    const client = new GoogleGenerativeAI(apiKey);
+
+    const model = client.getGenerativeModel({
         model: "gemini-2.5-flash",
         generationConfig: {
             responseMimeType: "application/json"
@@ -23,30 +25,28 @@ exports.handler = async (event) => {
     }
 
     try {
+
         const { sentence } = JSON.parse(event.body);
 
-        const promptJSON = {
-            instruction: "Corrige la oración y responde SOLO en JSON.",
+        // obligatorio: JSON.stringify dentro del prompt
+        const prompt = JSON.stringify({
+            instruction: "Corrige la oración. Responde SOLO en JSON.",
             input_sentence: sentence,
-            format: {
+            output_format: {
                 status: "Correcta o Incorrecta",
                 corrected_sentence: "string",
                 explanation: "string"
             }
-        };
+        });
 
+        // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
         const result = await model.generateContent([
-            {
-                role: "user",
-                parts: [
-                    { text: JSON.stringify(promptJSON) }
-                ]
-            }
+            { text: prompt }
         ]);
 
         const text = result.response.text();
 
-        // AHORA SÍ: Gemini RETORNA JSON PURO
+        // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
 
         return {
@@ -54,14 +54,14 @@ exports.handler = async (event) => {
             body: JSON.stringify(parsed)
         };
 
-    } catch (err) {
-        console.error("ERROR EN FUNCTION:", err);
+    } catch (error) {
+        console.error("ERROR EN FUNCTION:", error);
 
         return {
             statusCode: 500,
             body: JSON.stringify({
-                error: "Error interno",
-                details: err.message
+                error: "Internal Server Error",
+                details: error.message
             })
         };
     }
