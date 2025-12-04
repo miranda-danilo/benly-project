@@ -1,5 +1,16 @@
 // writing_logic.js
 
+
+// obligatorio: JSON.stringify dentro del prompt
+        /* const prompt = JSON.stringify({
+            instruction: "Actua como un corrector de oraciones en inglés.",
+            input_sentence: sentence,
+            output_format: {
+                status: "Correcta o Incorrecta",
+                corrected_sentence: "string",
+                explanation: "string"
+            }
+        }); */
 import { auth, db } from "./conexion_firebase.js";
 import { getDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { showMessage } from "./notificaciones.js";
