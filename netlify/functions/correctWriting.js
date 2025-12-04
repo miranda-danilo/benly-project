@@ -57,10 +57,24 @@ exports.handler = async (event) => {
         // Como le pedimos JSON puro, ahora sí podemos parsear
         const parsed = JSON.parse(text);
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify(parsed)
-        };
+       // Si devuelve un array, extraemos el objeto real
+let finalObj = parsed;
+
+// Si vino como array
+if (Array.isArray(parsed)) {
+    const item = parsed[0];
+
+    if (item.output_format) {
+        finalObj = item.output_format;
+    } else {
+        finalObj = item;
+    }
+}
+
+return {
+    statusCode: 200,
+    body: JSON.stringify(finalObj)
+};
 
     } catch (error) {
         console.error("ERROR EN FUNCTION:", error);
