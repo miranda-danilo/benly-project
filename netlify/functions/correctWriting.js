@@ -1,34 +1,32 @@
-// netlify/functions/correctWriting.js - VERSIÓN CORREGIDA
+// netlify/functions/correctWriting.js
 
-// Importa el SDK de Gemini
 const { GoogleGenAI } = require("@google/genai");
 
-// La función principal que maneja las solicitudes HTTP
 exports.handler = async (event, context) => {
     
-    // *** 1. OBTENER LA CLAVE DE FORMA SEGURA DENTRO DEL HANDLER ***
     const apiKey = process.env.GEMINI_API_KEY; 
 
-    // *** 2. VERIFICACIÓN CRÍTICA ***
+    console.log(apiKey)
+
+    // *** VERIFICACIÓN CRÍTICA ***
     if (!apiKey) {
-        console.error("ERROR CRÍTICO: La clave GEMINI_API_KEY no está configurada en Netlify.");
+        // Este error DEBE aparecer si la clave está faltando
+        console.error("ERROR CRÍTICO: Clave GEMINI_API_KEY no configurada.");
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Configuration Error: API Key Missing. Check Netlify Environment Variables." }),
+            body: JSON.stringify({ error: "Configuration Error: API Key Missing." }),
         };
     }
     
-    // *** 3. INICIALIZACIÓN DENTRO DEL HANDLER ***
-    // La inicialización del SDK DEBE hacerse aquí.
+    // *** INICIALIZACIÓN: Usando el constructor por defecto y el apiKey como opción ***
+    // (Tu código es correcto, pero lo repetimos para asegurar)
     const ai = new GoogleGenAI({ apiKey });
     
-    // 4. Verificar el método (solo POST)
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Método no permitido" };
     }
 
     try {
-        // ... (El resto de tu código de lógica de API sigue igual)
         const { sentence } = JSON.parse(event.body);
 
         if (!sentence) {
@@ -42,27 +40,32 @@ exports.handler = async (event, context) => {
             config: {
                 model: "gemini-2.5-flash", 
                 responseMimeType: "application/json",
-                responseSchema: {
-                   // ... (tu schema)
-                }
+                // ...
             }
         };
 
         // 5. Llamada segura a la API de Gemini
+        // Si el error 500 ocurre aquí, es un problema de autenticación (401/403)
         const genaiResponse = await ai.models.generateContent(payload);
         const parsedResult = JSON.parse(genaiResponse.text);
 
-        // 6. Devolver el JSON limpio al frontend
         return {
             statusCode: 200,
             body: JSON.stringify(parsedResult),
         };
 
     } catch (error) {
-        console.error("Error en Netlify Function:", error);
+        // Asegúrate de que el error 500 no sea causado por un error de autenticación 401/403
+        console.error("Error en Netlify Function:", error.message);
+        
+        // Si el error es una falla de autenticación, devuelve un mensaje específico.
+        const errorBody = error.message.includes('API key') || error.message.includes('403') ? 
+                          "Error de autenticación: Verifica la validez y restricciones de la clave de Gemini." :
+                          "Error interno del servidor al procesar la corrección.";
+
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Error interno del servidor al procesar la corrección." }),
+            body: JSON.stringify({ error: errorBody, originalError: error.message }),
         };
     }
 };
