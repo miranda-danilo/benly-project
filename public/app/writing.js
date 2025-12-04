@@ -11,6 +11,27 @@ import { showMessage } from "./notificaciones.js";
 const CORRECTION_FUNCTION_URL = "/.netlify/functions/correctWriting";
 
 
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Seleccionar una voz más humana (no la voz Microsoft Mark)
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(v =>
+        v.name.includes("Natural") ||
+        v.name.includes("Neural") ||
+        v.name.includes("Jenny") ||
+        v.lang === "en-US"
+    );
+
+    if (selectedVoice) utterance.voice = selectedVoice;
+
+    utterance.rate = 1;   // velocidad
+    utterance.pitch = 1;  // tono
+    utterance.volume = 1; // volumen
+    speechSynthesis.speak(utterance);
+}
+
+
 /**
  * Realiza una llamada a la API con reintentos y retroceso exponencial.
  * @param {string} url - La URL de la API.
@@ -122,32 +143,34 @@ export const handleWritingCorrection = async (sentence, feedbackContainer, feedb
         if (parsedResult.status === 'Correcta') {
             playSound("correct");
             currentScore = 10;
+             speak(`Correct. Your sentence is correct. You obtained ${currentScore} points.`);
             if (user) await saveWritingScore(user.uid, currentScore);
 
             outputHtml = `
                 <p class="feedback-message feedback-message--correct">
                     <svg class="feedback-message__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    ¡Correcta!
+                    ¡Correct!
                 </p>
-                <p class="feedback-explanation">Tu oración es gramaticalmente correcta. Has obtenido <b>${currentScore}</b> puntos.</p>
+                <p class="feedback-explanation">Your sentence '${sentence}' is grammatically correct. You have obtained <b>${currentScore}</b> points.</p>
             `;
         } else {
             playSound("wrong");
             currentScore = 0;
+            speak(`Incorrect. The corrected version is: ${parsedResult.corrected_sentence}. Explanation: ${parsedResult.explanation}`);
             outputHtml = `
                 <p class="feedback-message feedback-message--incorrect">
                     <svg class="feedback-message__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    ¡Incorrecta!
+                    ¡Incorrect!
                 </p>
                 <div class="corrected-section">
-                    <h3 class="input-label">Versión corregida:</h3>
+                    <h3 class="input-label">Corrected version:</h3>
                     <p class="corrected-text">"${parsedResult.corrected_sentence}"</p>
                 </div>
                 <div class="explanation-section">
-                    <h3 class="input-label">Explicación:</h3>
+                    <h3 class="input-label">Explanation:</h3>
                     <p class="explanation-text">${parsedResult.explanation}</p>
                 </div>
-                <p class="feedback-score">Puntaje obtenido en este intento: <b>${currentScore}</b> puntos.</p>
+                <p class="feedback-score">Score obtained in this attempt: <b>${currentScore}</b> points.</p>
             `;
         }
 
@@ -157,8 +180,8 @@ export const handleWritingCorrection = async (sentence, feedbackContainer, feedb
 
         if (writingProgressDiv) {
             writingProgressDiv.innerHTML = `
-                <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${highestScore}/10
-                ${highestScore >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de escritura!</span>' : ''}
+                <b style="color:#2563eb;">Your highest score is:</b> ${highestScore}/10
+                ${highestScore >= 10 ? '<br><span style="color:green;font-weight:bold;">Congratulations, you have completed the writing section!</span>' : ''}
             `;
         }
 
@@ -167,8 +190,8 @@ export const handleWritingCorrection = async (sentence, feedbackContainer, feedb
         console.error("Error during writing correction:", error);
         if (feedbackContent) {
             feedbackContent.innerHTML = `
-                <p class="error-message">Ocurrió un error al procesar la solicitud. Por favor, inténtalo de nuevo.</p>
-                <p class="error-detail">Detalles del error: ${error.message}</p>
+                <p class="error-message">An error occurred while processing the request. Please try again.</p>
+                <p class="error-detail">Error details: ${error.message}</p>
             `;
         }
     } finally {
