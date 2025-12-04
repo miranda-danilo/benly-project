@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Probando voices</h2>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus, ea? Perspiciatis quos ducimus, reprehenderit recusandae tempora et laudantium! Dignissimos explicabo sequi reprehenderit modi praesentium amet sit eligendi adipisci ex nostrum.S</p>
+    <select id="voiceSelect"></select>
+<button id="testVoice">🔊 Probar voz</button>
+
+</body>
+</html>
+<script>
+    
+/* ============================================================
+    OPTIMIZACIÓN: speechSynthesis.getVoices() a veces viene vacío.
+    Se asegura que haya voces cargadas antes de elegir.
+============================================================ */
+function loadVoices() {
+    return new Promise(resolve => {
+        const voices = speechSynthesis.getVoices();
+        if (voices.length) return resolve(voices);
+
+        speechSynthesis.onvoiceschanged = () => {
+            resolve(speechSynthesis.getVoices());
+        };
+    });
+}
+
+async function populateVoiceSelector() {
+    const select = document.getElementById("voiceSelect");
+    const voices = await loadVoices();
+
+    // Solo voces EN-US
+    const usVoices = voices.filter(v => v.lang === "en-US");
+
+    usVoices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = voice.name;
+        option.textContent = `${index + 1}. ${voice.name}`;
+        select.appendChild(option);
+    });
+
+    console.log("Voces EN-US cargadas:", usVoices);
+}
+
+async function speakWithSelectedVoice() {
+    const select = document.getElementById("voiceSelect");
+    const selectedName = select.value;
+
+    const voices = await loadVoices();
+    const selectedVoice = voices.find(v => v.name === selectedName);
+
+    const utterance = new SpeechSynthesisUtterance(
+        "Hello! This is how I sound. Nice to meet you!"
+    );
+
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    }
+
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    console.log("Reproduciendo voz:", selectedVoice.name);
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+}
+
+document.getElementById("testVoice").onclick = speakWithSelectedVoice;
+
+// Carga las voces al iniciar
+populateVoiceSelector();
+
+</script>

@@ -10,6 +10,17 @@ import { showMessage } from "./notificaciones.js";
     OPTIMIZACIÓN: speechSynthesis.getVoices() a veces viene vacío.
     Se asegura que haya voces cargadas antes de elegir.
 ============================================================ */
+/* ============================================================
+    CONFIG: voz primaria + fallback ordenado
+============================================================ */
+const MAIN_VOICE = "Microsoft Andrew Online (Natural) - English (United States)";
+
+const FALLBACK_INDEXES = [3, 5, 6, 8, 9, 10, 15, 18, 19]; 
+// (corrección por base 0)
+
+/* ============================================================
+    Cargar voces (esperar si aún no están disponibles)
+============================================================ */
 function loadVoices() {
     return new Promise(resolve => {
         const voices = speechSynthesis.getVoices();
@@ -21,30 +32,42 @@ function loadVoices() {
     });
 }
 
-async function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-
+/* ============================================================
+    Selección automática de la mejor voz
+============================================================ */
+async function getBestVoice() {
     const voices = await loadVoices();
+    const usVoices = voices.filter(v => v.lang === "en-US");
 
-    const selectedVoice = voices.find(v =>
-        v.name.includes("Natural") ||
-        v.name.includes("Neural") ||
-        v.name.includes("Jenny") ||
-        (v.lang === "en-US" && v.name.includes("Microsoft") === false)
-    );
+    // 1) SÍ EXISTE ANDREW → usarlo
+    const andrew = usVoices.find(v => v.name === MAIN_VOICE);
+    if (andrew) return andrew;
 
-    if (selectedVoice) utterance.voice = selectedVoice;
+    // 2) Fallback en el orden especificado
+    for (const index of FALLBACK_INDEXES) {
+        if (usVoices[index]) return usVoices[index];
+    }
 
-    console.warn("Using voice:", utterance.voice ? utterance.voice.name : "default");
-
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    speechSynthesis.cancel(); // evitar solapamientos
-    speechSynthesis.speak(utterance);
+    // 3) Último recurso si nada coincide
+    return usVoices[0] || voices[0];
 }
 
+/* ============================================================
+    Función speak() usando la voz seleccionada automáticamente
+============================================================ */
+export async function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    const bestVoice = await getBestVoice();
+
+    utterance.voice = bestVoice;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    console.log("🔊 Usando voz:", bestVoice.name);
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+}
 
 /* ============================================================
     Cargar progreso WRITING
