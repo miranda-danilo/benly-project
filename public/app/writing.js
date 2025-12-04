@@ -4,7 +4,7 @@ import { auth, db } from "./conexion_firebase.js";
 import { getDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { showMessage } from "./notificaciones.js";
 
-const CORRECTION_FUNCTION_URL = "/.netlify/functions/correctWriting";
+
 
 /* ============================================================
     OPTIMIZACIÓN: speechSynthesis.getVoices() a veces viene vacío.
@@ -120,7 +120,8 @@ async function saveWritingScore(userId, score) {
 /* ============================================================
     LÓGICA PRINCIPAL DE CORRECCIÓN WRITING
 ============================================================ */
-export const handleWritingCorrection = async (
+let isProcessingWriting = false; // evita doble click / spam
+export const handleWritingCorrection = async    (
     sentence,
     feedbackContainer,
     feedbackContent,
@@ -129,17 +130,27 @@ export const handleWritingCorrection = async (
     playSound
 ) => {
 
+     if (isProcessingWriting) return;   // ⬅ anti spam
+    isProcessingWriting = true;
+
     feedbackContainer?.classList.remove("hidden");
     feedbackContent?.classList.add("hidden");
     loadingIndicator?.classList.remove("hidden");
 
     try {
         // Llamada segura al backend
-        const parsedResult = await fetchWithRetry(CORRECTION_FUNCTION_URL, {
+        const response = await fetchWithRetry("/.netlify/functions/correctWriting", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sentence })
         });
+
+        let parsedResult = await response.json();
+
+        // si hay error del server, mostrar fallback
+        if (!response.ok && parsedResult.fallback) {
+            parsedResult = parsedResult.fallback;
+        }
 
         const user = auth.currentUser;
         let currentScore = parsedResult.status === "Correcta" ? 10 : 0;
@@ -209,5 +220,6 @@ export const handleWritingCorrection = async (
     } finally {
         loadingIndicator?.classList.add("hidden");
         feedbackContent?.classList.remove("hidden");
+        isProcessingWriting = false;   // ⬅ vuelve a permitir el uso
     }
 };
