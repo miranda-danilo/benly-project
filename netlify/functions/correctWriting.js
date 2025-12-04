@@ -30,7 +30,7 @@ exports.handler = async (event) => {
 
         // obligatorio: JSON.stringify dentro del prompt
         const prompt = JSON.stringify({
-            instruction: "Corrige la oración. Responde SOLO en JSON.",
+            instruction: "Actua como un corrector de oraciones en inglés.",
             input_sentence: sentence,
             output_format: {
                 status: "Correcta o Incorrecta",
@@ -43,6 +43,9 @@ exports.handler = async (event) => {
         const result = await model.generateContent([
             { text: prompt }
         ]);
+
+
+        console.warn("RESULT EN FUNCTION:", result);
 
         const text = result.response.text();
 
