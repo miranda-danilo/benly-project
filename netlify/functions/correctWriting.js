@@ -26,11 +26,9 @@ exports.handler = async (event) => {
     const client = new GoogleGenerativeAI(apiKey);
     const model = client.getGenerativeModel({
         model: "gemini-2.0-flash-lite",
-        generationConfig: { responseMimeType: "application/json" },
-        safetySettings: [{ category: "HARM_CATEGORY_DANGEROUS", threshold: 4 }]
+        generationConfig: { responseMimeType: "application/json" }
     });
 
-    // ---- RETRY function ----
     async function generateWithRetry(retries = 3, delay = 800) {
         try {
             const prompt = `
@@ -49,7 +47,6 @@ Correct the following English sentence and explain why if incorrect:
             const result = await model.generateContent([{ text: prompt }]);
             const text = result.response.text();
 
-            // Sanitizar espacios / markdown / bloques accidentales
             const clean = text.replace(/```json|```/g, "").trim();
 
             return JSON.parse(clean);
