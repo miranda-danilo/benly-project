@@ -72,7 +72,7 @@ Additionally, if a word or phrase is formal, mark it as "Correct" but provide a 
 
 Mandatory format:
 {
-  "status": "Correcto" | "Incorrecto",
+  "status": "Correcta" | "Incorrecta",
   "corrected_sentence": "string",
   "explanation": "string"
 }

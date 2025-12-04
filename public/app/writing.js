@@ -54,6 +54,7 @@ async function speak(text) {
     utterance.voice = selectedVoice;
 
     console.warn("Using voice:", selectedVoice ? selectedVoice.name : "default");
+    console.log(speechSynthesis.getVoices().map(v => `${v.name} (${v.lang})`));
 
     utterance.rate = 1;
     utterance.pitch = 1;
