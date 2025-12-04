@@ -1,92 +1,74 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 exports.handler = async (event) => {
-
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: "API Key missing" })
-        };
-    }
-
-    const client = new GoogleGenerativeAI(apiKey);
-
-    const model = client.getGenerativeModel({   
-        model: "gemini-2.0-flash-lite",
-        generationConfig: {
-            responseMimeType: "application/json"
-        }
-    });
-
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Método no permitido" };
     }
 
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        return { statusCode: 500, body: JSON.stringify({ error: "API Key missing" }) };
+    }
+
+    let sentence;
     try {
+        ({ sentence } = JSON.parse(event.body));
+        if (!sentence || typeof sentence !== "string") {
+            throw new Error("Invalid sentence");
+        }
+    } catch (e) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: "Invalid JSON body", details: e.message })
+        };
+    }
 
-        const { sentence } = JSON.parse(event.body);
+    const client = new GoogleGenerativeAI(apiKey);
+    const model = client.getGenerativeModel({
+        model: "gemini-2.0-flash-lite",
+        generationConfig: { responseMimeType: "application/json" },
+        safetySettings: [{ category: "HARM_CATEGORY_DANGEROUS", threshold: 4 }]
+    });
 
-        // obligatorio: JSON.stringify dentro del prompt
-        /* const prompt = JSON.stringify({
-            instruction: "Actua como un corrector de oraciones en inglés.",
-            input_sentence: sentence,
-            output_format: {
-                status: "Correcta o Incorrecta",
-                corrected_sentence: "string",
-                explanation: "string"
-            }
-        }); */
+    // ---- RETRY function ----
+    async function generateWithRetry(retries = 3, delay = 800) {
+        try {
+            const prompt = `
+RESPOND ONLY WITH VALID JSON.
 
-        const prompt = `
-RESPONDE ÚNICAMENTE con un JSON válido.
-Sin texto adicional. Sin arrays. Sin repetir el input.
-
-Formato OBLIGATORIO:
 {
-  "status": "Correcta" | "Incorrecta",
-  "corrected_sentence": "string",
-  "explanation": "string"
+ "status":"Correcta"|"Incorrecta",
+ "corrected_sentence":"string",
+ "explanation":"string"
 }
 
-Actua como un corrector de oraciones en inglés. Corrige la siguiente oración y proporciona una explicación si es incorrecta. Además, si la oración o palabra usa un termino formal indica una sugerencia en inglés informal. Responde solamente en inglés. Oración:
+Correct the following English sentence and explain why if incorrect:
 "${sentence}"
 `;
 
+            const result = await model.generateContent([{ text: prompt }]);
+            const text = result.response.text();
 
-        // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
-        const result = await model.generateContent([
-            { text: prompt }
-        ]);
+            // Sanitizar espacios / markdown / bloques accidentales
+            const clean = text.replace(/```json|```/g, "").trim();
 
+            return JSON.parse(clean);
 
-        const text = result.response.text();
-
-        
-
-        // Como le pedimos JSON puro, ahora sí podemos parsear
-        const parsed = JSON.parse(text);
-
-       // Si devuelve un array, extraemos el objeto real
-let finalObj = parsed;
-
-// Si vino como array
-if (Array.isArray(parsed)) {
-    const item = parsed[0];
-
-    if (item.output_format) {
-        finalObj = item.output_format;
-    } else {
-        finalObj = item;
+        } catch (err) {
+            if (retries > 0) {
+                await new Promise(res => setTimeout(res, delay));
+                return generateWithRetry(retries - 1, delay * 2);
+            }
+            throw err;
+        }
     }
-}
 
-return {
-    statusCode: 200,
-    body: JSON.stringify(finalObj)
-};
-
+    try {
+        const parsed = await generateWithRetry();
+        return {
+            statusCode: 200,
+            body: JSON.stringify(parsed)
+        };
     } catch (error) {
         console.error("ERROR EN FUNCTION:", error);
 
@@ -94,7 +76,12 @@ return {
             statusCode: 500,
             body: JSON.stringify({
                 error: "Internal Server Error",
-                details: error.message
+                details: error.message,
+                fallback: {
+                    status: "Incorrecta",
+                    corrected_sentence: sentence,
+                    explanation: "An error occurred while processing the sentence."
+                }
             })
         };
     }
