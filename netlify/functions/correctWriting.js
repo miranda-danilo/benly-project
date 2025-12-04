@@ -42,7 +42,7 @@ exports.handler = async (event) => {
     // ---- Configurar Gemini ----
     const client = new GoogleGenerativeAI(apiKey);
     const model = client.getGenerativeModel({
-        model: "gemini-2.0-flash-lite", // ⬅ mucho más estable que flash-lite
+        model: "gemini-2.0-flash-live", // ⬅ mucho más estable que flash-lite
         generationConfig: {
             responseMimeType: "application/json"
         },
