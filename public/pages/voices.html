@@ -6,8 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Probando voices</h2>
+    <h2>Hola Amber 😁</h2>
     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus, ea? Perspiciatis quos ducimus, reprehenderit recusandae tempora et laudantium! Dignissimos explicabo sequi reprehenderit modi praesentium amet sit eligendi adipisci ex nostrum.S</p>
+    <input type="text" placeholder="Escribe algo en inglés">
     <select id="voiceSelect"></select>
 <button id="testVoice">🔊 Probar voz</button>
 
@@ -53,9 +54,10 @@ async function speakWithSelectedVoice() {
 
     const voices = await loadVoices();
     const selectedVoice = voices.find(v => v.name === selectedName);
-
+    let textInput = document.querySelector("input[type='text']");
+    let text = textInput.value || "Hello, this is a test of the speech synthesis feature.";
     const utterance = new SpeechSynthesisUtterance(
-        "Hello! This is how I sound. Nice to meet you!"
+        text
     );
 
     if (selectedVoice) {
