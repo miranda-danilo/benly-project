@@ -20,21 +20,29 @@ let voicesLoaded = false;
 // ============================================================
 // Función para cargar voces disponibles
 // ============================================================
-function loadVoices() {
+async function loadVoicesWithFallback() {
     return new Promise(resolve => {
         let voices = speechSynthesis.getVoices();
-        if (voices.length) {
-            voicesLoaded = true;
-            return resolve(voices);
-        }
+
+        if (voices.length) return resolve(voices);
+
+        // Forzar una síntesis mínima para despertar el motor
+        const dummyUtterance = new SpeechSynthesisUtterance(" ");
+        speechSynthesis.speak(dummyUtterance);
 
         speechSynthesis.onvoiceschanged = () => {
             voices = speechSynthesis.getVoices();
-            voicesLoaded = true;
             resolve(voices);
         };
+
+        // Timeout de seguridad en caso de que onvoiceschanged no se dispare
+        setTimeout(() => {
+            voices = speechSynthesis.getVoices();
+            resolve(voices);
+        }, 2000);
     });
 }
+
 
 // ============================================================
 // Llenar el selector con voces EN-US
