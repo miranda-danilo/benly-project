@@ -1,55 +1,64 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// =======================================================
+// INICIALIZACIÓN (Fuera del handler para Cold Start)
+// =======================================================
+const { GoogleGenAI } = require("@google/genai"); 
 
-exports.handler = async (event) => {
+const apiKey = process.env.GEMINI_API_KEY;
 
-    const apiKey = process.env.GEMINI_API_KEY;
+// Verifica la clave API al inicio del módulo
+if (!apiKey) {
+    throw new Error("GEMINI_API_KEY no está definida. La función no puede iniciarse.");
+}
 
-    if (!apiKey) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: "API Key missing" })
-        };
-    }
+const client = new GoogleGenAI({ apiKey }); // Inicializa el cliente con la nueva clase
 
-    const client = new GoogleGenerativeAI(apiKey);
-
-    const model = client.getGenerativeModel({
-        model: "gemini-2.5-flash",
-        generationConfig: {
-            responseMimeType: "application/json"
+// Inicializa el modelo una sola vez, especificando la respuesta JSON
+const model = client.getGenerativeModel({
+    model: "gemini-2.5-flash",
+    config: { // Nota: se usa 'config' o 'generationConfig'
+        responseMimeType: "application/json",
+        responseSchema: {
+             type: "object",
+             properties: {
+                 status: { type: "string", description: "Correcta o Incorrecta" },
+                 corrected_sentence: { type: "string", description: "Oración corregida en inglés" },
+                 explanation: { type: "string", description: "Explicación de la corrección" }
+             },
+             required: ["status", "corrected_sentence", "explanation"]
         }
-    });
+    }
+});
+
+
+// =======================================================
+// HANDLER (El código que se ejecuta en cada llamada)
+// =======================================================
+exports.handler = async (event) => {
 
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Método no permitido" };
     }
 
     try {
-
         const { sentence } = JSON.parse(event.body);
 
-        // obligatorio: JSON.stringify dentro del prompt
-        const prompt = JSON.stringify({
-            instruction: "Actua como un corrector de oraciones en inglés.",
-            input_sentence: sentence,
-            output_format: {
-                status: "Correcta o Incorrecta",
-                corrected_sentence: "string",
-                explanation: "string"
-            }
+        if (!sentence) {
+             return { statusCode: 400, body: JSON.stringify({ error: "Falta la 'sentence' en el cuerpo de la solicitud." }) };
+        }
+        
+        // **Optimización del Prompt:** El modelo ya sabe que debe responder en JSON
+        // gracias a la configuración inicial. Puedes simplificar el prompt.
+        const prompt = `Actúa como un corrector de oraciones en inglés. Analiza la siguiente oración y genera el JSON de salida con el estado, la corrección y la explicación: ${sentence}`;
+
+        // El formato de la llamada es **generateContent**
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
         });
-
-        // EL FORMATO CORRECTO DEL SDK NUEVO (2025)
-        const result = await model.generateContent([
-            { text: prompt }
-        ]);
-
-
-        console.warn("RESULT EN FUNCTION:", result);
-
-        const text = result.response.text();
-
-        // Como le pedimos JSON puro, ahora sí podemos parsear
+        
+        // El resultado ya viene como un objeto que contiene el texto JSON
+        const text = result.response.text; // Usamos .text directamente sin ()
+        
+        // Intentamos parsear el JSON
         const parsed = JSON.parse(text);
 
         return {
