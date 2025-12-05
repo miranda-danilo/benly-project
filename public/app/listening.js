@@ -85,6 +85,7 @@ function generateFillInTheBlanks(originalText, targetIndices) {
  * @param {function} playSound - La función para reproducir sonidos.
  * @param {object} userScores - El objeto de puntajes del usuario.
  */
+
 export const setupListeningExercise = (unitSection, playSound, userScores) => {
     const content = `
         <h2 class="titulo-user">Práctica de Escucha</h2>
@@ -134,16 +135,11 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
     const displayInitialScore = () => {
         const topicScore = userScores.scores?.LISTENING;
         const score = topicScore ? topicScore.score : 0;
-      /*   scoreDisplay.innerHTML = `<b style="color:#2563eb;>Tu puntaje mayor es de:</b> ${score.toFixed(1)}/10 ${score.toFixed(10) >= 10  ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de listening!</span>' : ''}` */
-
+      
         scoreDisplay.innerHTML = `
                 <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${score.toFixed(1)}/10
                 ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de listening!</span>' : ''}
             `
-
-/* `
-                <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${highestScore}/10 ${highestScore >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de escritura!</span>' : ''}
-            ` */
 
     };
     displayInitialScore();
@@ -221,13 +217,15 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
             <p>Respuestas correctas: ${correctCount} de ${totalQuestions}</p>
         `;
 
-        if (score >= 7) {
+        if (score >= 10) {
             playSound("win");
             showMessage("¡Excelente trabajo! Has pasado el ejercicio de listening.", "success");
         } else {
             playSound("fail");
-            showMessage("Sigue practicando. Puedes intentarlo de nuevo.", "info");
+            showMessage("Sigue practicando. Puedes intentarlo de nuevo.", "error");
         }
+
+        
 
         scoreDisplay.innerHTML = scoreHtml;
         saveListeningScore(auth.currentUser.uid, score);
@@ -269,7 +267,7 @@ async function saveListeningScore(userId, score) {
         if (score > prevScore) {
              const newScoreEntry = {
                 score: score,
-                completada: score >= 7,
+                completada: score >= 10,
             };
             
             await setDoc(docRef, {

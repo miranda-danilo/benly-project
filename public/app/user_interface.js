@@ -197,10 +197,10 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
                 audio = new Audio("assets/chicharra-error-incorrecto-.mp3");
                 break;
             case "win":
-                audio = new Audio("assets/bites-ta-da-winner.mp3");
+                audio = new Audio("assets/win.mp3");
                 break;
             case "fail":
-                audio = new Audio("assets/computers-critical-error-windows.mp3");
+                audio = new Audio("assets/fail.mp3");
                 break;
         }
         if (audio) audio.play();
