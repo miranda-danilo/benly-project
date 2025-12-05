@@ -7,11 +7,23 @@ import { showMessage } from "./notificaciones.js";
 // Datos de ejemplo para la actividad de listening
 // Con rutas de archivos de audio locales
 const listeningData = {
+     'anna': {
+        title: "Anna's Story",
+        text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
+        targetIndices: [1, 10, 23, 31, 37, 50, 58],
+        audioUrl: 'assets/anna.wav'
+    },
     'family': {
         title: "My Family",
         text: "My family lives in Melbourne. There are six people in my family. My mother and father live in a large house. The house has four bedrooms and a big backyard. There are flowers in the front yard. My older brother, Alan, is married with two children. My younger brother, Bill, and my sister, Sue, live at home. My father works in an office in Belmore. He is a manager. My mother works at home and looks after the house. I am very lucky to have a wonderful family.",
-        targetIndices: [2, 6, 16, 22, 29, 41, 56, 59, 66, 76],
+        targetIndices: [2, 6, 19, 25, 32, 42, 55, 59, 68, 75],
         audioUrl: 'assets/my-family.wav'
+    },
+    'university': {
+        title: "At the University",
+        text: "I'm Mark. I am a student of Information Technology. Today was a good day for me. The weather was very nice. It was sunny and warm. My bus was on time. It was fast. My teacher was very happy because I was on time for my class. He was friendly. My first class was Databases. It was at 8:00 AM. I learned to save information. Then I had my Programming class. My laptop was good. I typed my code. The program was okay. I finished my work. I checked my email too. At 12 o'clock, my classes finished. I left the university. The sun was still shining. I walked home. It was a great day.",
+        targetIndices: [5, 17, 24, 36, 44, 49, 54, 69, 88, 108],
+        audioUrl: 'assets/at-university.wav'
     },
     'office': {
         title: "At the Office",
@@ -19,20 +31,11 @@ const listeningData = {
         targetIndices: [6, 16, 24, 36, 44, 49, 54, 73, 83, 107],
         audioUrl: 'assets/at-the-office.wav'
     },
-    'travel': {
-        title: "Summer Vacation",
-        text: "Last summer, I went to the beach. The weather was sunny and hot. I swam in the ocean and built sandcastles. It was a very relaxing trip.",
-        audioUrl: 'assets/summer.wav'
-    },
-    'technology': {
-        title: "The Internet",
-        text: "The internet is a vast network that connects millions of computers worldwide. We use it for communication, work, and entertainment. It has changed our lives in many ways.",
-        audioUrl: 'assets/internet.wav'
-    },
-    'art': {
-        title: "Modern Art",
-        text: "Modern art often challenges traditional ideas about what art should be. It includes many different styles and movements, like cubism and surrealism. It is a very exciting field.",
-        audioUrl: 'assets/art.wav'
+    'weekend': {
+        title: "Next Weekend",
+        text: "Next weekend I'm going to have a great time. On Saturday morning, I'm going to buy some new jeans and a pair of shoes. In the afternoon, I'm going to visit a friend in Punchbowl. At 8 o'clock, I'm going to go to a French restaurant with five friends. On Sunday, I'm going to have an interesting day. I'm going to go to the museum with a friend. After that, I'm going to eat out at an Indian restaurant. I'm going to go to bed late.",
+        targetIndices: [1, 10, 13, 30, 41, 49, 54, 73, 83, 107],
+        audioUrl: 'assets/next-weekend.wav'
     }
 };
 
@@ -89,11 +92,11 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         <div class="opciones-listening">
             <select id="listeningTopicSelect" class="select-field">
                 <option value="">-- Selecciona un tema --</option>
+                <option value="anna">Anna's Story</option>
                 <option value="family">My Family</option>
+                <option value="university">At the University</option>
                 <option value="office">At the office</option>
-                <option value="travel">Summer Vacation</option>
-                <option value="technology">The Internet</option>
-                <option value="art">Modern Art</option>
+                <option value="weekend">Next weekend</option>
             </select>
             <button id="loadAudioBtn" class="boton-primario">Cargar Audio</button>
         </div>
