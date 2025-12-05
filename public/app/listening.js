@@ -221,7 +221,8 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
             playSound("win");
             showMessage("¡Excelente trabajo! Has pasado el ejercicio de listening.", "success");
         } else {
-            /* playSound("fail"); */
+            console.warn("Se ecuata el sonido de fallo");
+            playSound("fail");
             showMessage("Sigue practicando. Puedes intentarlo de nuevo.", "error");
         }
 
