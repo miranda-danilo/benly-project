@@ -7,7 +7,7 @@ import { showMessage } from "./notificaciones.js";
 // Datos de ejemplo para la actividad de listening
 // Con rutas de archivos de audio locales
 const listeningData = {
-     'anna': {
+    'anna': {
         title: "Anna's Story",
         text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
         targetIndices: [1, 10, 23, 31, 37, 50, 58],
@@ -49,27 +49,27 @@ function generateFillInTheBlanks(originalText, targetIndices) {
     const words = originalText.split(/\s+/);
     let quizHtml = '';
     const correctAnswers = [];
-    
+
     // Convertimos el array de índices en un Set para búsquedas rápidas
-    const targetSet = new Set(targetIndices); 
+    const targetSet = new Set(targetIndices);
     // Variable para llevar la cuenta de qué número de espacio en blanco estamos generando (1 a 10)
-    let blankCount = 0; 
+    let blankCount = 0;
 
     words.forEach((word, index) => {
         const sanitizedWord = word.replace(/[.,?!]/g, '').toLowerCase();
 
         // **NUEVA LÓGICA:** Comprueba si el índice actual está en nuestra lista de objetivos.
         if (targetSet.has(index)) {
-            
+
             // 1. Incrementamos el contador para obtener el número del espacio (1, 2, 3...)
             blankCount++;
-            
+
             // 2. Creamos el espacio en blanco con el número visible
             quizHtml += `(${blankCount})<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
-            
+
             // 3. Guardamos la palabra correcta.
             correctAnswers.push(sanitizedWord);
-            
+
         } else {
             // Si la palabra no está en la lista, se mantiene en el texto.
             quizHtml += `${word} `;
@@ -88,31 +88,32 @@ function generateFillInTheBlanks(originalText, targetIndices) {
 
 export const setupListeningExercise = (unitSection, playSound, userScores) => {
     const content = `
-        <h2 class="titulo-user">Práctica de Escucha</h2>
-        <p class="descripcion">Escoge un tema para practicar tu habilidad de escucha.</p>
+        <h2 class="titulo-user">LISTENING PRACTICE WITH SHORT STORIES 🎧⚡</h2>
+        <p class="descripcion">Choose a topic to practice your listening skills.</p>
         <div class="opciones-listening">
             <select id="listeningTopicSelect" class="select-field">
-                <option value="">-- Selecciona un tema --</option>
+                <option value="">-- Select a topic --</option>
                 <option value="anna">Anna's Story</option>
                 <option value="family">My Family</option>
                 <option value="university">At the University</option>
                 <option value="office">At the office</option>
                 <option value="weekend">Next weekend</option>
             </select>
-            <button id="loadAudioBtn" class="boton-primario">Cargar Audio</button>
+            <button id="loadAudioBtn" class="boton-primario">Load Audio</button>
         </div>
 
         <div id="listening-area" class="listening-area">
             <div id="loadingIndicator" class="loading-indicator hidden">
                 <div class="loading-bar"></div>
-                <span class="loading-text">Generando audio...</span>
+                <span class="loading-text">Generating audio...</span>
             </div>
             <div id="scoreDisplay" class="score-display"></div>
             <div id="audioPlayerContainer"></div>
+            <div id="wordBankContainer" class="word-bank-container hidden"></div>
             <div id="quizContainer" class="quiz-container hidden">
                 <p id="quizText" class="quiz-text"></p>
-                <button id="verifyBtn" class="boton-secundario" style="display: none;">Verificar Respuestas</button>
-                <button id="repeatBtn" class="boton-secundario" style="display: none;">Repetir</button>
+                <button id="verifyBtn" class="boton-secundario" style="display: none;">Verify Answers</button>
+                <button id="repeatBtn" class="boton-secundario" style="display: none;">Repeat</button>
             </div>
         </div>
     `;
@@ -128,17 +129,19 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
     const verifyBtn = document.getElementById('verifyBtn');
     const repeatBtn = document.getElementById('repeatBtn');
     const scoreDisplay = document.getElementById('scoreDisplay');
-    
+    // 🎯 NUEVO: Referencia al contenedor del banco de palabras
+    const wordBankContainer = document.getElementById('wordBankContainer');
+
     let currentCorrectAnswers = [];
 
     // Carga el puntaje inicial si existe
     const displayInitialScore = () => {
         const topicScore = userScores.scores?.LISTENING;
         const score = topicScore ? topicScore.score : 0;
-      
+
         scoreDisplay.innerHTML = `
-                <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${score.toFixed(1)}/10
-                ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de listening!</span>' : ''}
+                <b style="color:#2563eb;">Your highest score is:</b> ${score.toFixed(1)}/10
+                ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">Congratulations, you have completed the listening section!</span>' : ''}
             `
 
     };
@@ -146,6 +149,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
     const resetUI = () => {
         audioPlayerContainer.innerHTML = '';
+        wordBankContainer.classList.add('hidden');
         quizContainer.classList.add('hidden');
         verifyBtn.style.display = 'none';
         repeatBtn.style.display = 'none';
@@ -160,31 +164,54 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
     loadAudioBtn.addEventListener('click', async () => {
         const selectedTopic = topicSelect.value;
         if (!selectedTopic) {
-            showMessage("Por favor, selecciona un tema preestablecido.", "warning");
+            showMessage("Please select a topic.", "warning");
             return;
         }
 
         resetUI();
         loadingIndicator.classList.remove('hidden');
-        
+
         try {
             const data = listeningData[selectedTopic];
-            
+
             // Carga el audio desde la ruta preestablecida
             const audioUrl = data.audioUrl;
-            
+
             audioPlayerContainer.innerHTML = `
                 <audio id="audioPlayer" class="w-full" controls src="${audioUrl}"></audio>
             `;
-            
+
             const { quizHtml, correctAnswers } = generateFillInTheBlanks(data.text, data.targetIndices);
+
+
+
+            // 🎯 LÓGICA DEL WORD BANK (Banco de Palabras)
+
+            // 1. Opcional: Mezclar las palabras para que el usuario no las complete en orden.
+            // Utiliza el algoritmo de Fisher-Yates (puedes buscarlo o implementarlo tú). 
+            // Por simplicidad, aquí las mostramos ordenadas, pero se recomienda mezclarlas.
+            const shuffledAnswers = [...correctAnswers].sort(() => Math.random() - 0.5);
+
+            let bankHtml = '<p class="font-bold">Palabras a buscar:</p><div class="flex flex-wrap gap-2 justify-center">';
+
+            shuffledAnswers.forEach(word => {
+                bankHtml += `<span class="word-bank-item">${word}</span>`;
+            });
+
+            bankHtml += '</div>';
+
+            wordBankContainer.innerHTML = bankHtml;
+            wordBankContainer.classList.remove('hidden');
+
+            // FIN LÓGICA DEL WORD BANK
+
             quizTextEl.innerHTML = quizHtml;
             currentCorrectAnswers = correctAnswers;
             quizContainer.classList.remove('hidden');
             verifyBtn.style.display = 'block';
 
         } catch (error) {
-            showMessage("Ocurrió un error al cargar el audio. Por favor, inténtalo de nuevo.", "error");
+            showMessage("An error occurred while loading the audio. Please try again.", "error");
             console.error(error);
         } finally {
             loadingIndicator.classList.add('hidden');
@@ -196,7 +223,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         const userInputs = Array.from(document.querySelectorAll('.input-blank')).map(input => input.value.trim().toLowerCase());
         let correctCount = 0;
         let scoreHtml = '';
-        
+
         userInputs.forEach((input, index) => {
             const correctAnswer = currentCorrectAnswers[index];
             const inputEl = document.querySelectorAll('.input-blank')[index];
@@ -213,20 +240,19 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         const totalQuestions = currentCorrectAnswers.length;
         const score = (correctCount / totalQuestions) * 10;
         scoreHtml = `
-            <h3 class="font-bold text-lg">Tu puntaje: ${score.toFixed(1)}/10</h3>
-            <p>Respuestas correctas: ${correctCount} de ${totalQuestions}</p>
+            <h3 class="font-bold text-lg">Your score: ${score.toFixed(1)}/10</h3>
+            <p>Correct answers: ${correctCount} out of ${totalQuestions}</p>
         `;
 
         if (score >= 10) {
             playSound("win");
-            showMessage("¡Excelente trabajo! Has pasado el ejercicio de listening.", "success");
+            showMessage("Great job! You have completed the listening exercise.", "success");
         } else {
-            console.warn("Se ecuata el sonido de fallo");
             playSound("fail");
-            showMessage("Sigue practicando. Puedes intentarlo de nuevo.", "error");
+            showMessage("Keep practicing. You can try again!", "error");
         }
 
-        
+
 
         scoreDisplay.innerHTML = scoreHtml;
         saveListeningScore(auth.currentUser.uid, score);
@@ -239,6 +265,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         quizContainer.classList.add('hidden');
         displayInitialScore();
         audioPlayerContainer.innerHTML = '';
+        wordBankContainer.classList.add('hidden');
         quizTextEl.innerHTML = '';
         verifyBtn.style.display = 'none';
         repeatBtn.style.display = 'none';
@@ -246,6 +273,8 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         topicSelect.value = '';
     });
 };
+
+
 
 /**
  * Guarda el puntaje del ejercicio de listening en Firestore.
@@ -266,11 +295,11 @@ async function saveListeningScore(userId, score) {
         const prevScore = currentScores['LISTENING']?.score || 0;
 
         if (score > prevScore) {
-             const newScoreEntry = {
+            const newScoreEntry = {
                 score: score,
                 completada: score >= 10,
             };
-            
+
             await setDoc(docRef, {
                 ...currentData,
                 scores: {
