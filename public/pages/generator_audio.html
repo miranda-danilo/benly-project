@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Audio de Alta Calidad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo general para la fuente Inter y centrado de la aplicación */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .tts-container {
+            max-width: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tts-container">
+    <header class="text-center mb-8">
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-2">
+            🎧 Generador de Voz Humana (Inglés)
+        </h1>
+        <p class="text-lg text-gray-600">Voces de alta calidad impulsadas por IA. Audio descargable.</p>
+    </header>
+
+    <main class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border border-gray-100">
+        
+        <!-- Selector de Voz -->
+        <div class="mb-6">
+            <label for="voice-select" class="block text-sm font-medium text-gray-700 mb-2">
+                Seleccionar Voz:
+            </label>
+            <select id="voice-select" class="w-full p-3 border-2 border-indigo-200 rounded-lg bg-white focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-base">
+                <option value="Kore">Kore (Firme)</option>
+                <option value="Puck">Puck (Optimista)</option>
+                <option value="Charon">Charon (Informativo)</option>
+                <option value="Zephyr">Zephyr (Brillante)</option>
+            </select>
+        </div>
+
+        <!-- Área de texto para la entrada del usuario -->
+        <div class="mb-6">
+            <label for="text-input" class="block text-sm font-medium text-gray-700 mb-2">
+                Texto para convertir (en inglés):
+            </label>
+            <textarea 
+                id="text-input" 
+                rows="8" 
+                class="w-full p-4 border-2 border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out resize-none text-base"
+                placeholder="Write your English text here, for example: 'Say cheerfully: Hello, this is a demonstration of the new human-like voice generator.'">
+            </textarea>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button 
+                id="speak-button" 
+                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out disabled:bg-indigo-300 disabled:cursor-not-allowed transform hover:scale-[1.01] active:scale-[0.98]">
+                🔊 Generar y Reproducir Audio
+            </button>
+            <a 
+                id="download-link" 
+                download="audio_generado.wav"
+                href="#"
+                hidden
+                class="flex-1 text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-[1.01] active:scale-[0.98]">
+                ⬇️ Descargar Audio (.wav)
+            </a>
+        </div>
+
+        <!-- Mensajes de estado -->
+        <div id="message-box" class="mt-6 p-3 rounded-lg text-center font-medium transition-all duration-300 ease-in-out opacity-0">
+            <!-- Los mensajes se insertarán aquí dinámicamente -->
+        </div>
+
+    </main>
+
+    <footer class="text-center mt-6 text-sm text-gray-500">
+        Usando la API de Gemini TTS para voces de alta fidelidad.
+    </footer>
+</div>
+
+<script>
+    // --- JAVASCRIPT: Funcionalidad de Texto a Voz con API Gemini ---
+    const textarea = document.getElementById('text-input');
+    const speakButton = document.getElementById('speak-button');
+    const voiceSelect = document.getElementById('voice-select');
+    const downloadLink = document.getElementById('download-link');
+    const messageBox = document.getElementById('message-box');
+
+    const apiKey = "AIzaSyD96iv8y-OYYKzDVxJhjN_B1S_6y8Vc02E"; 
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+    const SAMPLE_RATE = 24000; // La tasa de muestreo común para el audio PCM de esta API
+
+    // Función de utilidad para mostrar mensajes de estado
+    function showMessage(text, bgColor, textColor = 'white', duration = 3000) {
+        messageBox.textContent = text;
+        messageBox.className = `mt-6 p-3 rounded-lg text-center font-medium transition-all duration-300 ease-in-out ${bgColor} text-${textColor}`;
+        messageBox.style.opacity = 1;
+        
+        if (duration > 0) {
+            setTimeout(() => {
+                messageBox.style.opacity = 0;
+            }, duration);
+        }
+    }
+
+    // --- Funciones de Conversión de Audio (Necesarias para PCM a WAV) ---
+
+    // 1. Convierte Base64 a ArrayBuffer
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    // 2. Convierte el audio PCM (raw data) a un Blob de archivo WAV
+    function pcmToWav(pcmData, sampleRate) {
+        const pcm16 = new Int16Array(pcmData);
+        const numChannels = 1;
+        const bitsPerSample = 16;
+        const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+        const blockAlign = numChannels * (bitsPerSample / 8);
+        
+        const buffer = new ArrayBuffer(44 + pcm16.length * 2); // 44 bytes para el encabezado WAV
+        const view = new DataView(buffer);
+
+        let offset = 0;
+        
+        // Función auxiliar para escribir strings
+        function writeString(s) {
+            for (let i = 0; i < s.length; i++) {
+                view.setUint8(offset + i, s.charCodeAt(i));
+            }
+            offset += s.length;
+        }
+
+        // Función auxiliar para escribir enteros de 32 bits (little-endian)
+        function writeUint32(i) {
+            view.setUint32(offset, i, true);
+            offset += 4;
+        }
+
+        // Función auxiliar para escribir enteros de 16 bits (little-endian)
+        function writeUint16(i) {
+            view.setUint16(offset, i, true);
+            offset += 2;
+        }
+
+        // RIFF chunk
+        writeString('RIFF');
+        writeUint32(36 + pcm16.byteLength); // Tamaño del archivo - 8
+        writeString('WAVE');
+
+        // fmt chunk
+        writeString('fmt ');
+        writeUint32(16);          // Tamaño del chunk fmt
+        writeUint16(1);           // Formato de audio (1 = PCM)
+        writeUint16(numChannels); // Número de canales
+        writeUint32(sampleRate);  // Tasa de muestreo
+        writeUint32(byteRate);    // Byte rate
+        writeUint16(blockAlign);  // Bloque de alineación
+        writeUint16(bitsPerSample); // Bits por muestra
+
+        // data chunk
+        writeString('data');
+        writeUint32(pcm16.byteLength); // Tamaño de los datos
+
+        // Escribir los datos PCM
+        let pcmOffset = 0;
+        for (let i = 0; i < pcm16.length; i++) {
+            view.setInt16(offset, pcm16[i], true);
+            offset += 2;
+        }
+
+        return new Blob([buffer], { type: 'audio/wav' });
+    }
+
+    // --- Lógica Principal del TTS ---
+
+    async function speakText() {
+        const text = textarea.value.trim();
+        const selectedVoice = voiceSelect.value;
+        
+        downloadLink.hidden = true; // Ocultar el link de descarga al inicio
+
+        if (text === '') {
+            showMessage('⚠️ Por favor, introduce algún texto para generar audio.', 'bg-yellow-500');
+            return;
+        }
+
+        // Deshabilitar botón y mostrar carga
+        speakButton.disabled = true;
+        speakButton.textContent = '⏳ Generando Audio...';
+        showMessage('Generando audio con la API de Gemini...', 'bg-indigo-600', 'white', 0); // Mensaje persistente
+
+        const payload = {
+            contents: [{
+                parts: [{ text: text }]
+            }],
+            generationConfig: {
+                responseModalities: ["AUDIO"],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: selectedVoice } // Usar la voz seleccionada
+                    }
+                }
+            },
+            model: "gemini-2.5-flash-preview-tts"
+        };
+        
+        let attempts = 0;
+        const maxAttempts = 5;
+
+        while (attempts < maxAttempts) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType; // audio/L16;rate=24000;channels=1
+
+                if (!audioData) {
+                    throw new Error("No se recibieron datos de audio válidos.");
+                }
+
+                // 1. Convertir Base64 a ArrayBuffer de PCM
+                const pcmDataBuffer = base64ToArrayBuffer(audioData);
+                
+                // 2. Convertir ArrayBuffer PCM a Int16Array (datos firmados de 16 bits)
+                // Se asume la tasa de muestreo constante de SAMPLE_RATE para la conversión a WAV
+                
+                // 3. Convertir PCM a Blob de archivo WAV
+                const wavBlob = pcmToWav(pcmDataBuffer, SAMPLE_RATE);
+                const audioUrl = URL.createObjectURL(wavBlob);
+
+                // 4. Reproducir Audio
+                const audio = new Audio(audioUrl);
+                
+                // Evento de inicio de reproducción
+                audio.addEventListener('play', () => {
+                    showMessage('🔊 Reproduciendo audio...', 'bg-indigo-600', 'white', 0);
+                });
+
+                // Evento de fin de reproducción
+                audio.addEventListener('ended', () => {
+                    speakButton.disabled = false;
+                    speakButton.textContent = '🔊 Generar y Reproducir Audio';
+                    showMessage('✅ Reproducción finalizada. Listo para descargar.', 'bg-green-600', 'white', 5000);
+                });
+
+                audio.play();
+                
+                // 5. Habilitar la descarga
+                downloadLink.href = audioUrl;
+                downloadLink.hidden = false;
+                
+                return; // Salir del bucle si es exitoso
+
+            } catch (error) {
+                attempts++;
+                console.error(`Intento ${attempts} fallido:`, error);
+                
+                if (attempts < maxAttempts) {
+                    const delay = Math.pow(2, attempts) * 1000; // Backoff exponencial
+                    console.log(`Reintentando en ${delay / 1000} segundos...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    showMessage(`❌ Error crítico al generar el audio. Por favor, inténtalo de nuevo.`, 'bg-red-600', 'white', 0);
+                    break;
+                }
+            }
+        }
+
+        // Restablecer el botón si todos los intentos fallaron
+        speakButton.disabled = false;
+        speakButton.textContent = '🔊 Generar y Reproducir Audio';
+    }
+
+    // Asignar evento al botón
+    speakButton.addEventListener('click', speakText);
+
+</script>
+
+</body>
+</html>

@@ -7,17 +7,15 @@ import { showMessage } from "./notificaciones.js";
 // Datos de ejemplo para la actividad de listening
 // Con rutas de archivos de audio locales
 const listeningData = {
-    'family': {
-        title: "My Family",
-        text: "My family lives in Melbourne. There are six people in my family. My mother and father live in a large house. The house has four bedrooms and a big backyard. There are flowers in the front yard. My older brother, Alan, is married with two children. My younger brother, Bill, and my sister, Sue, live at home. My father works in an office in Belmore. He is a manager. My mother works at home and looks after the house. I am very lucky to have a wonderful family.",
-        targetIndices: [2, 6, 16, 22, 29, 41, 56, 59, 66, 76],
-        audioUrl: 'assets/my-family.wav'
+    'pets': {
+        title: "My Favorite Pet",
+        text: "My favorite animal is a cat. It's a small, fluffy animal that loves to play. Cats are very good pets for people who live in apartments.",
+        audioUrl: 'assets/my-favorite-animal.wav'
     },
-    'office': {
-        title: "At the Office",
-        text: "Yesterday wasn't a good day. The weather wasn't very nice. It was cold and raining. The bus wasn't on time. It was late. My boss wasn't very happy because I was late for work. He was angry. At 1 o'clock I went to a cafe for lunch but the food wasn't hot and the coffee was cold. I wasn't very happy. Then I went back to work but my papers weren't on my desk. They were missing. I looked everywhere but I couldn't find them. Later someone gave them back to me. I left work at 5 o'clock and it started to rain again. I got very wet. Yesterday was a bad day for me.",
-        targetIndices: [6, 16, 24, 36, 44, 49, 54, 73, 83, 107],
-        audioUrl: 'assets/at-the-office.wav'
+    'food': {
+        title: "Healthy Eating",
+        text: "Eating a balanced diet is very important for our health. We should eat a lot of fruits and vegetables every day. Remember to drink water too.",
+        audioUrl: 'assets/balanced-diet.wav'
     },
     'travel': {
         title: "Summer Vacation",
@@ -37,38 +35,24 @@ const listeningData = {
 };
 
 /**
- * Genera el texto del quiz convirtiendo palabras específicas por índice en espacios en blanco.
+ * Genera el texto del quiz con palabras faltantes (espacios en blanco).
  * @param {string} originalText - El texto completo del audio.
- * @param {number[]} targetIndices - Array de índices (posiciones) de las palabras a omitir.
  * @returns {{quizHtml: string, correctAnswers: string[]}} - El HTML del quiz y las respuestas correctas.
  */
-function generateFillInTheBlanks(originalText, targetIndices) {
+function generateFillInTheBlanks(originalText) {
     const words = originalText.split(/\s+/);
+    const blanks = [];
     let quizHtml = '';
     const correctAnswers = [];
-    
-    // Convertimos el array de índices en un Set para búsquedas rápidas
-    const targetSet = new Set(targetIndices); 
-    // Variable para llevar la cuenta de qué número de espacio en blanco estamos generando (1 a 10)
-    let blankCount = 0; 
 
+    // Lógica para quitar una palabra de cada 5
     words.forEach((word, index) => {
         const sanitizedWord = word.replace(/[.,?!]/g, '').toLowerCase();
-
-        // **NUEVA LÓGICA:** Comprueba si el índice actual está en nuestra lista de objetivos.
-        if (targetSet.has(index)) {
-            
-            // 1. Incrementamos el contador para obtener el número del espacio (1, 2, 3...)
-            blankCount++;
-            
-            // 2. Creamos el espacio en blanco con el número visible
-            quizHtml += `(${blankCount})<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
-            
-            // 3. Guardamos la palabra correcta.
+        if (index % 5 === 0 && sanitizedWord.length > 2) {
+            quizHtml += `<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
             correctAnswers.push(sanitizedWord);
-            
+            blanks.push(index);
         } else {
-            // Si la palabra no está en la lista, se mantiene en el texto.
             quizHtml += `${word} `;
         }
     });
@@ -89,8 +73,8 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         <div class="opciones-listening">
             <select id="listeningTopicSelect" class="select-field">
                 <option value="">-- Selecciona un tema --</option>
-                <option value="family">My Family</option>
-                <option value="office">At the office</option>
+                <option value="pets">My Favorite Pet</option>
+                <option value="food">Healthy Eating</option>
                 <option value="travel">Summer Vacation</option>
                 <option value="technology">The Internet</option>
                 <option value="art">Modern Art</option>
@@ -178,7 +162,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
                 <audio id="audioPlayer" class="w-full" controls src="${audioUrl}"></audio>
             `;
             
-            const { quizHtml, correctAnswers } = generateFillInTheBlanks(data.text, data.targetIndices);
+            const { quizHtml, correctAnswers } = generateFillInTheBlanks(data.text);
             quizTextEl.innerHTML = quizHtml;
             currentCorrectAnswers = correctAnswers;
             quizContainer.classList.remove('hidden');
