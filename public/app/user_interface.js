@@ -107,12 +107,12 @@ const quizData = {
 };
 
 const moduleInfo = [
-    { id: 'UT1', title: 'UNIT 1', desc: 'Introduction and Greetings', icon: '👋', img: 'https://img.freepik.com/foto-gratis/retrato-amigable-joven-feliz-que-despide-mano-decir-hola-saludandote-gesto-saludo-diciendo-adios-pie-sobre-pared-blanca_176420-39098.jpg?t=st=1756572182~exp=1756575782~hmac=2f8801a7a0dc2db3277d3cb2911074a2d58cb6dbf6b3517f1290eea4efae0b8f&w=740' },
-    { id: 'UT2', title: 'UNIT 2', desc: 'People and Places', icon: '🏠', img: 'https://cdn.pixabay.com/photo/2018/09/06/18/30/sofia-3658934_1280.jpg' },
-    { id: 'UT3', title: 'UNIT 3', desc: 'Daily Life', icon: '⏰', img: 'https://images.pexels.com/photos/3771069/pexels-photo-3771069.jpeg' },
-    { id: 'UT4', title: 'UNIT 4', desc: 'Food and Drinks', icon: '🍎', img: 'https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg' },
-    { id: 'UT5', title: 'UNIT 5', desc: 'Things I Have', icon: '📱', img: 'https://images.pexels.com/photos/607812/pexels-photo-607812.jpegg' },
-    { id: 'UT6', title: 'UNIT6', desc: 'Around the City', icon: '🏞️', img: 'https://img.freepik.com/psd-premium/renderizacion-3d-patio-recreo_23-2150659735.jpg' },
+    { id: 'UT1', title: 'UNIT 1', desc: 'INTRODUCTION AND BASIC GREETINGS', icon: '👋', img: 'https://img.freepik.com/foto-gratis/retrato-amigable-joven-feliz-que-despide-mano-decir-hola-saludandote-gesto-saludo-diciendo-adios-pie-sobre-pared-blanca_176420-39098.jpg?t=st=1756572182~exp=1756575782~hmac=2f8801a7a0dc2db3277d3cb2911074a2d58cb6dbf6b3517f1290eea4efae0b8f&w=740' },
+    { id: 'UT2', title: 'UNIT 2', desc: 'PEOPLE AND PLACES', icon: '🏠', img: 'https://cdn.pixabay.com/photo/2018/09/06/18/30/sofia-3658934_1280.jpg' },
+    { id: 'UT3', title: 'UNIT 3', desc: 'DAILY LIFE', icon: '⏰', img: 'https://images.pexels.com/photos/3771069/pexels-photo-3771069.jpeg' },
+    { id: 'UT4', title: 'UNIT 4', desc: 'FOODS AND DRINKS', icon: '🍎', img: 'https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg' },
+    { id: 'UT5', title: 'UNIT 5', desc: 'THINGS I HAVE', icon: '📱', img: 'https://images.pexels.com/photos/607812/pexels-photo-607812.jpegg' },
+    { id: 'UT6', title: 'UNIT 6', desc: 'AROUND TWON | FREE TIME', icon: '🏞️', img: 'https://img.freepik.com/psd-premium/renderizacion-3d-patio-recreo_23-2150659735.jpg' },
 ];
 
 
@@ -258,27 +258,32 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
     /**
      * Renderiza el grid de tarjetas de módulos.
      */
-    const renderModulesGrid = () => {
-        if (!modulesGrid) return;
-        modulesGrid.innerHTML = '';
-        const learningUnits = units.filter(unit => unit.id.startsWith('UT'));
-        learningUnits.forEach(unit => {
-            const info = moduleInfo.find(m => m.id === unit.id) || {};
-            const card = document.createElement('div');
-            card.className = 'modulo-card';
-            card.innerHTML = `
-                <div class="modulo-card__icon">${info.icon}</div>
-                <div class="modulo-card__title">${info.title || unit.title}</div>
-                <div class="modulo-card__desc">${info.desc || ''}</div>
-                <button class="boton-accion" data-unit-id="${unit.id}">Ver Módulo</button>
-            `;
-            modulesGrid.appendChild(card);
-            card.querySelector('.boton-accion').addEventListener('click', () => {
-                renderUnitContent(unit.id);
-            });
+   const renderModulesGrid = () => {
+    if (!modulesGrid) return;
+    modulesGrid.innerHTML = '';
+    const learningUnits = units.filter(unit => unit.id.startsWith('UT'));
+    
+    learningUnits.forEach(unit => {
+        const info = moduleInfo.find(m => m.id === unit.id) || {};
+        const card = document.createElement('div');
+        card.className = 'modulo-card';
+        
+        // ✨ NO INCLUYE EL BOTÓN 'boton-accion'
+        card.innerHTML = `
+            <div class="modulo-card__title">${info.title || unit.title}</div>
+            <div class="modulo-card__icon">${info.icon}</div>
+            <div class="modulo-card__desc">${info.desc || ''}</div>
+        `;
+
+        modulesGrid.appendChild(card);
+        
+        // 🚀 El click listener en la tarjeta hace la acción principal
+        card.addEventListener('click', () => {
+            renderUnitContent(unit.id);
         });
-        showSection(modulesSection);
-    };
+    });
+    showSection(modulesSection);
+};
 
     /**
      * Actualiza el estado de completado de las unidades en la interfaz.
