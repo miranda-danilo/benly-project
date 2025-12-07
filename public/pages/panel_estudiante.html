@@ -60,284 +60,543 @@
             </section>
             
             <!-- Secciones de las unidades existentes (ocultas por defecto) -->
-            <section id="unit-UT1" class="seccion-unidad seccion-unidad--oculta">
-                  <h2 class="titulo-user">UNIT 1: To Be & Greetings</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut1" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut1" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut1" class="boton-audio boton-audio--stop">⏹️ Parar</button>
-                </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: To Be & Greetings</h2>
-                    <p class="tarjeta-leccion__texto">Aprende a usar el verbo "To Be" y los saludos básicos. Ejercicios
-                        y ejemplos incluidos.</p>
-                    <ul>
-                        <li><b>I am</b> a student.</li>
-                        <li><b>He is</b> a teacher.</li>
-                        <li><b>She is</b> a teacher.</li>
-                        <li><b>It is</b> a teacher.</li>
-                        <li><b>You are</b> friends.</li>
-                        <li><b>We are</b> friends.</li>
-                        <li><b>They are</b> friends.</li>
-                    </ul>
-                </div>
-                <!-- Ejemplo dentro de la sección de vocabulario o lección -->
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario Básico</h2>
-                    <ul>
-                        <li>Hello: <span>Hola</span></li>
-                        <li>Goodbye: <span>Adiós</span></li>
-                        <li>Good morning: Buenos días</li>
-                        <li>Good afternoon: Buenas tardes</li>
-                        <li>Good evening: Buenas noches (al llegar)</li>
-                        <li>Good night: Buenas noches (al despedirse)</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-video">
-                    <h2 class="tarjeta-video__titulo">Video: Greetings en inglés</h2>
-                    <div class="video-responsive">
-                        <iframe width="560" height="315"
-                            src="https://www.youtube.com/embed/uim7QYa8Ado?si=s_2bQwclA054rPMe"
-                            title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
+       <section id="unit-UT1" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 1: INTRODUCTION AND BASIC GREETINGS</h2>
+  
 
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT1" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT1"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
-                        </div>
-                        <p id="feedback-UT1" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
-                </div>
-            </section>
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: SALUDOS Y PRESENTACIONES</h3>
 
-            <section id="unit-UT2" class="seccion-unidad seccion-unidad--oculta">
-                  <h2 class="titulo-user">UNIT 2: People and Places</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut2" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut2" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut2" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://images.pexels.com/photos/5063095/pexels-photo-5063095.jpeg" alt="Imagen de saludo" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Hello</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_hello.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: People and Places</h2>
-                    <p class="tarjeta-leccion__texto">Describe personas y lugares usando adjetivos posesivos.</p>
-                    <ul>
-                        <li>My book</li>
-                        <li>Your car</li>
-                        <li>His name</li>
-                        <li>Her phone</li>
-                    </ul>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Hello! How are you?</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_hello.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de la Familia</h2>
-                    <ul>
-                        <li>Father: Padre</li>
-                        <li>Dad: Papá</li>
-                        <li>Mother: Madre</li>
-                        <li>Mom: Mamá</li>
-                        <li>Brother: Hermano</li>
-                        <li>Sister: Hermana</li>
-                        <li>Son: Hijo</li>
-                        <li>Daughter: Hija</li>
-                    </ul>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://i.etsystatic.com/50913866/r/il/6ea65b/5883617711/il_1588xN.5883617711_e5pk.jpg" alt="Imagen de estudiante" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">I am</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_iam.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-ejercicios">
-                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
-                    <p class="tarjeta-ejercicios__texto">Escribe una oración sobre tu familia usando adjetivos
-                        posesivos.</p>
-                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: Her name is Sofia.">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I'm a student from Ecuador.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_iam.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT2" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT2"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
-                        </div>
-                        <p id="feedback-UT2" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://images.pexels.com/photos/6326377/pexels-photo-6326377.jpeg" alt="Imagen de profesor" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">He is</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_heis.mp3')">🔊</button>
                 </div>
-            </section>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">He's my english teacher.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_heis.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://daily-devotional.org/wp-content/uploads/2012/07/HelloMyNameIsTheGu.gif" alt="Imagen de saludo" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Name</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_name.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">What's your name?</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_name.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://images.pexels.com/photos/8199222/pexels-photo-8199222.jpeg" alt="Imagen de estudiante" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">They are</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_theyare.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">They are my new classmates</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_theyare.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://images.pexels.com/photos/8475189/pexels-photo-8475189.jpeg" alt="Imagen de profesor" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Bye</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_bye.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Bye! See you tomorrow.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_bye.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Greetings en inglés</h3>
+        <div class="video-responsive">
+           <!--  <iframe width="560" height="315"
+                src="https://www.youtube.com/shorts/RMyZUGnSHyo"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+    <iframe width="358" height="636" src="https://www.youtube.com/embed/RMyZUGnSHyo" title="GREETINGS IN ENGLISH | ENGLISH VOCABULARY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
 
-            <section id="unit-UT3" class="seccion-unidad seccion-unidad--oculta">
-                 <h2 class="titulo-user">UNIT 3: Daily Life</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut13" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut3" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut3" class="boton-audio boton-audio--stop">⏹️ Parar</button>
-                </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: Daily Life</h2>
-                    <p class="tarjeta-leccion__texto">Rutinas diarias y adverbios de frecuencia.</p>
-                    <ul>
-                        <li>I wake up at 7.</li>
-                        <li>I always eat breakfast.</li>
-                        <li>She never goes to bed late.</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Rutinas</h2>
-                    <ul>
-                        <li>Wake up: Despertarse</li>
-                        <li>Go to bed: Acostarse</li>
-                        <li>Eat breakfast: Desayunar</li>
-                        <li>Always: Siempre</li>
-                        <li>Never: Nunca</li>
-                        <li>Sometimes: A veces</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-ejercicios">
-                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
-                    <p class="tarjeta-ejercicios__texto">Describe tu rutina diaria usando adverbios de frecuencia.</p>
-                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I always wake up at 7.">
-                </div>
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT3" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT3"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
-                        </div>
-                        <p id="feedback-UT3" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
-                </div>
-            </section>
+    
 
-            <section id="unit-UT4" class="seccion-unidad seccion-unidad--oculta">
-                <h2 class="titulo-user">UNIT 4: Food and Drinks</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut4" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut4" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut4" class="boton-audio boton-audio--stop">⏹️ Parar</button>
-                </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: Foods and Drinks</h2>
-                    <p class="tarjeta-leccion__texto">Aprende vocabulario sobre comidas y bebidas.</p>
-                    <ul>
-                        <li>Apple, Banana, Bread, Water, Milk, Juice, Eggs</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Comidas</h2>
-                    <ul>
-                        <li>Fruit: Fruta</li>
-                        <li>Bread: Pan</li>
-                        <li>Milk: Leche</li>
-                        <li>Eggs: Huevos</li>
-                        <li>Juice: Jugo</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-ejercicios">
-                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
-                    <p class="tarjeta-ejercicios__texto">Escribe una lista de tus comidas favoritas en inglés.</p>
-                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I like apples and bread.">
-                </div>
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT4" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT4"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
-                        </div>
-                        <p id="feedback-UT4" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
-                </div>
-            </section>
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT1" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT1">"Good night" se usa al llegar a una fiesta.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT1" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
 
-            <section id="unit-UT5" class="seccion-unidad seccion-unidad--oculta">
-                <h2 class="titulo-user">UNIT 5: Things I Have</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut5" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut5" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut5" class="boton-audio boton-audio--stop">⏹️ Parar</button>
-                </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: Things I Have</h2>
-                    <p class="tarjeta-leccion__texto">Vocabulario de objetos personales y posesión.</p>
-                    <ul>
-                        <li>I have a phone.</li>
-                        <li>My keys</li>
-                        <li>Her bag</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Objetos</h2>
-                    <ul>
-                        <li>Phone: Teléfono</li>
-                        <li>Keys: Llaves</li>
-                        <li>Bag: Bolsa</li>
-                        <li>Notebook: Cuaderno</li>
-                        <li>Wallet: Cartera</li>
-                    </ul>
-                </div>
-                <div class="tarjeta-ejercicios">
-                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
-                    <p class="tarjeta-ejercicios__texto">Escribe qué objetos tienes contigo hoy.</p>
-                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I have my phone and wallet.">
-                </div>
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT5" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT5"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
-                        </div>
-                        <p id="feedback-UT5" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
-                </div>
-            </section>
+<section id="unit-UT2" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 2: PEOPLE AND PLACES (POSSESSIVES)</h2>
+  
 
-            <section id="unit-UT6" class="seccion-unidad seccion-unidad--oculta">
-                <h2 class="titulo-user">UNIT 6: Around the City</h2>
-                <div class="audio-controls">
-                    <button id="audio-play-ut6" class="boton-audio">▶️ Reproducir</button>
-                    <button id="audio-pause-ut6" class="boton-audio boton-audio--pause">⏸️ Pausar</button>
-                    <button id="audio-stop-ut6" class="boton-audio boton-audio--stop">⏹️ Parar</button>
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: FAMILIA Y POSESIONES</h3>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/404/300/150" alt="Imagen de madre" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Mother</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_mother.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-leccion">
-                    <h2 class="tarjeta-leccion__titulo">Lección: Around Town - Free Time</h2>
-                    <p class="tarjeta-leccion__texto">Lugares en la ciudad y actividades de tiempo libre.</p>
-                    <ul>
-                        <li>Bank, Park, Cinema, Restaurant, Library</li>
-                    </ul>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Her mother is kind.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_mother.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-vocabulario">
-                    <h2 class="tarjeta-vocabulario__titulo">Vocabulario de Lugares</h2>
-                    <ul>
-                        <li>Bank: Banco</li>
-                        <li>Park: Parque</li>
-                        <li>Cinema: Cine</li>
-                        <li>Restaurant: Restaurante</li>
-                        <li>Library: Biblioteca</li>
-                    </ul>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/505/300/150" alt="Imagen de hermano" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Brother</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_brother.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-ejercicios">
-                    <h2 class="tarjeta-ejercicios__titulo">Ejercicio de escritura</h2>
-                    <p class="tarjeta-ejercicios__texto">¿Qué haces en tu tiempo libre? Escribe una oración.</p>
-                    <input type="text" class="seccion-habilidad__input" placeholder="Ej: I go to the park.">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">My brother plays soccer.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_brother.mp3')">🔊</button>
                 </div>
-                <div class="tarjeta-actividad">
-                    <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
-                    <div id="quiz-container-UT6" class="contenedor-quiz">
-                        <p class="contenedor-quiz__pregunta" id="question-UT6"></p>
-                        <div class="contenedor-quiz__botones">
-                            <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                            <button class="boton-quiz boton-quiz--falso" data-answer="false">False</button>
-                        </div>
-                        <p id="feedback-UT6" class="contenedor-quiz__retroalimentacion"></p>
-                    </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/606/300/150" alt="Imagen de coche" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Car</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_car.mp3')">🔊</button>
                 </div>
-            </section>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">That is their new car.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_car.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Adjetivos Posesivos</h3>
+        <div class="video-responsive">
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/n4_h_R5l42k"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT2" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT2">El posesivo "His" se usa para objetos que le pertenecen a ella.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT2" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
+
+<section id="unit-UT3" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 3: DAILY LIFE (ROUTINES AND ADVERBS)</h2>
+ 
+
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: RUTINAS DIARIAS</h3>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/707/300/150" alt="Imagen de despertar" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Wake up</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_wakeup.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I always wake up early.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_wakeup.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/808/300/150" alt="Imagen de desayuno" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Breakfast</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_breakfast.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">She eats breakfast at 8 AM.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_breakfast.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/909/300/150" alt="Imagen de nunca" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Never</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_never.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">We never go out late.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_never.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Adverbios de Frecuencia</h3>
+        <div class="video-responsive">
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/5N8525bQe4Y"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT3" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT3">El adverbio "Sometimes" se coloca al final de la oración.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT3" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
+
+<section id="unit-UT4" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 4: FOOD AND DRINKS</h2>
+    
+
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: ALIMENTOS Y BEBIDAS</h3>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/1010/300/150" alt="Imagen de manzana" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Apple</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_apple.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I eat an apple every day.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_apple.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/1015/300/150" alt="Imagen de pan" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Bread</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_bread.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">We need more bread.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_bread.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/1018/300/150" alt="Imagen de leche" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Milk</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_milk.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Do you like hot milk?</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_milk.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Food Vocabulary</h3>
+        <div class="video-responsive">
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/n4_h_R5l42k"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT4" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT4">"Juice" significa 'queso' en español.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT4" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
+
+<section id="unit-UT5" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 5: THINGS I HAVE (OBJECTS)</h2>
+ 
+
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: OBJETOS PERSONALES</h3>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/103/300/150" alt="Imagen de teléfono" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Phone</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_phone.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I have a new phone.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_phone.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/111/300/150" alt="Imagen de llaves" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Keys</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_keys.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Where are my keys?</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_keys.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/115/300/150" alt="Imagen de cartera" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Wallet</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_wallet.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I lost my wallet.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_wallet.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Vocabulario de Objetos</h3>
+        <div class="video-responsive">
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/5N8525bQe4Y"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT5" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT5">"I have a bag" significa 'Tengo una llave'.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT5" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
+
+<section id="unit-UT6" class="seccion-unidad seccion-unidad--oculta">
+    <h2 class="titulo-unidad titulo-user">UNIT 6: AROUND THE CITY (PLACES)</h2>
+
+
+    <h3 class="titulo-vocabulario">VOCABULARIO CLAVE: LUGARES DE LA CIUDAD</h3>
+    <div class="contenedor-tarjetas-vocabulario">
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/160/300/150" alt="Imagen de parque" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Park</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_park.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">Let's go to the park.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_park.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/170/300/150" alt="Imagen de cine" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Cinema</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_cinema.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">We watch movies at the cinema.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_cinema.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-vocabulario-flash">
+            <div class="tarjeta-vocabulario-flash__imagen-container">
+                <img src="https://picsum.photos/id/180/300/150" alt="Imagen de biblioteca" class="tarjeta-vocabulario-flash__imagen">
+            </div>
+            <div class="tarjeta-vocabulario-flash__contenido">
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__palabra">Library</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_library.mp3')">🔊</button>
+                </div>
+                <div class="tarjeta-vocabulario-flash__item">
+                    <span class="tarjeta-vocabulario-flash__frase">I read books at the library.</span>
+                    <button class="boton-reproducir" onclick="playAudio('audio_frase_library.mp3')">🔊</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="tarjeta-video">
+        <h3 class="tarjeta-video__titulo">Video: Lugares en la Ciudad</h3>
+        <div class="video-responsive">
+            <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/5N8525bQe4Y"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <div class="tarjeta-actividad">
+        <h3 class="tarjeta-actividad__subtitulo">Test: Verdadero o Falso</h3>
+        <div id="quiz-container-UT6" class="contenedor-quiz">
+            <p class="contenedor-quiz__pregunta" id="question-UT6">El "Bank" es un lugar para ver películas.</p>
+            <div class="contenedor-quiz__botones">
+                <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
+                <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+            </div>
+            <p id="feedback-UT6" class="contenedor-quiz__retroalimentacion"></p>
+        </div>
+    </div>
+</section>
 
             <!-- EXAMEN 1: FIRST TERM EXAMEN - Solo test -->
             <section id="unit-EXAM1" class="seccion-unidad seccion-unidad--oculta">

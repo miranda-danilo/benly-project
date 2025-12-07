@@ -142,6 +142,7 @@ background-color: #58CC02aa
     color: #2563eb;
     font-weight: bold;
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 
@@ -261,7 +262,8 @@ color: #D1D5DB;
 
 .seccion-unidad {
 padding: 1rem;
-background-color: #FFFFFF;
+background-color: 
+#fff;
 border-radius: 0.75rem;
 box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -403,65 +405,6 @@ margin: auto;
 background-color: #2563EB;
 }
 
-.juego-ahorcado__palabra {
-letter-spacing: 0.5rem;
-font-size: 1.5rem;
-font-weight: 700;
-text-align: center;
-margin-bottom: 1rem;
-}
-
-.juego-ahorcado__input {
-width: 3rem;
-height: 3rem;
-text-align: center;
-font-size: 1.25rem;
-text-transform: uppercase;
-border: 2px solid #D1D5DB;
-border-radius: 0.5rem;
-}
-
-.juego-ahorcado__letras {
-display: flex;
-flex-wrap: wrap;
-gap: 0.5rem;
-justify-content: center;
-margin-top: 1rem;
-}
-
-.juego-ahorcado__letra {
-width: 2.5rem;
-height: 2.5rem;
-font-size: 1.1rem;
-font-weight: 700;
-text-transform: uppercase;
-border: 2px solid #D1D5DB;
-border-radius: 0.5rem;
-background-color: #F9FAFB;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.juego-ahorcado__letra:hover:not(:disabled) {
-background-color: #E5E7EB;
-}
-
-.juego-ahorcado__letra:disabled {
-opacity: 0.5;
-cursor: not-allowed;
-}
-
-.juego-ahorcado__imagen {
-width: 100%;
-max-width: 200px;
-margin: 1rem auto;
-display: block;
-}
-
-.juego-ahorcado__imagen svg {
-width: 100%;
-height: auto;
-}
 
 .seccion-hablidad {
 padding: 1.5rem;
@@ -1026,26 +969,30 @@ display:grid;
 grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 gap: 2.2rem;
 margin-top: 2rem;
+
 }
 .modulo-card {
-background: #E6F9E6;
-border-radius: 1.2rem;
-box-shadow: 0 2px 12px rgba(44, 165, 78, 0.08);
-padding: 2.2rem 1.1rem;
-text-align: center;
-transition: transform 0.15s, box-shadow 0.15s;
-cursor: pointer;
-animation: popIn 0.5s;
-border: 2px solid #58CC02;
-display: grid;
-grid-template-columns: subgrid;
-
-
+    background: #E6F9E6;
+    border-radius: 1.2rem;
+    /* Usar sombra más sutil sin el borde neón */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+    padding: 2.2rem 1.8rem; /* Aumentar padding horizontal */
+    text-align: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    animation: popIn 0.5s;
+    /* ❌ Eliminar el borde duro para un look más limpio */
+   /*   border: 2px solid #58CC02;  */
+    /* ❌ Eliminar propiedades innecesarias de grid si solo contiene elementos apilados */
+    /* display: grid; */
+    /* grid-template-columns: subgrid; */
 }
+
 .modulo-card:hover {
-transform: scale(1.04);
-box-shadow: 0 8px 24px rgba(44, 165, 78, 0.13);
-background: #d4fcd4;
+    /* Mantener un efecto hover claro y agradable */
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(44, 165, 78, 0.13);
+    background: #d4fcd4;
 }
 @keyframes popIn {
 0% { transform: scale(0.8); opacity: 0; }
@@ -1053,31 +1000,34 @@ background: #d4fcd4;
 100% { transform: scale(1); opacity: 1; }
 }
 .modulo-card__title {
-font-size: 1.5rem;
-font-weight: bold;
-color: #2563eb;
-
-
-
+    /* ✅ Solución 2: Color Gris Oscuro y Extra-Negrita */
+    font-size: 1.6rem; /* Ligeramente más grande */
+    font-weight: 800; 
+    color: #4A4A4A; 
+    /* Elimina el margen si ya está manejado por el ícono */
 }
 .modulo-card__desc {
-background-color: #58CC02;;
-color: white;
-font-size: 1.15rem;
-margin-bottom: 1.2rem;
-font-weight: bold;
-padding: 0.75rem 1.5rem;
-border-radius: 1.2rem;
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 0 auto;
+    background-color: #58CC02; 
+    color: white;
+    font-size: 1.15rem;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* ✅ Ajuste de Margen para centrar y añadir espacio superior */
+    /* Arriba (1.5rem) | Laterales (auto) | Abajo (0) */
+    margin: 1.5rem auto 0 auto; 
+    
+    /* Nota: margin-bottom: 1.2rem; se vuelve redundante y puede ser eliminado. */
 }
 .modulo-card__icon {
-font-size: 2.5rem;
-margin-bottom: 0.5rem;
+    font-size: 2.8rem; /* Ligeramente más grande para más impacto */
+    margin-top: 0.5rem; /* Espacio después del título */
+    margin-bottom: 1.5rem; /* Aumentar la separación con el bloque de descripción */
 }
-
 
 /* Estilos para la sección de Listening */
 .opciones-listening {
@@ -1594,4 +1544,111 @@ margin-bottom: 0.5rem;
 .disabled-speaking:hover {
     transform: none !important;
     box-shadow: none !important;
+}
+/* Estilo del Título de Vocabulario */
+.titulo-vocabulario {
+    font-size: 1.5rem;
+    color: #4CAF50; 
+    margin-top: 25px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    text-align: center; /* Opcional: para centrar el título */
+}
+
+/* Contenedor de las Tarjetas para un diseño flexible */
+.contenedor-tarjetas-vocabulario {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center; 
+    margin-bottom: 30px;
+}
+
+/* Estilo de la Tarjeta Individual (Flashcard) */
+.tarjeta-vocabulario-flash {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    width: 300px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.tarjeta-vocabulario-flash:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor de la Imagen */
+.tarjeta-vocabulario-flash__imagen-container {
+    width: 100%;
+    height: 150px; 
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+}
+
+.tarjeta-vocabulario-flash__imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position:  center center;
+}
+
+/* Contenido de la Tarjeta (Palabra y Frase) */
+.tarjeta-vocabulario-flash__contenido {
+    padding: 15px;
+}
+
+.tarjeta-vocabulario-flash__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px dotted #ccc;
+}
+
+.tarjeta-vocabulario-flash__item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.tarjeta-vocabulario-flash__palabra {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.tarjeta-vocabulario-flash__frase {
+    font-size: 0.95rem;
+    color: #555;
+    flex-grow: 1; 
+    margin-right: 10px;
+}
+
+/* Botón de Reproducción de Audio */
+.boton-reproducir {
+    background-color: #1a73e8; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1; 
+    transition: background-color 0.2s;
+    flex-shrink: 0; 
+}
+
+.boton-reproducir:hover {
+    background-color: #0d47a1;
+}
+
+/* Estilos para el título de la unidad (ajustando la clase existente si es necesario) */
+.titulo-unidad {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
 }

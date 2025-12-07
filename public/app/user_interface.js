@@ -120,6 +120,26 @@ const moduleInfo = [
 // --- Variables Globales (o de ámbito superior) ---
 let userScores = {}; // Para almacenar los puntajes del usuario
 
+
+// --- NUEVA FUNCIÓN GLOBAL PARA REPRODUCIR AUDIOS DE LAS TARJETAS ---
+// Esta función se llama desde el atributo 'onclick' en el HTML de las tarjetas.
+window.playAudio = (audioUrl) => {
+    // Asegúrate de que el audio actual se detenga antes de iniciar uno nuevo
+    if (window.currentAudio) {
+        window.currentAudio.pause();
+        window.currentAudio.currentTime = 0;
+    }
+    
+    // Asume que los archivos de audio están en una carpeta 'assets/audios/'
+    const fullPath = `assets/audios-vocabulario/${audioUrl}`; 
+    window.currentAudio = new Audio(fullPath);
+    window.currentAudio.play().catch(error => {
+        console.error("Error al reproducir el audio:", error);
+        showMessage("No se pudo reproducir el audio. Verifica la URL.", "error");
+    });
+};
+// ----------------------------------------------------------------------
+
 export const setupUserPanelLogic = (panelElement, userRole) => {
     // --- Referencias a Elementos del DOM (Declaración Única) ---
     // Elementos comunes para WRITING y el panel general
@@ -591,113 +611,6 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             unitSection.appendChild(quizDiv);
             setupTrueFalseQuiz(unitId);
         }
-
-        // Configuración de audio dinámico para todas las unidades
-        setTimeout(() => {
-            const playBtn = document.getElementById(`audio-play-${unitId.toLowerCase()}`);
-            const pauseBtn = document.getElementById(`audio-pause-${unitId.toLowerCase()}`);
-            const stopBtn = document.getElementById(`audio-stop-${unitId.toLowerCase()}`);
-            let utterance;
-            let isPaused = false;
-            let isSpeaking = false;
-
-            if (playBtn) {
-                playBtn.onclick = () => {
-                    window.speechSynthesis.cancel();
-                    isPaused = false;
-                    isSpeaking = true;
-
-                    playBtn.classList.add('boton-audio--playing');
-                    playBtn.innerHTML = '🔊 Reproduciendo...';
-                    pauseBtn.classList.add('boton-audio--pause');
-                    pauseBtn.classList.remove('boton-audio--resume');
-                    pauseBtn.innerHTML = '⏸️ Pausar';
-                    stopBtn.classList.add('boton-audio--stop');
-
-                    // Solo lee el texto en inglés, ignorando lo que está dentro de <span>
-                    const unitSection = document.getElementById(`unit-${unitId}`);
-                    if (!unitSection) return;
-
-                    const leccionUl = unitSection.querySelector('.tarjeta-leccion ul');
-                    const vocabularioUl = unitSection.querySelector('.tarjeta-vocabulario ul');
-                    let texto = '';
-
-                    function getEnglishFromList(ul) {
-                        if (!ul) return '';
-                        return Array.from(ul.querySelectorAll('li'))
-                            .map(li => {
-                                const span = li.querySelector('span');
-                                if (span) {
-                                    return li.innerText.replace(span.innerText, '').trim();
-                                }
-                                if (li.innerText.includes(':')) {
-                                    return li.innerText.split(':')[0].trim();
-                                }
-                                return li.innerText.trim();
-                            })
-                            .filter(txt => txt.length > 0)
-                            .join('. ') + '. ';
-                    }
-
-                    texto += getEnglishFromList(leccionUl);
-                    texto += getEnglishFromList(vocabularioUl);
-
-                    utterance = new SpeechSynthesisUtterance(texto);
-                    utterance.lang = 'en-US';
-
-                    utterance.onend = () => {
-                        isSpeaking = false;
-                        playBtn.classList.remove('boton-audio--playing');
-                        playBtn.innerHTML = '▶️ Reproducir';
-                        pauseBtn.classList.add('boton-audio--pause');
-                        pauseBtn.classList.remove('boton-audio--resume');
-                        pauseBtn.innerHTML = '⏸️ Pausar';
-                    };
-                    utterance.onpause = () => {
-                        isPaused = true;
-                        pauseBtn.classList.remove('boton-audio--pause');
-                        pauseBtn.classList.add('boton-audio--resume');
-                        pauseBtn.innerHTML = '▶️ Reanudar';
-                    };
-                    utterance.onresume = () => {
-                        isPaused = false;
-                        pauseBtn.classList.add('boton-audio--pause');
-                        pauseBtn.classList.remove('boton-audio--resume');
-                        pauseBtn.innerHTML = '⏸️ Pausar';
-                    };
-
-                    window.speechSynthesis.speak(utterance);
-                };
-            }
-            if (pauseBtn) {
-                pauseBtn.onclick = () => {
-                    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-                        window.speechSynthesis.pause();
-                    } else if (window.speechSynthesis.paused && isPaused) {
-                        window.speechSynthesis.resume();
-                    }
-                };
-                pauseBtn.classList.add('boton-audio--pause');
-                pauseBtn.classList.remove('boton-audio--resume');
-                pauseBtn.innerHTML = '⏸️ Pausar';
-            }
-            if (stopBtn) {
-                stopBtn.onclick = () => {
-                    window.speechSynthesis.cancel();
-                    if (playBtn) {
-                        playBtn.classList.remove('boton-audio--playing');
-                        playBtn.innerHTML = '▶️ Reproducir';
-                    }
-                    if (pauseBtn) {
-                        pauseBtn.classList.add('boton-audio--pause');
-                        pauseBtn.classList.remove('boton-audio--resume');
-                        pauseBtn.innerHTML = '⏸️ Pausar';
-                    }
-                };
-                stopBtn.classList.add('boton-audio--stop');
-                stopBtn.innerHTML = '⏹️ Parar';
-            }
-        }, 0);
     };
 
     /**
