@@ -303,6 +303,7 @@ padding-bottom: 0.5rem;
 font-size: 1rem;
 font-weight: 600;
 color: #374151;
+color: #222;
 margin-bottom: 0.5rem;
 }
 
@@ -1553,6 +1554,7 @@ margin-top: 2rem;
     margin-bottom: 15px;
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
+    font-weight: bold;
     text-align: center; /* Opcional: para centrar el título */
 }
 

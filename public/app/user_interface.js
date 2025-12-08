@@ -595,7 +595,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             const infoText = isExam ? 'El examen solo se podrá dar una vez.‼️‼️' : 'Solo se guardará tu nota más alta en este test.';
 
             quizDiv.innerHTML = `
-                <h3 class="tarjeta-actividad__subtitulo">Test Interactivo</h3>
+                <h3 class="tarjeta-actividad__subtitulo">${unitId} </h3>
                 <div class="quiz-progress-bar"><div id="quiz-progress-${unitId}" class="quiz-progress-bar-fill"></div></div>
                 <div id="quiz-container-${unitId}" class="contenedor-quiz">
                     <p class="contenedor-quiz__pregunta" id="question-${unitId}"></p>
@@ -608,6 +608,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
                     <p style="margin-top:1rem;font-weight:bold;"><b>${infoText}</b></p>
                 </div>
             `;
+            console.log("Agregando quiz para la unidad:", unitId, unitSection.getElementsByClassName('titulo-unidad').textContent);
             unitSection.appendChild(quizDiv);
             setupTrueFalseQuiz(unitId);
         }
@@ -761,25 +762,6 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             { id: 'grades', title: 'GRADES', sectionId: 'grades-section' }
         ];
 
-
-        /*      menuItems.forEach(item => {
-         const li = document.createElement('li');
-         li.innerHTML = `<a href="#" data-section-id="${item.sectionId}" class="unidad-link">${item.title}</a>`;
-                 MobileUnitList.appendChild(li);
-         li.querySelector('a')?.addEventListener('click', (e) => {
-             e.preventDefault();
-             if (hamburgerMenu) hamburgerMenu.style.display = "none";
-             if (hamburgerBtn) hamburgerBtn.style.display = "flex";
-             if (item.id === 'modules') {
-                 renderModulesGrid();
-             } else if (item.id === 'grades') { // **NUEVO CAMBIO AQUÍ**
-                
-                 renderGradesSection(); // Llama a la función que renderiza la tabla de calificaciones
-             } else {
-                 renderUnitContent(item.id);
-             }
-         });
-     }); */
         menuItems.forEach(item => {
             const li = document.createElement('li');
 
