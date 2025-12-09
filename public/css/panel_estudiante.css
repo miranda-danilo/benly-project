@@ -300,11 +300,12 @@ padding-bottom: 0.5rem;
 
 .tarjeta-leccion__subtitulo,
 .tarjeta-actividad__subtitulo {
-font-size: 1rem;
+font-size: 1.25rem;
 font-weight: 600;
 color: #374151;
 color: #222;
 margin-bottom: 0.5rem;
+
 }
 
 .tarjeta-leccion__texto,
@@ -326,9 +327,10 @@ margin-top: 1rem;
 }
 
 .contenedor-quiz__pregunta {
-font-size: 1rem;
+font-size: 1.1rem;
 font-weight: 500;
 margin-bottom: 1rem;
+
 }
 
 .contenedor-quiz__botones {
@@ -515,9 +517,9 @@ font-weight: 700;
 /* Quiz mejorado */
 .quiz-progress-bar {
 width: 100%;
-height: 8px;
+height: 0.6rem;
 background: #E5E7EB;
-border-radius: 4px;
+border-radius: 8px;
 margin-bottom: 1rem;
 overflow: hidden;
 }
@@ -543,35 +545,6 @@ transition: background-color 0.2s;
 .boton-quiz--repeat:hover {
 background-color: #EA580C;
 }
-
-/* Responsive YouTube video /
-/ .video-responsive {
-position: relative;
-padding-bottom: 56.25%;
-height: 0;
-overflow: hidden;
-max-width: 100%;
-}
-
-.video-responsive iframe {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-border-radius: 12px;
-
-}
-
-@media (min-width: 900px) {
-.video-responsive {
-
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 56.25%;
-}
-
-} */
 
 .video-responsive {
 
@@ -1147,6 +1120,7 @@ margin-top: 2rem;
     transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
+   
 }
 
 .boton-primario:hover {
@@ -1354,6 +1328,9 @@ margin-top: 2rem;
     .crossword-cell {
         width: auto;
         height: auto;
+    }
+    .crossword-container {
+        padding: 0;
     }
 }
 
@@ -1654,3 +1631,91 @@ margin-top: 2rem;
     text-align: center;
     margin-bottom: 30px;
 }
+.crossword-cell {
+    position: relative; /* Es esencial para posicionar el número */
+    /* Otros estilos de la celda: ancho, alto, borde, etc. */
+}
+
+.crossword-number {
+    position: absolute; /* Permite posicionarlo dentro de .crossword-cell */
+    top: 1px;           /* Distancia desde la parte superior */
+    left: 2px;          /* Distancia desde la izquierda */
+    font-size: 0.8rem;   /* Tamaño pequeño, típico de los números de crucigrama */
+    font-weight: bold;
+    color: #333;        /* Color oscuro para el número */
+   
+    z-index: 10;        /* Asegura que esté sobre el fondo de color */
+}
+
+/* Opcional: Estilo para el input */
+.crossword-input {
+    text-align: center;
+    /* ... otros estilos ... */
+}
+
+/* Agrega estas variables si aún no las tienes */
+:root {
+    --highlight-color: #f9fab1; /* Color nuevo para el foco */
+    --correct-color: #4CAF50;   /* Verde para la verificación final */
+    --incorrect-color: #F44336; /* Rojo para la verificación final */
+}
+
+.crossword-cell {
+    /* ... otros estilos ... */
+    transition: background-color 0.2s; /* Opcional: para una transición suave del color */
+}
+
+/* Opcional: una clase si quieres hacer más que solo cambiar el fondo */
+/* .crossword-cell.highlighted {
+    border: 2px solid var(--highlight-color);
+} */
+
+.select-field {
+    /* Base */
+    display: block;
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* Aumenta el padding para la flecha personalizada */
+    font-size: 16px;
+    line-height: 1.5;
+    color: #495057;
+    font-weight: bold;
+    font-style: italic;
+    background-image: linear-gradient(to left, #fff, rgb(222, 241, 255));
+    text-transform: uppercase;
+    /* Diseño moderno */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px; /* Bordes suaves */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    
+    /* Ocultar la flecha nativa */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Animación para transiciones suaves */
+    transition: all 0.2s ease-in-out; 
+    
+    /* Quitar el outline azul predeterminado al enfocarse */
+    outline: none;
+    
+}
+
+#readingTopicSelect {
+    margin-bottom: 1rem;
+}
+
+
+/* Interacción y Focus */
+
+/* Efecto al pasar el ratón */
+.select-field:hover {
+    border-color: #007bff; /* Color primario al pasar el ratón */
+    box-shadow: 0 6px 10px rgba(0, 123, 255, 0.1);
+}
+
+/* Efecto al seleccionar (Focus) */
+.select-field:focus {
+    border-color: #007bff; /* Color primario al enfocarse */
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25); /* Anillo de enfoque suave */
+}
+

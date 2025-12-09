@@ -92,7 +92,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         <p class="descripcion">Choose a topic to practice your listening skills.</p>
         <div class="opciones-listening">
             <select id="listeningTopicSelect" class="select-field">
-                <option value="">-- Select a topic --</option>
+                <option value="">-- SELECT A TOPIC 👆 --</option>
                 <option value="anna">Anna's Story</option>
                 <option value="family">My Family</option>
                 <option value="university">At the University</option>

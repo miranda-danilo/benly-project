@@ -1,84 +1,91 @@
-// reading.js
-
 import { auth, db } from "./conexion_firebase.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { showMessage } from "./notificaciones.js";
+
+// Color de resaltado deseado: #f9fab1
+const HIGHLIGHT_COLOR = '#f9fab1';
 
 // Datos para la actividad de lectura.
 // El texto se usa para el ejercicio y las palabras clave se marcan para el crucigrama.
 // Datos para el crucigrama, con las palabras reubicadas para evitar cualquier superposición.
 const readingData = {
     'story1': {
-        title: "The Little Red Hen",
-        text: "Once upon a time, there lived a little red hen who lived on a farm. She found a grain of wheat and asked her friends for help to plant it, but they all said no. She planted the grain herself. When the wheat was ready, she asked for help to cut it and take it to the mill, but her friends said no. The hen did it all by herself. When the bread was baked, she asked her friends if they wanted to eat it. This time, they all said yes! But the little red hen said, 'No, I did it all by myself, so I will eat it all by myself.' And she did.",
+        title: "A Trip to the Market",
+        audioUrl: "assets/audios-reading/story1.mp3", // <-- NUEVO: URL del audio de la historia
+        text: "Luis needs to buy tomatoes and onions today. He takes his small red bicycle from the garage now. He rides slowly to the market on the sunny street. When he returns home, his mom gives him a big smile. She thanks him and says, 'Good job, Luis!'",
         placedWords: [
-            { word: "hen", startRow: 10, startCol: 3, orientation: "horizontal", color: "hsla(10, 70%, 50%, 0.8)" },
-            { word: "farm", startRow: 4, startCol: 5, orientation: "horizontal", color: "hsla(40, 70%, 50%, 0.8)" },
-            { word: "wheat", startRow: 0, startCol: 9, orientation: "vertical", color: "hsla(70, 70%, 50%, 0.8)" },
-            { word: "mill", startRow: 8, startCol: 2, orientation: "horizontal", color: "hsla(120, 70%, 50%, 0.8)" },
-            { word: "bread", startRow: 1, startCol: 1, orientation: "horizontal", color: "hsla(180, 70%, 50%, 0.8)" },
-            { word: "eat", startRow: 6, startCol: 0, orientation: "horizontal", color: "hsla(220, 70%, 50%, 0.8)" },
-            { word: "friends", startRow: 5, startCol: 1, orientation: "horizontal", color: "hsla(260, 70%, 50%, 0.8)" },
-            { word: "cut", startRow: 3, startCol: 0, orientation: "horizontal", color: "hsla(300, 70%, 50%, 0.8)" }
+            { word: "sunny", startRow: 2, startCol: 1, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/sunny.mp3" }, // <-- NUEVO: Pronunciación
+            { word: "home", startRow: 3, startCol: 9, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/home.mp3" },
+            { word: "onions", startRow: 5, startCol: 0, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/onions.mp3" },
+            { word: "smile", startRow: 5, startCol: 5, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/smile.mp3" },
+            { word: "market", startRow: 6, startCol: 5, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/market.mp3" },
         ]
     },
     'story2': {
-        title: "The Tortoise and the Hare",
-        text: "A boastful hare once challenged a slow tortoise to a race. The hare was so fast that he ran far ahead and decided to take a nap. The tortoise, who was slow but persistent, continued to walk without stopping. While the hare was sleeping, the tortoise passed him by. When the hare woke up, he saw the tortoise was already at the finish line and had won the race. This story teaches us that being slow and steady can win the race.",
+        title: "The Rainy Afternoon Game",
+        audioUrl: "assets/audios-reading/story2.mp3",
+        text: "It is a cold, rainy Saturday afternoon, and the kids are inside. Sarah and her brother Ben cannot go outside to play in the park. They decide to sit on the floor and play a video game with small blue cars. Sarah wins the game one time, but Ben manages to win three times quickly. They laugh together because the game is fun, even when it rains.",
         placedWords: [
-            { word: "slow", startRow: 0, startCol: 2, orientation: "horizontal", color: "hsla(10, 70%, 50%, 0.8)" },
-            { word: "race", startRow: 2, startCol: 2, orientation: "horizontal", color: "hsla(40, 70%, 50%, 0.8)" },
-            { word: "fast", startRow: 5, startCol: 1, orientation: "horizontal", color: "hsla(70, 70%, 50%, 0.8)" },
-            { word: "won", startRow: 8, startCol: 2, orientation: "horizontal", color: "hsla(120, 70%, 50%, 0.8)" },
-            { word: "steady", startRow: 10, startCol: 2, orientation: "horizontal", color: "hsla(180, 70%, 50%, 0.8)" },
-            { word: "hare", startRow: 1, startCol: 8, orientation: "vertical", color: "hsla(220, 70%, 50%, 0.8)" },
-            { word: "finish", startRow: 6, startCol: 7, orientation: "vertical", color: "hsla(260, 70%, 50%, 0.8)" },
-            { word: "wake", startRow: 0, startCol: 11, orientation: "vertical", color: "hsla(300, 70%, 50%, 0.8)" }
+            { word: "small", startRow: 2, startCol: 1, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/small.mp3" },
+            { word: "laugh", startRow: 2, startCol: 5, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/laugh.mp3" },
+            { word: "floor", startRow: 2, startCol: 7, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/floor.mp3" },
+            { word: "cold", startRow: 5, startCol: 3, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/cold.mp3" },
+            { word: "brother", startRow: 6, startCol: 1, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/brother.mp3" },
         ]
     },
     'story3': {
-        title: "A Day at the Park",
-        text: "Today is a beautiful day. I go to the park with my friends. The sun is warm and bright. We see a big tree and many small flowers. We like to play games and run with a ball. It is a lot of fun.",
+        title: "Homework Before Sleep",
+        audioUrl: "assets/audios-reading/story3.mp3",
+        text: "Maria is tired after dinner, but she must finish her school homework. She needs to write about three animals: her favorite cat, a fish, and a small bird. She opens her book to find the words and uses a big blue pen to write them down. When she finishes, she puts the book and the pen safely in her large school bag. She is happy because now she can go to bed and sleep.",
         placedWords: [
-            { word: "park", startRow: 0, startCol: 1, orientation: "vertical", color: "hsla(10, 70%, 50%, 0.8)" },
-            { word: "run", startRow: 2, startCol: 5, orientation: "horizontal", color: "hsla(40, 70%, 50%, 0.8)" },
-            { word: "flowers", startRow: 5, startCol: 0, orientation: "horizontal", color: "hsla(70, 70%, 50%, 0.8)" },
-            { word: "ball", startRow: 1, startCol: 5, orientation: "horizontal", color: "hsla(120, 70%, 50%, 0.8)" },
-            { word: "tree", startRow: 7, startCol: 3, orientation: "horizontal", color: "hsla(180, 70%, 50%, 0.8)" },
-            { word: "day", startRow: 9, startCol: 1, orientation: "horizontal", color: "hsla(220, 70%, 50%, 0.8)" },
-            { word: "sun", startRow: 0, startCol: 7, orientation: "horizontal", color: "hsla(260, 70%, 50%, 0.8)" },
-            { word: "fun", startRow: 6, startCol: 7, orientation: "horizontal", color: "hsla(300, 70%, 50%, 0.8)" }
+            { word: "happy", startRow: 2, startCol: 2, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/happy.mp3" },
+            { word: "bag", startRow: 3, startCol: 1, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/bag.mp3" },
+            { word: "opens", startRow: 5, startCol: 1, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/opens.mp3" },
+            { word: "school", startRow: 5, startCol: 5, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/school.mp3" },
+            { word: "book", startRow: 8, startCol: 3, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/book.mp3" },
         ]
     },
     'story4': {
-        title: "My Family",
-        text: "I have a big family. I live in a big house with my mom, my dad, and my brother. We also have a dog. My sister lives in another city, but we visit her. We love our family very much.",
+        title: "Coffee and the Dog",
+        audioUrl: "assets/audios-reading/story4.mp3",
+        text: "Ms. Helen wakes up and wants her morning hot coffee. She goes to the kitchen and turns on the machine right away. Her dog, Sparky, follows her, waiting for his food. Ms. Helen gives Sparky his breakfast first in his red bowl. Then, she finally sits down and drinks her hot coffee slowly.",
         placedWords: [
-            { word: "family", startRow: 1, startCol: 0, orientation: "horizontal", color: "hsla(10, 70%, 50%, 0.8)" },
-            { word: "house", startRow: 7, startCol: 0, orientation: "horizontal", color: "hsla(40, 70%, 50%, 0.8)" },
-            { word: "mom", startRow: 3, startCol: 3, orientation: "horizontal", color: "hsla(70, 70%, 50%, 0.8)" },
-            { word: "sister", startRow: 0, startCol: 7, orientation: "horizontal", color: "hsla(120, 70%, 50%, 0.8)" },
-            { word: "brother", startRow: 6, startCol: 1, orientation: "horizontal", color: "hsla(180, 70%, 50%, 0.8)" },
-            { word: "dog", startRow: 8, startCol: 7, orientation: "horizontal", color: "hsla(220, 70%, 50%, 0.8)" },
-            { word: "live", startRow: 2, startCol: 12, orientation: "vertical", color: "hsla(260, 70%, 50%, 0.8)" },
-            { word: "city", startRow: 4, startCol: 9, orientation: "vertical", color: "hsla(300, 70%, 50%, 0.8)" }
-        ]
-    },
-    'story5': {
-        title: "At School",
-        text: "I like to go to school. My friends are in my class. We have a good teacher. We learn to read and write. I have a book and a pencil in my bag.",
-        placedWords: [
-            { word: "school", startRow: 0, startCol: 4, orientation: "horizontal", color: "hsla(10, 70%, 50%, 0.8)" },
-            { word: "friends", startRow: 2, startCol: 3, orientation: "horizontal", color: "hsla(40, 70%, 50%, 0.8)" },
-            { word: "teacher", startRow: 4, startCol: 1, orientation: "horizontal", color: "hsla(70, 70%, 50%, 0.8)" },
-            { word: "read", startRow: 6, startCol: 1, orientation: "horizontal", color: "hsla(120, 70%, 50%, 0.8)" },
-            { word: "book", startRow: 8, startCol: 0, orientation: "horizontal", color: "hsla(180, 70%, 50%, 0.8)" },
-            { word: "write", startRow: 10, startCol: 1, orientation: "horizontal", color: "hsla(220, 70%, 50%, 0.8)" },
-            { word: "pencil", startRow: 9, startCol: 3, orientation: "horizontal", color: "hsla(260, 70%, 50%, 0.8)" },
-            { word: "class", startRow: 0, startCol: 10, orientation: "vertical", color: "hsla(300, 70%, 50%, 0.8)" }
+            { word: "coffee", startRow: 2, startCol: 2, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/coffee.mp3" },
+            { word: "slowly", startRow: 2, startCol: 4, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/slowly.mp3" },
+            { word: "bowl", startRow: 3, startCol: 1, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/bowl.mp3" },
+            { word: "goes", startRow: 3, startCol: 7, orientation: "vertical", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/goes.mp3" },
+            { word: "wakes", startRow: 5, startCol: 4, orientation: "horizontal", color: "hsla(0, 0%, 100%, 1.00)", pronunciation: "assets/audios-reading/wakes.mp3" },
         ]
     },
 };
+
+
+
+
+function playSoundHd(audioUrl) {
+    if (audioUrl) {
+        try {
+            // Detenemos cualquier audio que se esté reproduciendo actualmente
+            if (window.currentAudio) {
+                window.currentAudio.pause();
+                window.currentAudio.currentTime = 0;
+            }
+            
+            // Creamos y guardamos la nueva instancia de Audio
+            const audio = new Audio(audioUrl);
+            window.currentAudio = audio; // Lo guardamos globalmente para poder detenerlo
+
+            audio.play().catch(error => {
+                console.error("Error al intentar reproducir el audio:", error);
+                // Si falla (a menudo por políticas de navegadores que requieren interacción previa),
+                // puedes mostrar un mensaje alternativo si es necesario.
+            });
+        } catch (e) {
+            console.error("Error al crear el objeto Audio:", e);
+        }
+    }
+}
+
 
 
 /**
@@ -88,11 +95,28 @@ const readingData = {
  * @returns {string} - El HTML con el texto formateado.
  */
 function highlightKeywords(text, placedWords) {
-    const keywordsToHighlight = new Set(placedWords.map(word => word.word.toLowerCase()));
+    // Usamos Map para asociar la palabra con su URL de audio (manejo de duplicados en placedWords)
+    const keywordsMap = new Map();
+    placedWords.forEach(w => {
+        if (!keywordsMap.has(w.word.toLowerCase())) {
+            // Guarda la URL de pronunciación o una cadena vacía si no existe
+            keywordsMap.set(w.word.toLowerCase(), w.pronunciation || '');
+        }
+    });
+
+    const highlightedWords = new Set();
 
     return text.replace(/\b(\w+)\b/g, (match, word) => {
-        if (keywordsToHighlight.has(word.toLowerCase())) {
-            return `<span class="keyword" data-keyword="${word.toLowerCase()}">${match}</span>`;
+        const lowerCaseWord = word.toLowerCase();
+
+        // 1. Debe ser una palabra clave.
+        // 2. NO debe haber sido resaltada antes (para evitar duplicidad en el texto).
+        if (keywordsMap.has(lowerCaseWord) && !highlightedWords.has(lowerCaseWord)) {
+            highlightedWords.add(lowerCaseWord);
+            const audioUrl = keywordsMap.get(lowerCaseWord);
+
+            // Agrega el atributo data-audio y la clase 'keyword' para el clic.
+            return `<span class="keyword" data-keyword="${lowerCaseWord}" data-audio="${audioUrl}">${match}</span>`;
         }
         return match;
     });
@@ -109,9 +133,20 @@ function generateCrosswordHtml(placedWords) {
     const gridCols = 12;
     const grid = Array.from({ length: gridRows }, () => Array(gridCols).fill(''));
 
-    // Llenar la cuadrícula con las palabras
+    // 1. Crear un mapa para identificar la celda inicial de cada palabra y asignarle un número.
+    const startCellNumberMap = new Map();
+    let wordIndex = 1;
+
+    // Llenar la cuadrícula con las palabras y el mapa de números
     placedWords.forEach(wordData => {
         const word = wordData.word.toUpperCase();
+        const startKey = `${wordData.startRow}-${wordData.startCol}`;
+
+        // Asignar número solo si la celda no ha sido marcada como inicio por otra palabra (cruce)
+        if (!startCellNumberMap.has(startKey)) {
+            startCellNumberMap.set(startKey, wordIndex++);
+        }
+
         for (let i = 0; i < word.length; i++) {
             const r = wordData.orientation === 'horizontal' ? wordData.startRow : wordData.startRow + i;
             const c = wordData.orientation === 'horizontal' ? wordData.startCol + i : wordData.startCol;
@@ -119,43 +154,48 @@ function generateCrosswordHtml(placedWords) {
         }
     });
 
-    // Generar el HTML
+    // 2. Generar el HTML
     let crosswordHtml = `<div class="crossword-grid">`;
     for (let r = 0; r < gridRows; r++) {
         for (let c = 0; c < gridCols; c++) {
             const letter = grid[r][c];
             const cellClass = letter ? "filled" : "empty";
+            const cellKey = `${r}-${c}`;
 
             let cellStyle = '';
-            let isStartCell = false;
-            let startColor = '';
+            let wordData = null; // Para obtener el color correcto
 
-            const wordData = placedWords.find(w => {
-                const word = w.word.toUpperCase();
-                if (w.orientation === 'horizontal') {
-                    if (r === w.startRow && c >= w.startCol && c < w.startCol + word.length) {
-                        if (c === w.startCol) isStartCell = true;
-                        startColor = w.color;
-                        return true;
-                    }
-                } else {
-                    if (c === w.startCol && r >= w.startRow && r < w.startRow + word.length) {
-                        if (r === w.startRow) isStartCell = true;
-                        startColor = w.color;
-                        return true;
-                    }
-                }
-                return false;
-            });
-
+            // Buscar si esta celda corresponde a alguna palabra (para el color)
             if (letter) {
+                wordData = placedWords.find(w => {
+                    const word = w.word.toUpperCase();
+                    if (w.orientation === 'horizontal') {
+                        return r === w.startRow && c >= w.startCol && c < w.startCol + word.length;
+                    } else {
+                        return c === w.startCol && r >= w.startRow && r < w.startRow + word.length;
+                    }
+                });
+            }
+
+            if (wordData) {
+                // Usar el color de la palabra que la contiene
                 cellStyle = `style="background-color: ${wordData.color};"`;
             }
 
+            // Inicia la celda HTML
             crosswordHtml += `<div class="crossword-cell ${cellClass}" data-row="${r}" data-col="${c}" ${cellStyle}>`;
+
+            // 3. Agregar el número de índice si es una celda de inicio
+            if (startCellNumberMap.has(cellKey)) {
+                const number = startCellNumberMap.get(cellKey);
+                crosswordHtml += `<span class="crossword-number">${number}</span>`;
+            }
+
+            // Agregar el input si la celda está llena
             if (letter) {
                 crosswordHtml += `<input type="text" maxlength="1" data-row="${r}" data-col="${c}" class="crossword-input" />`;
             }
+
             crosswordHtml += `</div>`;
         }
     }
@@ -163,6 +203,53 @@ function generateCrosswordHtml(placedWords) {
     return crosswordHtml;
 }
 
+// ------------------------------------------------
+// NUEVA FUNCIÓN DE UTILIDAD: Obtener las celdas de la palabra
+// ------------------------------------------------
+
+/**
+ * Encuentra todas las celdas (filas y columnas) que forman parte de la palabra
+ * a la que pertenece la celda (r, c).
+ * @param {number} r - Fila de la celda.
+ * @param {number} c - Columna de la celda.
+ * @param {object[]} placedWords - Las palabras del crucigrama.
+ * @returns {Array<HTMLElement>} - Un array de elementos <div> (celdas).
+ */
+function getWordCells(r, c, placedWords) {
+    const currentWordData = placedWords.find(w => {
+        const word = w.word.toUpperCase();
+        const len = word.length;
+
+        if (w.orientation === 'horizontal') {
+            return r === w.startRow && c >= w.startCol && c < w.startCol + len;
+        } else {
+            return c === w.startCol && r >= w.startRow && r < w.startRow + len;
+        }
+    });
+
+    if (!currentWordData) return [];
+
+    const cells = [];
+    const word = currentWordData.word.toUpperCase();
+    const len = word.length;
+
+    for (let i = 0; i < len; i++) {
+        const row = currentWordData.orientation === 'horizontal' ? currentWordData.startRow : currentWordData.startRow + i;
+        const col = currentWordData.orientation === 'horizontal' ? currentWordData.startCol + i : currentWordData.startCol;
+
+        // Usar querySelector para obtener el elemento DIV de la celda
+        const cell = document.querySelector(`.crossword-cell[data-row="${row}"][data-col="${col}"]`);
+        if (cell) {
+            cells.push(cell);
+        }
+    }
+    return cells;
+}
+
+
+// ------------------------------------------------
+// CÓDIGO setupReadingExercise MODIFICADO
+// ------------------------------------------------
 
 /**
  * Maneja la lógica de la sección de lectura.
@@ -177,12 +264,11 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
 
         <div class="opciones-reading">
             <select id="readingTopicSelect" class="select-field">
-                <option value="">-- Selecciona una historia --</option>
-                <option value="story1">The Little Red Hen</option>
-                <option value="story2">The Tortoise and the Hare</option>
-                <option value="story3">A Day at the Park</option>
-                <option value="story4">My Family</option>
-                <option value="story5">At School</option>
+                <option value="">-- SELECT A STORY 👆 --</option>
+                <option value="story1">A Trip to the Market</option>
+                <option value="story2">The Rainy Afternoon Game</option>
+                <option value="story3">Homework Before Sleep</option>
+                <option value="story4">Coffee and the Dog</option>
             </select>
             <button id="loadReadingBtn" class="boton-primario">Cargar Crucigrama</button>
         </div>
@@ -192,6 +278,9 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
 
         <div id="reading-area" class="reading-area hidden">
             <h3 id="storyTitle" class="story-title"></h3>
+
+<button id="playStoryAudioBtn" class="boton-secundario mb-4 hidden">🎧 Reproducir Historia Completa</button>
+
             <div class="reading-card">
                 <p id="readingText" class="reading-text"></p>
             </div>
@@ -218,6 +307,7 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
     const storyTitleEl = document.getElementById('storyTitle');
     const readingTextEl = document.getElementById('readingText');
     const crosswordGridEl = document.getElementById('crosswordGrid');
+    const playStoryAudioBtn = document.getElementById('playStoryAudioBtn'); // <-- NUEVA REFERENCIA
     const checkCrosswordBtn = document.getElementById('checkCrosswordBtn');
     const repeatCrosswordBtn = document.getElementById('repeatCrosswordBtn');
     const readingScoreDisplayEl = document.getElementById('reading-score-display');
@@ -226,6 +316,7 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
 
     let currentLayout = null;
     let originalColors = {};
+    let selectedTopic = null; // Variable para almacenar el tópico seleccionado
 
     // Carga inicial del puntaje de lectura si existe
     const displayInitialScore = async () => {
@@ -247,7 +338,7 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
 
     // Manejador del botón de cargar historia
     loadReadingBtn.addEventListener('click', async () => {
-        const selectedTopic = topicSelect.value;
+        selectedTopic = topicSelect.value;
         if (!selectedTopic) {
             showMessage("Por favor, selecciona una historia.", "warning");
             return;
@@ -260,15 +351,46 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                 storyTitleEl.textContent = data.title;
 
                 currentLayout = data.placedWords;
-
+// ------------------------------------------------
+                // 1. MANEJO DEL AUDIO DE LA HISTORIA
+                // ------------------------------------------------
+                if (data.audioUrl) {
+                    playStoryAudioBtn.classList.remove('hidden');
+                    playStoryAudioBtn.onclick = () => {
+                        playSoundHd(data.audioUrl);
+                    };
+                } else {
+                    playStoryAudioBtn.classList.add('hidden');
+                }
                 // Genera el crucigrama y el texto con palabras resaltadas
                 readingTextEl.innerHTML = highlightKeywords(data.text, currentLayout);
                 crosswordGridEl.innerHTML = generateCrosswordHtml(readingData[selectedTopic].placedWords);
 
+// ------------------------------------------------
+                // 2. MANEJO DEL AUDIO DE PRONUNCIACIÓN DE PALABRAS (Event Listeners)
+                // ------------------------------------------------
+                document.querySelectorAll('.keyword').forEach(keywordSpan => {
+                    // Establecer cursor para indicar que es clickeable
+                    keywordSpan.style.cursor = 'pointer'; 
+                    keywordSpan.title = 'Haz clic para escuchar la pronunciación';
+
+                    keywordSpan.addEventListener('click', (e) => {
+                        const audioUrl = e.currentTarget.dataset.audio;
+                        if (audioUrl) {
+                            playSoundHd(audioUrl); 
+                        } else {
+                            showMessage("Audio de pronunciación no disponible.", "warning");
+                        }
+                    });
+                });
+
+
+                // Guarda los colores originales para poder restaurarlos
                 originalColors = {};
                 document.querySelectorAll('.crossword-cell.filled').forEach(cell => {
-                    originalColors[cell.dataset.row + '-' + cell.dataset.col] = cell.style.backgroundColor;
+                    originalColors[cell.dataset.row + '-' + cell.dataset.col] = cell.style.backgroundColor || 'transparent'; // Guarda el color
                 });
+
 
                 // Muestra los botones
                 checkCrosswordBtn.classList.remove('hidden');
@@ -281,14 +403,15 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                     input.disabled = false;
                     input.value = '';
 
-                    // Manejador del evento de entrada (input)
+                    // Manejador del evento de ENTRADA (Input) - ELIMINADO: retroalimentación de color inmediato
                     input.addEventListener('input', (e) => {
-                        const cell = e.target.parentElement;
-                        const row = parseInt(cell.dataset.row);
-                        const col = parseInt(cell.dataset.col);
-                        const userLetter = e.target.value.toUpperCase();
+                        // NO HACEMOS NADA DE VERDE/ROJO AQUÍ
 
-                        let correctLetter = '';
+                        // Navegación automática según la orientación de la palabra
+                        const row = parseInt(e.target.dataset.row);
+                        const col = parseInt(e.target.dataset.col);
+
+                        // Obtenemos solo la primera palabra a la que pertenece (simplificación para el movimiento)
                         const placedWord = readingData[selectedTopic].placedWords.find(w => {
                             const word = w.word.toUpperCase();
                             if (w.orientation === 'horizontal') {
@@ -298,23 +421,7 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                             }
                         });
 
-                        if (placedWord) {
-                            const index = placedWord.orientation === 'horizontal' ? col - placedWord.startCol : row - placedWord.startRow;
-                            correctLetter = placedWord.word.toUpperCase().charAt(index);
-                        }
-
-                        if (userLetter === correctLetter) {
-                            cell.style.backgroundColor = 'var(--correct-color)';
-                            cell.classList.remove('incorrect');
-                            cell.classList.add('correct');
-                        } else {
-                            cell.style.backgroundColor = 'var(--incorrect-color)';
-                            cell.classList.remove('correct');
-                            cell.classList.add('incorrect');
-                        }
-
-                        // Navegación automática según la orientación de la palabra
-                        if (e.target.value.length === e.target.maxLength) {
+                        if (e.target.value.length === e.target.maxLength && placedWord) {
                             let nextInput;
                             if (placedWord.orientation === 'horizontal') {
                                 nextInput = document.querySelector(`.crossword-input[data-row="${row}"][data-col="${col + 1}"]`);
@@ -325,6 +432,36 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                                 nextInput.focus();
                             }
                         }
+                    });
+
+
+                    // ------------------------------------------------
+                    // NUEVO MANEJADOR: FOCUS (Resaltar la palabra completa)
+                    // ------------------------------------------------
+                    input.addEventListener('focus', (e) => {
+                        const row = parseInt(e.target.dataset.row);
+                        const col = parseInt(e.target.dataset.col);
+
+                        const cellsToHighlight = getWordCells(row, col, readingData[selectedTopic].placedWords);
+
+                        cellsToHighlight.forEach(cell => {
+                            // Usar una clase o style para el resaltado
+                            cell.style.backgroundColor = HIGHLIGHT_COLOR;
+                            cell.classList.add('highlighted');
+                        });
+                    });
+
+                    // ------------------------------------------------
+                    // NUEVO MANEJADOR: BLUR (Restaurar el color original)
+                    // ------------------------------------------------
+                    input.addEventListener('blur', (e) => {
+                        const allHighlightedCells = document.querySelectorAll('.crossword-cell.highlighted');
+                        allHighlightedCells.forEach(cell => {
+                            const cellKey = cell.dataset.row + '-' + cell.dataset.col;
+                            // Restaurar al color original guardado
+                            cell.style.backgroundColor = originalColors[cellKey] || 'transparent';
+                            cell.classList.remove('highlighted');
+                        });
                     });
 
                     // Manejador del evento de presionar tecla (keydown)
@@ -365,9 +502,17 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                 const c = wordData.orientation === 'horizontal' ? wordData.startCol + i : wordData.startCol;
 
                 const input = document.querySelector(`.crossword-input[data-row="${r}"][data-col="${c}"]`);
+                const cell = document.querySelector(`.crossword-cell[data-row="${r}"][data-col="${c}"]`);
+
                 if (!input || input.value.toUpperCase() !== word.charAt(i)) {
                     isWordCorrect = false;
-                    break;
+
+                    // Retroalimentación de color (ROJO) al verificar
+                    if (cell) cell.style.backgroundColor = 'var(--incorrect-color)';
+
+                } else {
+                    // Retroalimentación de color (VERDE) al verificar
+                    if (cell) cell.style.backgroundColor = 'var(--correct-color)';
                 }
             }
             if (isWordCorrect) {

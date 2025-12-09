@@ -9,12 +9,12 @@ import { setupSpeakingExercise } from "./speaking.js";
 
 // --- Datos de Unidades y Quizzes ---
 const units = [
-    { id: 'UT1', title: 'Introduction and Basic Greetings', quiz: 'true_false' },
-    { id: 'UT2', title: 'People and Places', quiz: 'true_false' },
-    { id: 'UT3', title: 'Daily Life', quiz: 'true_false' },
-    { id: 'UT4', title: 'Foods and Drinks', quiz: 'true_false' },
-    { id: 'UT5', title: 'Things I Have', quiz: 'true_false' },
-    { id: 'UT6', title: 'Around Town - Free Time', quiz: 'true_false' },
+    { id: 'UT1', title: 'INTRODUCTION AND BASIC GREETINGS', quiz: 'true_false' },
+    { id: 'UT2', title: 'PEOPLE AND PLACES', quiz: 'true_false' },
+    { id: 'UT3', title: 'DAILY LIFE', quiz: 'true_false' },
+    { id: 'UT4', title: 'FOODS AND DRINKS', quiz: 'true_false' },
+    { id: 'UT5', title: 'THINGS I HAVE', quiz: 'true_false' },
+    { id: 'UT6', title: 'AROUND TOWN | FREE TIME', quiz: 'true_false' },
     { id: 'WRITING', title: 'WRITING PRACTICE', quiz: 'none' },
     { id: 'LISTENING', title: 'LISTENING PRACTICE', quiz: 'listening' },
     { id: 'READING', title: 'READING PRACTICE', quiz: 'reading' },
@@ -24,86 +24,97 @@ const units = [
 ];
 
 const quizData = {
-    'UT1': [
-        { question: "Hello is a greeting.", answer: "true" },
-        { question: "Goodbye means 'hello'.", answer: "false" },
-        { question: "The verb To Be is am/is/are.", answer: "true" },
-        { question: "'How are you?' is to ask for someone's name.", answer: "false" },
-        { question: "Good morning is used in the afternoon.", answer: "false" },
-        { question: "I am a teacher.", answer: "false" },
-        { question: "We are friends.", answer: "true" },
-        { question: "It is a book.", answer: "true" }
-    ],
+ 'UT1': [
+    { question: "The phrase 'How are you?' is used to ask about someone's name.", answer: "false" },
+    { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
+    { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
+    { question: "You use 'He is' when you talk about one boy or man.", answer: "true" }, // <- Ajustada para máxima claridad A1
+    { question: "'They are' is the correct verb form for one person.", answer: "false" },
+    { question: "Hello is a way to start a conversation.", answer: "true" },
+    { question: "You say 'Good afternoon' in the morning.", answer: "false" },
+    { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" }
+],
     'UT2': [
-        { question: "My is a possessive adjective.", answer: "true" },
-        { question: "Brother means 'hermana'.", answer: "false" },
-        { question: "Her phone is 'su teléfono' de ella.", answer: "true" },
-        { question: "Father means madre.", answer: "false" },
-        { question: "Your car is 'tu carro'.", answer: "true" },
-        { question: "Sister means hermano.", answer: "false" },
-        { question: "Son means hijo.", answer: "true" },
-        { question: "Mother means mamá.", answer: "true" }
-    ],
+    { question: "The word 'Mother' is a girl.", answer: "true" },
+    { question: "Brother and Sister are family.", answer: "true" },
+    { question: "The word 'My' means something belongs to you.", answer: "true" },
+    { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
+    { question: "A 'School' is a place where you sleep.", answer: "false" },
+    { question: "The word 'Live' is about where you are.", answer: "true" },
+    { question: "If you have a 'Family', you are alone.", answer: "false" },
+    { question: "'Home' is a type of house.", answer: "true" }
+],
     'UT3': [
-        { question: "There are means plural.", answer: "true" },
-        { question: "Wake up means dormir.", answer: "false" },
-        { question: "Always is an adverb of frequency.", answer: "true" },
-        { question: "Go to bed means levantarse.", answer: "false" },
-        { question: "Never means nunca.", answer: "true" },
-        { question: "Eat breakfast means cenar.", answer: "false" },
-        { question: "Sometimes means a veces.", answer: "true" },
-        { question: "She wakes up at 7.", answer: "true" }
-    ],
+    { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
+    { question: "The word 'Always' means you do something 0% of the time.", answer: "false" },
+    { question: "You use 'There are' to talk about one thing (singular).", answer: "false" },
+    { question: "The word 'Next to' is used to talk about a location.", answer: "true" },
+    { question: "'Eat breakfast' is the last meal of the day.", answer: "false" },
+    { question: "You use 'O'clock' to talk about the time.", answer: "true" },
+    { question: "The word 'Sometimes' means 'a few times'.", answer: "true" },
+    { question: "When you 'Wake up', you leave your bed.", answer: "true" }
+],
     'UT4': [
-        { question: "Apple is a fruit.", answer: "true" },
-        { question: "'Some' is used with countable nouns.", answer: "false" },
-        { question: "Water is uncountable.", answer: "true" },
-        { question: "Bread is a drink.", answer: "false" },
-        { question: "Banana is a fruit.", answer: "true" },
-        { question: "Milk is uncountable.", answer: "true" },
-        { question: "Eggs are countable.", answer: "true" },
-        { question: "Juice is a food.", answer: "false" }
-    ],
+    { question: "The word 'Water' is a type of drink.", answer: "true" },
+    { question: "You ask for the 'Menu' when you want to see what food they have.", answer: "true" },
+    { question: "A 'Sandwich' is usually two pieces of bread with food inside.", answer: "true" },
+    { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
+    { question: "A 'Salad' is usually made with meat and bread.", answer: "false" }, // <-- NUEVA PREGUNTA DE REEMPLAZO (SALAD)
+    { question: "The word 'Bread' is a food made with vegetables.", answer: "false" },
+    { question: "To ask for the check means you want to pay.", answer: "true" },
+    { question: "An 'Appetizer' is a large main meal.", answer: "false" }
+],
     'UT5': [
-        { question: "I have a phone.", answer: "true" },
-        { question: "Keys means 'llaves'.", answer: "true" },
-        { question: "Bag means comida.", answer: "false" },
-        { question: "Notebook means cuaderno.", answer: "true" },
-        { question: "Pen means lápiz.", answer: "false" },
-        { question: "I have two bags.", answer: "true" },
-        { question: "Wallet means cartera.", answer: "true" },
-        { question: "Shoes means camisa.", answer: "false" }
-    ],
+    { question: "The 'Keys' are used to open a door.", answer: "true" },
+    { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
+    { question: "An 'old phone' is newer than a 'new phone'.", answer: "false" },
+    { question: "The word 'Bag' is a container to carry things.", answer: "true" },
+    { question: "The 'Shoes' are more expensive than a pencil.", answer: "true" }, // <-- NUEVA PREGUNTA DE LÓGICA (Reemplazo)
+    { question: "A 'Phone' is usually used for cooking.", answer: "false" },
+    { question: "'Shoes' are something you wear on your hands.", answer: "false" },
+    { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" }
+],
     'UT6': [
-        { question: "Bank is a place in town.", answer: "true" },
-        { question: "Playing sports is a hobby.", answer: "true" },
-        { question: "Present continuous is used for future plans.", answer: "true" },
-        { question: "Library is a place to eat.", answer: "false" },
-        { question: "Park is a place for free time.", answer: "true" },
-        { question: "Cinema is a place to watch movies.", answer: "true" },
-        { question: "Swimming pool is for reading.", answer: "false" },
-        { question: "Restaurant is a place to eat.", answer: "true" }
-    ],
-    'EXAM1': [
-        { question: "The verb 'to be' has three forms: am, is, are.", answer: "true" },
-        { question: "'Good morning' is used to say hello in the evening.", answer: "false" },
-        { question: "Possessive adjectives like 'my', 'your', 'his' show ownership.", answer: "true" },
-        { question: "'Brother' means the same as 'sister'.", answer: "false" },
-        { question: "Adverbs of frequency include 'always', 'never', and 'sometimes'.", answer: "true" },
-        { question: "'Wake up' means the same as 'go to bed'.", answer: "false" },
-        { question: "Countable nouns can be singular or plural.", answer: "true" },
-        { question: "'Water' is a countable noun.", answer: "false" }
-    ],
-    'EXAM2': [
-        { question: "'I have a phone' is a correct sentence.", answer: "true" },
-        { question: "'Keys' means 'comida' in Spanish.", answer: "false" },
-        { question: "Present continuous can be used for future plans.", answer: "true" },
-        { question: "'Library' is a place to eat food.", answer: "false" },
-        { question: "Basic greetings include 'hello' and 'goodbye'.", answer: "true" },
-        { question: "'Good afternoon' is used at night.", answer: "false" },
-        { question: "Family vocabulary includes 'father', 'mother', 'brother'.", answer: "true" },
-        { question: "'Son' means 'hija' en español.", answer: "false" }
-    ],
+    { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
+    { question: "You use 'Turn right' to go left.", answer: "false" },
+    { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
+    { question: "You can find many books at the 'Library'.", answer: "true" }, // <-- REEMPLAZO 1 (Vocabulario)
+    { question: "The phrase 'Free time' means you are busy working.", answer: "false" },
+    { question: "The word 'Cinema' is a place where you borrow books.", answer: "false" },
+    { question: "When you go 'Straight', you do not turn.", answer: "true" },
+    { question: "A 'Park' is a good place to do some exercise.", answer: "true" } // <-- REEMPLAZO 2 (Lógica de Lugares)
+],
+    // =========================================================
+// EXAMEN 1: UNIDADES 1, 2 Y 3 (Saludos, Familia, Rutinas)
+// =========================================================
+'EXAM1': [
+    { question: "You use 'O'clock' to talk about the time.", answer: "true" },
+    { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
+    { question: "If you have a 'Family', you are alone.", answer: "false" },
+    { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
+    { question: "'Home' is a type of house.", answer: "true" },
+    { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
+    { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" },
+    { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
+    { question: "The word 'Mother' is a girl.", answer: "true" },
+    { question: "The word 'Sometimes' means 'a few times'.", answer: "true" }
+],
+
+// =========================================================
+// EXAMEN 2: UNIDADES 4, 5 Y 6 (Comida, Objetos, Lugares)
+// =========================================================
+'EXAM2': [
+    { question: "A 'Salad' is usually made with meat and bread.", answer: "false" },
+    { question: "The 'Keys' are used to open a door.", answer: "true" },
+    { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
+    { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
+    { question: "A 'Phone' is usually used for cooking.", answer: "false" },
+    { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
+    { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" },
+    { question: "To ask for the check means you want to pay.", answer: "true" },
+    { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
+    { question: "The word 'Water' is a type of drink.", answer: "true" }
+]
 };
 
 const moduleInfo = [
@@ -522,7 +533,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         // Cargar estado previo del quiz si existe
         const scoreData = userScores.scores?.[unitId];
         if (scoreData) {
-            questionEl.textContent = `Examen completado. Tu puntaje es: ${scoreData.score.toFixed(1)}/10`;
+            questionEl.textContent = `QUIZ COMPLETADO. Tu puntaje es: ${scoreData.score.toFixed(1)}/10`;
             feedbackEl.textContent = isExam ? 'EXAMEN REALIZADO.' : (scoreData.completada ? '¡Felicidades!' : 'Puedes mejorar tu puntaje.');
             feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--sucesso', scoreData.completada);
             feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--error', !scoreData.completada);
@@ -592,19 +603,24 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             const quizDiv = document.createElement('div');
             quizDiv.className = 'tarjeta-actividad';
             const isExam = unitId === 'EXAM1' || unitId === 'EXAM2';
-            const infoText = isExam ? 'El examen solo se podrá dar una vez.‼️‼️' : 'Solo se guardará tu nota más alta en este test.';
+            const infoText = isExam ? 'El examen solo se podrá dar una vez.‼️‼️' : 'Puedes repetir el quiz para mejorar tu puntaje.';
 
+            let unitTitle = '';
+            const unitInfoObj = units.find(m => m.id === unitId);
+            if (unitInfoObj) {
+                unitTitle = unitInfoObj.title;
+            }
             quizDiv.innerHTML = `
-                <h3 class="tarjeta-actividad__subtitulo">${unitId} </h3>
+                <h3 class="tarjeta-actividad__subtitulo">📗 ${unitId} - ${unitTitle}</h3>
                 <div class="quiz-progress-bar"><div id="quiz-progress-${unitId}" class="quiz-progress-bar-fill"></div></div>
                 <div id="quiz-container-${unitId}" class="contenedor-quiz">
                     <p class="contenedor-quiz__pregunta" id="question-${unitId}"></p>
                     <div class="contenedor-quiz__botones">
-                        <button class="boton-quiz boton-quiz--verdadero" data-answer="true">Verdadero</button>
-                        <button class="boton-quiz boton-quiz--falso" data-answer="false">Falso</button>
+                        <button class="boton-quiz boton-quiz--verdadero" data-answer="true">True</button>
+                        <button class="boton-quiz boton-quiz--falso" data-answer="false">False</button>
                     </div>
                     <p id="feedback-${unitId}" class="contenedor-quiz__retroalimentacion"></p>
-                    <button id="repeat-quiz-${unitId}" class="boton-quiz--repeat" style="display:none;">Repetir Quiz</button>
+                    <button id="repeat-quiz-${unitId}" class="boton-quiz--repeat" style="display:none;">Repeat Quiz</button>
                     <p style="margin-top:1rem;font-weight:bold;"><b>${infoText}</b></p>
                 </div>
             `;

@@ -101,7 +101,7 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
         <div class="speaking-section">
             <div class="opciones-speaking">
                 <select id="speakingTopicSelect" class="select-field">
-                    <option value="">-- Selecciona un tema --</option>
+                    <option value="">-- SELECT A TOPIC 👆 --</option>
                     <option value="greetings">Saludos Básicos</option>
                     <option value="introductions">Presentaciones</option>
                     <option value="questions">Preguntas Frecuentes</option>
