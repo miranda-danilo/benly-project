@@ -1719,3 +1719,12 @@ margin-top: 2rem;
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25); /* Anillo de enfoque suave */
 }
 
+.text-red-500 {
+color: #ef4444;
+}
+.text-yellow-500 {
+color: #f59e0b;
+}
+.text-red-500 {
+color: #ef4444; 
+}

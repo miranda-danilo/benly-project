@@ -10,31 +10,25 @@ const listeningData = {
     'anna': {
         title: "Anna's Story",
         text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
-        targetIndices: [1, 10, 15, 23, 31],
+        targetIndices: [1, 15, 23, 37, 53],
         audioUrl: 'assets/anna.wav'
     },
     'family': {
         title: "My Family",
         text: "My family lives in Melbourne. There are six people in my family. My mother and father live in a large house. The house has four bedrooms and a big backyard. There are flowers in the front yard. My older brother, Alan, is married with two children. My younger brother, Bill, and my sister, Sue, live at home. My father works in an office in Belmore. He is a manager. My mother works at home and looks after the house. I am very lucky to have a wonderful family.",
-        targetIndices: [2, 6, 19, 25, 32, 42, 55, 59, 68, 75],
+        targetIndices: [8, 25, 42, 59, 86],
         audioUrl: 'assets/my-family.wav'
     },
     'university': {
         title: "At the University",
         text: "I'm Mark. I am a student of Information Technology. Today was a good day for me. The weather was very nice. It was sunny and warm. My bus was on time. It was fast. My teacher was very happy because I was on time for my class. He was friendly. My first class was Databases. It was at 8:00 AM. I learned to save information. Then I had my Programming class. My laptop was good. I typed my code. The program was okay. I finished my work. I checked my email too. At 12 o'clock, my classes finished. I left the university. The sun was still shining. I walked home. It was a great day.",
-        targetIndices: [5, 17, 24, 36, 44, 49, 54, 69, 88, 108],
+        targetIndices: [8, 33, 54, 86, 101],
         audioUrl: 'assets/at-university.wav'
-    },
-    'office': {
-        title: "At the Office",
-        text: "Yesterday wasn't a good day. The weather wasn't very nice. It was cold and raining. The bus wasn't on time. It was late. My boss wasn't very happy because I was late for work. He was angry. At 1 o'clock I went to a cafe for lunch but the food wasn't hot and the coffee was cold. I wasn't very happy. Then I went back to work but my papers weren't on my desk. They were missing. I looked everywhere but I couldn't find them. Later someone gave them back to me. I left work at 5 o'clock and it started to rain again. I got very wet. Yesterday was a bad day for me.",
-        targetIndices: [6, 16, 24, 36, 44, 49, 54, 73, 83, 107],
-        audioUrl: 'assets/at-the-office.wav'
     },
     'weekend': {
         title: "Next Weekend",
         text: "Next weekend I'm going to have a great time. On Saturday morning, I'm going to buy some new jeans and a pair of shoes. In the afternoon, I'm going to visit a friend in Punchbowl. At 8 o'clock, I'm going to go to a French restaurant with five friends. On Sunday, I'm going to have an interesting day. I'm going to go to the museum with a friend. After that, I'm going to eat out at an Indian restaurant. I'm going to go to bed late.",
-        targetIndices: [1, 10, 13, 30, 41, 49, 54, 73, 83, 107],
+        targetIndices: [10, 30, 40, 56, 73],
         audioUrl: 'assets/next-weekend.wav'
     }
 };
@@ -96,7 +90,6 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
                 <option value="anna">Anna's Story</option>
                 <option value="family">My Family</option>
                 <option value="university">At the University</option>
-                <option value="office">At the office</option>
                 <option value="weekend">Next weekend</option>
             </select>
             <button id="loadAudioBtn" class="boton-primario">Load Audio</button>
@@ -187,7 +180,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
             // Utiliza el algoritmo de Fisher-Yates (puedes buscarlo o implementarlo tú). 
             const shuffledAnswers = [...correctAnswers].sort(() => Math.random() - 0.5);
 
-            let bankHtml = '<p class="font-bold">Palabras a buscar:</p><div class="flex flex-wrap gap-2 justify-center">';
+            let bankHtml = '<p class="font-bold">WORDS TO LOOK FOR:</p><div class="flex flex-wrap gap-2 justify-center">';
 
             shuffledAnswers.forEach(word => {
                 bankHtml += `<span class="word-bank-item">${word}</span>`;
@@ -234,10 +227,23 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
         const totalQuestions = currentCorrectAnswers.length;
         const score = (correctCount / totalQuestions) * 10;
+        
+
+        let myStyle = "";
+        if(score >= 0 && score < 7) {
+           myStyle = "text-red-500";
+        } else if(score >=7 && score < 10) {
+            myStyle = "text-yellow-500";
+        } else {
+            myStyle = "text-green-500";
+        }
+        
         scoreHtml = `
+        <div class="${myStyle}">
             <h3 class="font-bold text-lg">Your score: ${score.toFixed(1)}/10</h3>
             <p>Correct answers: ${correctCount} out of ${totalQuestions}</p>
-        `;
+        </div>
+            `;
 
         if (score >= 10) {
             playSound("win");
