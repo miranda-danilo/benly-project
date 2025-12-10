@@ -10,7 +10,7 @@ const listeningData = {
     'anna': {
         title: "Anna's Story",
         text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
-        targetIndices: [1, 10, 23, 31, 37, 50, 58],
+        targetIndices: [1, 10, 15, 23, 31],
         audioUrl: 'assets/anna.wav'
     },
     'family': {
@@ -60,12 +60,12 @@ function generateFillInTheBlanks(originalText, targetIndices) {
 
         // **NUEVA LÓGICA:** Comprueba si el índice actual está en nuestra lista de objetivos.
         if (targetSet.has(index)) {
-
+console.log("target yes: ", index)
             // 1. Incrementamos el contador para obtener el número del espacio (1, 2, 3...)
             blankCount++;
 
             // 2. Creamos el espacio en blanco con el número visible
-            quizHtml += `(${blankCount})<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
+            quizHtml += `<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
 
             // 3. Guardamos la palabra correcta.
             correctAnswers.push(sanitizedWord);
@@ -103,18 +103,14 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         </div>
 
         <div id="listening-area" class="listening-area">
-            <div id="loadingIndicator" class="loading-indicator hidden">
-                <div class="loading-bar"></div>
-                <span class="loading-text">Generating audio...</span>
-            </div>
-            <div id="scoreDisplay" class="score-display"></div>
-            <div id="audioPlayerContainer"></div>
             <div id="wordBankContainer" class="word-bank-container hidden"></div>
+            <div id="audioPlayerContainer"></div>
             <div id="quizContainer" class="quiz-container hidden">
                 <p id="quizText" class="quiz-text"></p>
                 <button id="verifyBtn" class="boton-secundario" style="display: none;">Verify Answers</button>
                 <button id="repeatBtn" class="boton-secundario" style="display: none;">Repeat</button>
             </div>
+             <div id="scoreDisplay" class="score-display"></div>
         </div>
     `;
 
@@ -189,7 +185,6 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
             // 1. Opcional: Mezclar las palabras para que el usuario no las complete en orden.
             // Utiliza el algoritmo de Fisher-Yates (puedes buscarlo o implementarlo tú). 
-            // Por simplicidad, aquí las mostramos ordenadas, pero se recomienda mezclarlas.
             const shuffledAnswers = [...correctAnswers].sort(() => Math.random() - 0.5);
 
             let bankHtml = '<p class="font-bold">Palabras a buscar:</p><div class="flex flex-wrap gap-2 justify-center">';
