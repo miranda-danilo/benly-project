@@ -7,11 +7,11 @@ const speakingData = {
     'greetings': {
         title: "Saludos Básicos",
         phrases: [
-            "Hello, how are you?",
-            "Nice to meet you.",
-            "Good morning.",
-            "Goodbye, see you later.",
-            "How's it going?"
+            "hello, how are you",
+            "nice to meet you",
+            "good morning",
+            "goodbye, see you later",
+            "how's it going"
         ]
     },
     'introductions': {
