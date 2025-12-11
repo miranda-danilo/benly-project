@@ -7,11 +7,11 @@ const speakingData = {
     'greetings': {
         title: "Saludos Básicos",
         phrases: [
-            "hello, how are you",
-            "nice to meet you",
-            "good morning",
-            "goodbye, see you later",
-            "how's it going"
+            "Hello, how are you?",
+            "Nice to meet you.",
+            "Good morning.",
+            "Goodbye, see you later.",
+            "How's it going?"
         ]
     },
     'introductions': {
@@ -40,6 +40,33 @@ let recognition = null;
 let isRecording = false;
 let utterance = null;
 let textToSpeak = "";
+
+// Función de Normalización (¡La Solución al problema de puntuación!)
+// ------------------------------------------------------------------
+/**
+ * Normaliza un texto eliminando puntuación, acentos y espacios extra.
+ * Esto hace que la comparación sea más robusta contra los resultados crudos
+ * del SpeechRecognition API.
+ * @param {string} texto - El texto a normalizar.
+ * @returns {string} - El texto normalizado.
+ */
+function normalizarParaComparacion(texto) {
+    // 1. Convertir a minúsculas
+    let normalizado = texto.toLowerCase();
+
+    // 2. Eliminar puntuación (comas, puntos, signos de interrogación, apóstrofes, etc.)
+    // La expresión regular es más amplia para cubrir todos los casos de la lista
+    normalizado = normalizado.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"¡¿]/g, "");
+
+    // 3. Eliminar acentos (para español, aunque aquí es inglés, es buena práctica)
+    normalizado = normalizado.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // 4. Eliminar espacios duplicados y trim
+    normalizado = normalizado.replace(/\s+/g, ' ').trim();
+
+    return normalizado;
+}
+// ------------------------------------------------------------------
 
 // Inicializa el SpeechRecognition API
 const initSpeechRecognition = () => {
@@ -71,7 +98,7 @@ const initSpeechRecognition = () => {
  * @returns {number} - El puntaje de similitud (0-10).
  */
 function calculateScore(reference, userText) {
-    const refWords = reference.toLowerCase().split(/\s+/);
+    /* const refWords = reference.toLowerCase().split(/\s+/);
     const userWords = userText.toLowerCase().split(/\s+/);
     let correctWords = 0;
     
@@ -82,6 +109,36 @@ function calculateScore(reference, userText) {
         }
     });
 
+    const score = (correctWords / refWords.length) * 10;
+    return Math.min(score, 10); */ // Asegura que el puntaje no sea mayor a 10
+// APLICAR NORMALIZACIÓN A AMBOS TEXTOS
+    const refNormalizado = normalizarParaComparacion(reference);
+    const userNormalizado = normalizarParaComparacion(userText);
+    
+    // Si ambos están vacíos después de la normalización, no hay palabras para comparar
+    if (!refNormalizado) return 0;
+
+    const refWords = refNormalizado.split(/\s+/);
+    const userWords = userNormalizado.split(/\s+/);
+    let correctWords = 0;
+    
+    // Creamos un conjunto de palabras de referencia para una búsqueda eficiente
+    const refWordsSet = new Set(refWords);
+    
+    // Contar las palabras correctas (palabras del usuario que están en la referencia)
+    userWords.forEach(userWord => {
+        if (refWordsSet.has(userWord)) {
+            correctWords++;
+            // Nota: Podrías necesitar una lógica más compleja si quieres evitar
+            // contar la misma palabra varias veces si no están en la posición correcta.
+            // Para una comparación simple de "palabras que aparecen", esto es suficiente.
+        }
+    });
+
+    // Penalizamos si el usuario dice más palabras de las que debería (opcional)
+    // const maxWords = Math.max(refWords.length, userWords.length);
+    
+    // Cálculo de la puntuación basado en las palabras de referencia
     const score = (correctWords / refWords.length) * 10;
     return Math.min(score, 10); // Asegura que el puntaje no sea mayor a 10
 }
