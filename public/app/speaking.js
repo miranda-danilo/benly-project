@@ -248,7 +248,8 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
     submitBtn.addEventListener('click', () => {
         const phrase = currentPhrases[currentPhraseIndex];
         const score = calculateScore(phrase, recordedText);
-        
+        console.log(`Frase de referencia: "${phrase}" ; frase del usuario: "${recordedText}"`);
+
         feedbackContainer.classList.remove('hidden');
 
         let feedbackMessage = '';

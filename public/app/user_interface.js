@@ -237,6 +237,9 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         if (audio) audio.play();
     };
 
+    
+
+
     /**
      * Actualiza la interfaz de usuario del perfil del usuario.
      * @param {object} user - Objeto de usuario de Firebase.

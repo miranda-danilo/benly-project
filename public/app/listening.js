@@ -11,25 +11,53 @@ const listeningData = {
         title: "Anna's Story",
         text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
         targetIndices: [1, 15, 23, 37, 53],
-        audioUrl: 'assets/anna.wav'
+        audioUrl: 'assets/anna.wav',
+        targetWordAudios: [
+            'assets/audios-listening/lives.mp3',   // Audio para la palabra en índice 1
+            'assets/audios-listening/college.mp3',  // Audio para la palabra en índice 15
+            'assets/audios-listening/helps.mp3',// Audio para la palabra en índice 23
+            'assets/audios-listening/goes.mp3',   // Audio para la palabra en índice 37
+            'assets/audios-listening/boyfriend.mp3'      // Audio para la palabra en índice 53
+        ]
     },
     'family': {
         title: "My Family",
         text: "My family lives in Melbourne. There are six people in my family. My mother and father live in a large house. The house has four bedrooms and a big backyard. There are flowers in the front yard. My older brother, Alan, is married with two children. My younger brother, Bill, and my sister, Sue, live at home. My father works in an office in Belmore. He is a manager. My mother works at home and looks after the house. I am very lucky to have a wonderful family.",
         targetIndices: [8, 25, 42, 59, 86],
-        audioUrl: 'assets/my-family.wav'
+        audioUrl: 'assets/my-family.wav',
+         targetWordAudios: [
+            'assets/audios-listening/people.mp3',   // Audio para la palabra en índice 1
+            'assets/audios-listening/bedrooms.mp3',  // Audio para la palabra en índice 15
+            'assets/audios-listening/married.mp3',// Audio para la palabra en índice 23
+            'assets/audios-listening/works.mp3',   // Audio para la palabra en índice 37
+            'assets/audios-listening/wonderful.mp3'      // Audio para la palabra en índice 53
+        ]
     },
     'university': {
         title: "At the University",
         text: "I'm Mark. I am a student of Information Technology. Today was a good day for me. The weather was very nice. It was sunny and warm. My bus was on time. It was fast. My teacher was very happy because I was on time for my class. He was friendly. My first class was Databases. It was at 8:00 AM. I learned to save information. Then I had my Programming class. My laptop was good. I typed my code. The program was okay. I finished my work. I checked my email too. At 12 o'clock, my classes finished. I left the university. The sun was still shining. I walked home. It was a great day.",
         targetIndices: [8, 33, 54, 86, 101],
-        audioUrl: 'assets/at-university.wav'
+        audioUrl: 'assets/at-university.wav',
+           targetWordAudios: [
+            'assets/audios-listening/technology.mp3',   // Audio para la palabra en índice 1
+            'assets/audios-listening/fast.mp3',  // Audio para la palabra en índice 15
+            'assets/audios-listening/databases.mp3',// Audio para la palabra en índice 23
+            'assets/audios-listening/work.mp3',   // Audio para la palabra en índice 37
+            'assets/audios-listening/university.mp3'      // Audio para la palabra en índice 53
+        ]
     },
     'weekend': {
         title: "Next Weekend",
         text: "Next weekend I'm going to have a great time. On Saturday morning, I'm going to buy some new jeans and a pair of shoes. In the afternoon, I'm going to visit a friend in Punchbowl. At 8 o'clock, I'm going to go to a French restaurant with five friends. On Sunday, I'm going to have an interesting day. I'm going to go to the museum with a friend. After that, I'm going to eat out at an Indian restaurant. I'm going to go to bed late.",
         targetIndices: [10, 30, 40, 56, 73],
-        audioUrl: 'assets/next-weekend.wav'
+        audioUrl: 'assets/next-weekend.wav',
+        targetWordAudios: [
+            'assets/audios-listening/saturday.mp3',   // Audio para la palabra en índice 1
+            'assets/audios-listening/visit.mp3',  // Audio para la palabra en índice 15
+            'assets/audios-listening/to.mp3',// Audio para la palabra en índice 23
+            'assets/audios-listening/interesting.mp3',   // Audio para la palabra en índice 37
+            'assets/audios-listening/eat.mp3'      // Audio para la palabra en índice 53
+        ]
     }
 };
 
@@ -39,7 +67,7 @@ const listeningData = {
  * @param {number[]} targetIndices - Array de índices (posiciones) de las palabras a omitir.
  * @returns {{quizHtml: string, correctAnswers: string[]}} - El HTML del quiz y las respuestas correctas.
  */
-function generateFillInTheBlanks(originalText, targetIndices) {
+function generateFillInTheBlanks(originalText, targetIndices, targetWordAudios) {
     const words = originalText.split(/\s+/);
     let quizHtml = '';
     const correctAnswers = [];
@@ -47,6 +75,7 @@ function generateFillInTheBlanks(originalText, targetIndices) {
     // Convertimos el array de índices en un Set para búsquedas rápidas
     const targetSet = new Set(targetIndices);
     // Variable para llevar la cuenta de qué número de espacio en blanco estamos generando (1 a 10)
+    let audioIndex = 0;
     let blankCount = 0;
 
     words.forEach((word, index) => {
@@ -54,16 +83,21 @@ function generateFillInTheBlanks(originalText, targetIndices) {
 
         // **NUEVA LÓGICA:** Comprueba si el índice actual está en nuestra lista de objetivos.
         if (targetSet.has(index)) {
-console.log("target yes: ", index)
+
             // 1. Incrementamos el contador para obtener el número del espacio (1, 2, 3...)
             blankCount++;
+            
 
             // 2. Creamos el espacio en blanco con el número visible
             quizHtml += `<input type="text" class="input-blank" data-index="${index}" placeholder="..." /> `;
 
             // 3. Guardamos la palabra correcta.
-            correctAnswers.push(sanitizedWord);
-
+            correctAnswers.push(
+                {word: sanitizedWord,
+                 audioUrl: targetWordAudios[audioIndex],
+            }
+            );
+audioIndex++;
         } else {
             // Si la palabra no está en la lista, se mantiene en el texto.
             quizHtml += `${word} `;
@@ -123,6 +157,9 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
     let currentCorrectAnswers = [];
 
+
+
+
     // Carga el puntaje inicial si existe
     const displayInitialScore = () => {
         const topicScore = userScores.scores?.LISTENING;
@@ -161,6 +198,9 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         loadingIndicator.classList.remove('hidden');
 
         try {
+
+
+
             const data = listeningData[selectedTopic];
 
             // Carga el audio desde la ruta preestablecida
@@ -170,7 +210,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
                 <audio id="audioPlayer" class="w-full" controls src="${audioUrl}"></audio>
             `;
 
-            const { quizHtml, correctAnswers } = generateFillInTheBlanks(data.text, data.targetIndices);
+            const { quizHtml, correctAnswers } = generateFillInTheBlanks(data.text, data.targetIndices, data.targetWordAudios);
 
 
 
@@ -182,10 +222,12 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
             let bankHtml = '<p class="font-bold">WORDS TO LOOK FOR:</p><div class="flex flex-wrap gap-2 justify-center">';
 
-            shuffledAnswers.forEach(word => {
-                bankHtml += `<span class="word-bank-item">${word}</span>`;
+            shuffledAnswers.forEach(answer => {
+                bankHtml += `<span class="word-bank-item" data-audio-url="${answer.audioUrl}">${answer.word}</span>`;
             });
 
+
+        
             bankHtml += '</div>';
 
             wordBankContainer.innerHTML = bankHtml;
@@ -197,6 +239,25 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
             currentCorrectAnswers = correctAnswers;
             quizContainer.classList.remove('hidden');
             verifyBtn.style.display = 'block';
+
+// 🔊 INICIO DE LA LÓGICA DE AUDIO PARA EL BANCO DE PALABRAS 🔊
+        const wordBankItems = document.querySelectorAll('.word-bank-item');
+
+        wordBankItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // ⚠️ CAMBIO 3: Obtenemos la ruta del atributo data-audio-url
+                const specificAudioPath = item.getAttribute('data-audio-url');
+                
+                if (specificAudioPath) {
+                    const wordAudio = new Audio(specificAudioPath);
+                    wordAudio.play().catch(e => console.error(`Error playing audio for ${specificAudioPath}:`, e));
+                }
+            });
+        });
+        // 🔊 FIN DE LA LÓGICA DE AUDIO 🔊
+
+
+
 
         } catch (error) {
             showMessage("An error occurred while loading the audio. Please try again.", "error");
@@ -227,17 +288,17 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
         const totalQuestions = currentCorrectAnswers.length;
         const score = (correctCount / totalQuestions) * 10;
-        
+
 
         let myStyle = "";
-        if(score >= 0 && score < 7) {
-           myStyle = "text-red-500";
-        } else if(score >=7 && score < 10) {
+        if (score >= 0 && score < 7) {
+            myStyle = "text-red-500";
+        } else if (score >= 7 && score < 10) {
             myStyle = "text-yellow-500";
         } else {
             myStyle = "text-green-500";
         }
-        
+
         scoreHtml = `
         <div class="${myStyle}">
             <h3 class="font-bold text-lg">Your score: ${score.toFixed(1)}/10</h3>
