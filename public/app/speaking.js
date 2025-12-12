@@ -281,6 +281,14 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
                 if(isRecording) {
                     recognition.stop();
                     isRecording = false;
+                    
+                    // AÑADIR ESTE CÓDIGO para restablecer la interfaz después de un fallo silencioso
+                    if (submitBtn.classList.contains('hidden')) {
+                        showMessage("Tiempo de grabación agotado. No se detectó voz o hubo un error de conexión.", "warning");
+                        recordBtn.textContent = "Grabar"; // Restablece la UI
+                        recordBtn.disabled = false;
+                        loadingIndicator.classList.add('hidden');
+                    }
                 }
             }, 5000); // 5 segundos de grabación máximo
         }
