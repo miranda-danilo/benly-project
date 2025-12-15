@@ -251,7 +251,6 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             const displayName = user.displayName || user.email || "Inglés A1";
             const photoURL = user.photoURL;
             const initials = user.email ? user.email.charAt(0).toUpperCase() : 'U';
-            const placeholderPhoto = `https://placehold.co/80x80/E2E8F0/A0AEC0?text=${initials}`;
             const sidebarPlaceholderPhoto = `https://placehold.co/48x48/E2E8F0/A0AEC0?text=${initials}`;
 
             const sidebarName = document.getElementById("sidebar-student-name");
@@ -259,7 +258,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             const sidebarPhoto = document.getElementById("sidebar-photo");
 
             if (sidebarName) sidebarName.textContent = displayName;
-            if (sidebarRole) sidebarRole.textContent = userRole ? `Rol: ${userRole}` : "";
+            if (sidebarRole) sidebarRole.textContent = userRole ? `STUDENT 🧑‍🎓📚` : "";
             if (sidebarPhoto) sidebarPhoto.src = photoURL || sidebarPlaceholderPhoto;
         } else {
             // Estado no autenticado

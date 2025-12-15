@@ -474,6 +474,9 @@ background-color: transparent;
     background-color: var(--primary-color);
     color: var(--light-text-color);
     text-align: center;
+    background-color: #3A9F00;
+
+
 }
 
 .contact__title {
@@ -513,7 +516,7 @@ background-color: transparent;
 }
 
 .contact__link:hover, .contact__social-link:hover {
-    color: var(--primary-color);
+    text-decoration: underline;
 }
 
 .contact__form {
@@ -872,3 +875,17 @@ background-color: transparent;
     }
 }
 
+
+
+#admin-role, #sidebar-student-role {
+    text-transform: uppercase;
+    background-color: var(--light-bg-color);
+    color: var(--secondary-color);
+    font-weight: bold;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 5px;
+    width: 10rem;
+
+
+}

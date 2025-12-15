@@ -32,7 +32,8 @@
 
     .barra-lateral-admin {
         width: 17rem;
-        min-height: 100vh;
+    /*     min-height: 100vh; */
+        
     }
 
     .contenido-principal-admin {
@@ -151,6 +152,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: sticky;
+    top: 74.24px;
+    z-index: 2100;
+    max-height: calc(100dvh - 74.24px);
+    height: auto;
+    
 }
 
 .barra-lateral__foto-admin {
@@ -179,6 +186,10 @@
     margin-bottom: 0.5rem;
 }
 
+.lista-modulos-admin li:not(:last-child) {
+     border-bottom: 1px solid white;
+}
+
 .modulo-link-admin {
     display: block;
     background: none;
@@ -189,6 +200,7 @@
     text-decoration: none;
     transition: background 0.2s;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .modulo-link-admin--activo,

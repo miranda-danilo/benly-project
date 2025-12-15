@@ -167,7 +167,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
 
 
-        [moduloSection, skillsSection, estudiantesSection, progresoSection].forEach(sec => sec.classList.add('seccion-admin--hidden'));
+        [moduloSection, skillsSection, estudiantesSection, progresoSection, unidadWritingSection, skillsInjectSection].forEach(sec => sec.classList.add('seccion-admin--hidden'));
 
         sectionToShow.classList.remove('seccion-admin--hidden');
 
@@ -222,35 +222,12 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
             // 🚀 El click listener en la tarjeta hace la acción principal
             card.addEventListener('click', () => {
-                showMessage("modulo0", "info")
                 renderUnitContentForAdmin(unit.id);
 
             });
         });
         showSection(moduloSection);
     };
-
-
-    // ----------- GESTIÓN DE ESTUDIANTES -----------
-
-    // ----------- GRID DE MÓDULOS -----------
-    /*   function renderModulosGrid() {
-          moduloContent.innerHTML = `<div class="modulos-grid-admin">` + */
-    /*  modules.map(mod => `
-             <div class="modulo-card-admin" data-module-id="${mod.id}">
-                 
-                 <div class="modulo-card-admin__icon">${mod.icon}</div>
-                 <div class="modulo-card-admin__title">${mod.title}</div>
-                 <div class="modulo-card-admin__desc">${mod.desc}</div>
-                 <button class="boton-accion" data-module-id="${mod.id}">Ver módulo</button>
-             </div>
-         `).join('') +
-         `</div>`;
-     moduloContent.querySelectorAll('.boton-accion').forEach(btn => {
-         btn.onclick = () => renderModuloDetalle(btn.dataset.moduleId);
-     });
- } */
-
 
     async function renderSkillsContent() {
 
@@ -276,30 +253,31 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
             btn.addEventListener('click', (e) => {
                 const moduleId = e.currentTarget.dataset.moduleId;
                 console.log("Módulo seleccionado:", moduleId);
-                
-                
-                if(moduleId !== "null") {
+
+
+                if (moduleId !== "null") {
                     console.log("es diferente de null")
-                     skillsSection.classList.add('seccion-admin--hidden');
+                    skillsSection.classList.add('seccion-admin--hidden');
                 }
                 if (moduleId === 'READING') {
                     console.log("READING")
                     setupReadingExercise(skillsInjectSection, playSound, userScores); // true indica modo admin
                     console.warn("userScores en admin_interface:", userScores);
                     skillsInjectSection.dataset.skill = "READING"; // Marcar como cargado
-                   
+
                     skillsInjectSection.classList.remove('seccion-admin--hidden');
                 } else if (moduleId === 'LISTENING') {
                     console.log("LISTENING")
                     setupListeningExercise(skillsInjectSection, playSound, userScores); // Llama a la nueva función y le pasa los puntajes
+                    skillsInjectSection.classList.remove('seccion-admin--hidden');
                 } else if (moduleId === 'WRITING') {
                     console.log("WRITING")
                     unidadWritingSection.classList.remove('seccion-admin--hidden');
 
                 } else if (moduleId === 'SPEAKING') {
                     console.log("SPEAKING")
-                     setupSpeakingExercise(skillsInjectSection, playSound, userScores);
-                     skillsInjectSection.classList.remove('seccion-admin--hidden');
+                    setupSpeakingExercise(skillsInjectSection, playSound, userScores);
+                    skillsInjectSection.classList.remove('seccion-admin--hidden');
                 }
             })
 
@@ -429,8 +407,18 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             if (adminNameSpan) adminNameSpan.textContent = user.displayName || user.email || "Docente";
-            if (adminPhoto) adminPhoto.src = user.photoURL || "https://placehold.co/64x64/E2E8F0/A0AEC0?text=D";
-            if (adminRoleSpan) adminRoleSpan.textContent = adminRole || "admin";
+            let sidebarPlaceholderPhoto = "https://placehold.co/64x64/E2E8F0/A0AEC0?text=D"
+
+            if (user.email === "marlon.barcia@unesum.edu.ec") {
+                if (adminPhoto) adminPhoto.src = user.photoURL || "https://lh3.googleusercontent.com/a-/ALV-UjV8qdhf0AchL-VaxvxWKN80VdYcHq29ZBxgjCzaTSS_--Edh8xZ=s300-p-k-rw-no";
+            } else {
+                adminPhoto.src = user.photoURL || sidebarPlaceholderPhoto;
+            }
+
+            if (adminRoleSpan) adminRoleSpan.textContent = "TEACHER ✏️📗" || "admin";
+
+
+
             renderMenu();
             renderModulosGrid();
             showSection(moduloSection);
@@ -441,5 +429,5 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
         }
     });
 
-    
+
 }
