@@ -479,6 +479,11 @@ background-color: transparent;
 
 }
 
+.logo-google {
+    height: 40px;
+    width: 40px;
+    text-align: center;
+}
 .contact__title {
     font-size: 2.5rem;
     margin-bottom: 3rem;
@@ -830,7 +835,7 @@ background-color: transparent;
     font-size: 1rem;
 }
 
-.modal-form button[type="submit"] {
+.modal-form button[type="submit"], .modal-form button[type="button"]{
     display: inline-block;
     width: 100%;
     padding: 1rem;
@@ -841,6 +846,21 @@ background-color: transparent;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.modal-form button[type="button"] {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    border: 1px solid #49b300;
+    background-color: #fff;
+    height: 60px;
+}
+.modal-form button[type="button"] .btn-google {
+   height: 40px;
+   width: 40px;
 }
 
 .modal-form button[type="submit"]:hover {

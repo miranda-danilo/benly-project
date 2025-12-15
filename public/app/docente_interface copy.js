@@ -41,12 +41,6 @@ const modules = [
         img: 'assets/vocab_hello.png',
     }]
 
-/**
- * [ELIMINADA LA FUNCIÓN DE EXPORTACIÓN A EXCEL/CSV]
- */
-// La función exportToExcelCSV ha sido eliminada.
-
-
 export function setupAdminPanelLogic(panelElement, adminRole) {
 
     // PASO 1: Obtener la referencia a las funciones del panel de usuario
@@ -70,7 +64,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
     const adminRoleSpan = document.getElementById("admin-role");
     const adminPhoto = document.getElementById("admin-photo");
     const unitSections = document.querySelectorAll('.seccion-unidad');
-    //  ----------- MENÚ HAMBURGUESA MOBILE ----------
+    //  ----------- MENÚ HAMBURGUESA MOBILE ----------
     const hamburgerBtn = document.getElementById('mobile-hamburger-btn');
     const hamburgerMenu = document.getElementById('mobile-hamburger-menu');
     const mobileMenuList = document.getElementById('mobile-menu-list');
@@ -159,16 +153,16 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
             e.preventDefault();
             renderProgresoContent();
             showSection(progresoSection);
-            moduleList.querySelectorAll('.modulo-link-admin').forEach(lnk => lnq.classList.remove('modulo-link-admin--activo'));
+            moduleList.querySelectorAll('.modulo-link-admin').forEach(lnk => lnk.classList.remove('modulo-link-admin--activo'));
             liProgreso.querySelector('a').classList.add('modulo-link-admin--activo');
         });
     }
 
     // Solo la sección activa
     /**
-        * Muestra una sección específica y oculta las demás.
-        * @param {HTMLElement} sectionToShow - La sección que se va a mostrar.
-        */
+       * Muestra una sección específica y oculta las demás.
+       * @param {HTMLElement} sectionToShow - La sección que se va a mostrar.
+       */
     const showSection = (sectionToShow) => {
 
 
@@ -244,7 +238,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                  <div class="modulo-card-admin__title">${mod.title}</div>
                  <button class="boton-accion" data-module-id="${mod.id}">Ver módulo</button>
              </div>
-        `).join('') +
+         `).join('') +
             `</div>`
 
 
@@ -291,211 +285,123 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
         })
     }
 
-    // ----------- GESTIÓN DE ESTUDIANTES (MODIFICADO) -----------
+    // ----------- GESTIÓN DE ESTUDIANTES -----------
     async function renderEstudiantesContent() {
-        estudiantesContent.innerHTML = `
-            <input type="text" id="search-student-input" placeholder="Buscar estudiante por nombre..." 
-                   style="padding: 10px; margin-bottom: 20px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
-            <p style="color:#2563eb;">Cargando estudiantes...</p>
-        `;
-
+        estudiantesContent.innerHTML = '<p style="color:#2563eb;">Cargando estudiantes...</p>';
         const usuariosRef = collection(db, 'usuarios');
         const snapshot = await getDocs(usuariosRef);
-        const estudiantesData = []; // Array para guardar los datos y usarlos en la búsqueda
+        let html = `<div style="overflow-x:auto;"><table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Curso</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>`;
         snapshot.forEach(docu => {
-            estudiantesData.push({ id: docu.id, ...docu.data() });
+            const data = docu.data();
+            html += `<tr>
+                <td>${data.name || '-'}</td>
+                <td>${data.email || '-'}</td>
+                <td>
+                    <select class="curso-select" data-uid="${docu.id}">
+                        <option value="">Sin curso</option>
+                        <option value="Primero A"${data.curso === 'Primero A' ? ' selected' : ''}>Primero A</option>
+                        <option value="Primero B"${data.curso === 'Primero B' ? ' selected' : ''}>Primero B</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="boton-eliminar-estudiante" data-uid="${docu.id}">Eliminar</button>
+                </td>
+            </tr>`;
         });
-
-        // Función para renderizar la tabla con los datos filtrados
-        const renderTable = (filteredData) => {
-            let html = `<div style="overflow-x:auto;"><table class="admin-table" id="student-table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Curso</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-            
-            filteredData.forEach(data => {
-                html += `<tr data-name="${(data.name || '').toLowerCase()}">
-                    <td>${data.name || '-'}</td>
-                    <td>${data.email || '-'}</td>
-                    <td>
-                        <select class="curso-select" data-uid="${data.id}">
-                            <option value="">Sin curso</option>
-                            <option value="Primero A"${data.curso === 'Primero A' ? ' selected' : ''}>Primero A</option>
-                            <option value="Primero B"${data.curso === 'Primero B' ? ' selected' : ''}>Primero B</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="boton-eliminar-estudiante" data-uid="${data.id}">Eliminar</button>
-                    </td>
-                </tr>`;
+        html += '</tbody></table></div>';
+        estudiantesContent.innerHTML = html;
+        estudiantesContent.querySelectorAll('.curso-select').forEach(select => {
+            select.addEventListener('change', async () => {
+                const uid = select.dataset.uid;
+                const curso = select.value;
+                await updateDoc(doc(db, 'usuarios', uid), { curso });
+                select.style.background = "#d1fae5";
             });
-            html += '</tbody></table></div>';
-            
-            // Reemplazar solo la tabla, manteniendo el input
-            const existingTable = document.getElementById('student-table');
-            if (existingTable) {
-                existingTable.parentElement.remove(); // Elimina el div overflow y la tabla
-            }
-            
-            // El placeholder de carga se reemplaza por la tabla renderizada
-            const loadingP = estudiantesContent.querySelector('p');
-            if (loadingP && loadingP.textContent === 'Cargando estudiantes...') {
-                loadingP.remove();
-            }
-            estudiantesContent.insertAdjacentHTML('beforeend', html);
-
-
-            // Re-adjuntar listeners de actualización de curso y eliminación
-            estudiantesContent.querySelectorAll('.curso-select').forEach(select => {
-                select.addEventListener('change', async () => {
-                    const uid = select.dataset.uid;
-                    const curso = select.value;
-                    await updateDoc(doc(db, 'usuarios', uid), { curso });
-                    select.style.background = "#d1fae5";
-                });
+        });
+        estudiantesContent.querySelectorAll('.boton-eliminar-estudiante').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (confirm('¿Eliminar estudiante? Esta acción no se puede deshacer.')) {
+                    await deleteDoc(doc(db, 'usuarios', btn.dataset.uid));
+                    renderEstudiantesContent();
+                }
             });
-            estudiantesContent.querySelectorAll('.boton-eliminar-estudiante').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    if (confirm('¿Eliminar estudiante? Esta acción no se puede deshacer.')) {
-                        await deleteDoc(doc(db, 'usuarios', btn.dataset.uid));
-                        renderEstudiantesContent(); // Recargar la lista
-                    }
-                });
-            });
-        };
-        
-        // Renderizado inicial
-        renderTable(estudiantesData);
-
-        // Lógica de filtrado dinámico
-        const searchInput = document.getElementById('search-student-input');
-        searchInput.addEventListener('input', (e) => {
-            const searchText = e.target.value.toLowerCase().trim();
-            const filteredStudents = estudiantesData.filter(student => 
-                (student.name || '').toLowerCase().includes(searchText)
-            );
-            renderTable(filteredStudents);
         });
     }
 
-    // ----------- MONITOREAR PROGRESO (MODIFICADO SIN EXPORTACIÓN) -----------
+    // ----------- MONITOREAR PROGRESO -----------
     async function renderProgresoContent() {
         progresoContent.innerHTML = `
-            <div style="display:flex; align-items: center; margin-bottom: 20px;">
-                <label for="curso-progreso" style="font-weight:700; color:#2563eb; margin-right: 10px;">Selecciona curso:</label>
-                <select id="curso-progreso" style="border:1px solid #58CC02; padding: 5px;">
-                    <option value="Primero A">Primero A</option>
-                    <option value="Primero B">Primero B</option>
-                </select>
-            </div>
+            <label for="curso-progreso" style="font-weight:700;color:#2563eb;">Selecciona curso:</label>
+            <select id="curso-progreso" style="border:1px solid #58CC02;">
+                <option value="Primero A">Primero A</option>
+                <option value="Primero B">Primero B</option>
+            </select>
             <div id="progreso-lista-estudiantes"></div>
             <div id="progreso-detalle-admin"></div>
         `;
         const selectCurso = document.getElementById('curso-progreso');
-
-
-        /**
-         * [FUNCIÓN DE RECOPILACIÓN ELIMINADA PORQUE YA NO SE EXPORTA]
-         */
-        
-
-        // Función para cargar la lista de estudiantes de progreso (con barra de búsqueda)
         async function cargarEstudiantesProgreso(curso) {
             const usuariosRef = collection(db, 'usuarios');
             const snapshot = await getDocs(usuariosRef);
-            
-            // Filtrar y preparar datos de estudiantes del curso actual
-            const estudiantesProgreso = [];
+            let lista = `<div style="overflow-x:auto;"><table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>`;
             snapshot.forEach(docu => {
                 const data = docu.data();
                 if (data.curso === curso) {
-                    estudiantesProgreso.push({ id: docu.id, ...data });
-                }
-            });
-
-            const progresoListaElement = document.getElementById('progreso-lista-estudiantes');
-            progresoListaElement.innerHTML = `
-                <input type="text" id="search-progreso-input" placeholder="Buscar estudiante por nombre..." 
-                       style="padding: 10px; margin-bottom: 10px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
-            `;
-
-
-            const renderProgresoTable = (filteredStudents) => {
-                let htmlTable = `<div style="overflow-x:auto;"><table class="admin-table" id="progreso-table">
-                    <thead><tr><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead><tbody>`;
-
-                filteredStudents.forEach(data => {
-                    htmlTable += `<tr>
+                    lista += `<tr>
                         <td>${data.name || '-'}</td>
                         <td>${data.email || '-'}</td>
-                        <td><button class="boton-ver-detalle" data-uid="${data.id}">Ver progreso</button></td>
+                        <td>
+                            <button class="boton-ver-detalle" data-uid="${docu.id}">Ver progreso</button>
+                        </td>
                     </tr>`;
-                });
-                htmlTable += '</tbody></table></div>';
-                
-                // Reemplazar solo la tabla
-                const existingProgresoTable = document.getElementById('progreso-table');
-                if (existingProgresoTable) {
-                    existingProgresoTable.parentElement.remove();
                 }
-                progresoListaElement.insertAdjacentHTML('beforeend', htmlTable);
-
-                // Re-adjuntar listeners para "Ver progreso"
-                document.querySelectorAll('.boton-ver-detalle').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const docSnap = await getDoc(doc(db, 'usuarios', btn.dataset.uid));
-                        if (!docSnap.exists()) return;
-                        const data = docSnap.data();
-                        const scores = data.scores || {};
-                        let detalle = `<h3 style="color:#2563eb;">Calificaciones de ${data.name || data.email}</h3>
-                            <div style="overflow-x:auto;"><table class="admin-table">
-                            <thead><tr><th>Unidad</th><th>Puntaje</th><th>Estado</th></tr></thead><tbody>`;
-                        Object.entries(scores).forEach(([unidad, obj]) => {
-                            // Aplicar color de fondo verde claro para el estado 'Completada'
-                            const rowStyle = obj.completada ? 'style="background-color:#d1fae5;"' : '';
-                            detalle += `<tr ${rowStyle}>
-                                <td>${unidad}</td>
-                                <td>${obj.score ?? '-'}</td>
-                                <td class="${obj.completada ? 'estado-aprobado' : 'estado-reprobado'}">
-                                    ${obj.completada ? 'Completada' : 'Pendiente'}
-                                </td>
-                            </tr>`;
-                        });
-                        detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;">Cerrar</button>';
-                        document.getElementById('progreso-detalle-admin').innerHTML = detalle;
-                        document.getElementById('cerrar-detalle-progreso').onclick = () => document.getElementById('progreso-detalle-admin').innerHTML = "";
+            });
+            lista += '</tbody></table></div>';
+            document.getElementById('progreso-lista-estudiantes').innerHTML = lista;
+            document.querySelectorAll('.boton-ver-detalle').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const docSnap = await getDoc(doc(db, 'usuarios', btn.dataset.uid));
+                    if (!docSnap.exists()) return;
+                    const data = docSnap.data();
+                    const scores = data.scores || {};
+                    let detalle = `<h3 style="color:#2563eb;">Calificaciones de ${data.name || data.email}</h3>
+                        <div style="overflow-x:auto;"><table class="admin-table">
+                        <thead><tr><th>Unidad</th><th>Puntaje</th><th>Estado</th></tr></thead><tbody>`;
+                    Object.entries(scores).forEach(([unidad, obj]) => {
+                        detalle += `<tr>
+                            <td>${unidad}</td>
+                            <td>${obj.score ?? '-'}</td>
+                            <td class="${obj.completada ? 'estado-aprobado' : 'estado-reprobado'}">
+                                ${obj.completada ? 'Completada' : 'Pendiente'}
+                            </td>
+                        </tr>`;
                     });
+                    detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;">Cerrar</button>';
+                    document.getElementById('progreso-detalle-admin').innerHTML = detalle;
+                    document.getElementById('cerrar-detalle-progreso').onclick = () => document.getElementById('progreso-detalle-admin').innerHTML = "";
                 });
-            };
-            
-            renderProgresoTable(estudiantesProgreso);
-
-            // Lógica de filtrado dinámico para la lista de progreso
-            const searchInputProgreso = document.getElementById('search-progreso-input');
-            if (searchInputProgreso) {
-                searchInputProgreso.addEventListener('input', (e) => {
-                    const searchText = e.target.value.toLowerCase().trim();
-                    const filteredStudents = estudiantesProgreso.filter(student => 
-                        (student.name || '').toLowerCase().includes(searchText)
-                    );
-                    renderProgresoTable(filteredStudents);
-                });
-            }
-
-        } // Fin de cargarEstudiantesProgreso
-
-        selectCurso.addEventListener('change', () => {
-            document.getElementById('progreso-detalle-admin').innerHTML = ""; // Limpiar detalle al cambiar curso
-            cargarEstudiantesProgreso(selectCurso.value);
-        });
+            });
+        }
+        selectCurso.addEventListener('change', () => cargarEstudiantesProgreso(selectCurso.value));
         cargarEstudiantesProgreso(selectCurso.value);
-    } // Fin de renderProgresoContent
+    }
 
     // ----------- INICIALIZACIÓN y perfil -----------
     onAuthStateChanged(auth, (user) => {

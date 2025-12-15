@@ -5,7 +5,7 @@ import { showMessage } from "./notificaciones.js";
 
 // Obtiene los elementos del DOM una sola vez
 const $signinForm = document.getElementById("signin-form");
-const $signinModal = document.getElementById("signin-modal");
+export const $signinModal = document.getElementById("signin-modal");
 
 /**
  * Configura el listener del formulario para el inicio de sesión de usuarios.
