@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Docente - Benly</title>
     <script type="module" src="../app/docente_interface.js"></script>
+
 </head>
 <body class="cuerpo-admin">
     <div class="contenedor-admin">
@@ -30,16 +31,792 @@
             <button id="logout-btn-admin" class="boton-logout-admin">Cerrar Sesión</button>
         </aside>
         <main class="contenido-principal-admin" id="admin-panel">
-            <section id="modulo-section-admin" class="seccion-admin">
+          
+          
+          
+          
+            <section id="modulo-section-admin" class="seccion-unidad seccion-unidad--oculta">
                 <h1 class="titulo-admin">Panel de Módulos Interactivos</h1>
-                <div id="modulo-content-admin"></div>
+             <!--    <div id="modulo-content-admin" class="modulos-grid"></div> -->
+           
+                <div id="modules-grid-admin" class="modulos-grid"></div>
+           
+           
             </section>
+
+              <!-- Secciones de las unidades existentes (ocultas por defecto) -->
+            <section id="unit-UT1" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 1: INTRODUCTION AND BASIC GREETINGS</h2>
+
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: GREETINGS AND INTRODUCTIONS</h3>
+
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-hello.jpeg"
+                                alt="Imagen de saludo" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Hello</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_hello.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Hello! How are you?</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_hello.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-student.jpg"
+                                alt="Imagen de estudiante" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Student</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_iam.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I'm a student from Ecuador.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_iam.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-teacher.jpeg"
+                                alt="Imagen de profesor" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Teacher</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_heis.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">He's my english teacher.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_heis.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-name.gif"
+                                alt="Imagen de saludo" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Name</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_name.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">What's your name?</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_name.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-classmates.jpeg"
+                                alt="Imagen de estudiante" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Classmates</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_theyare.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">They are my new classmates</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_theyare.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-bye.jpeg"
+                                alt="Imagen de profesor" class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Bye</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_bye.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Bye! See you tomorrow.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_bye.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo titulo-vocabulario">📽️ VIDEO PRACTICE: GREETINGS IN ENGLISH</h3>
+                    <div class="video-responsive">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/RLs9lIy5WT0?si=ec3HCfsNQS5NtVsb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <h3 class="titulo-vocabulario">💻 INTERACTIVE TEST </h3>
+
+            </section>
+
+            <section id="unit-UT2" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 2: PEOPLE AND PLACES</h2>
+
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: PEOPLE AND PLACES</h3>
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-mother.jpeg" alt="Imagen de madre"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Mother</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_mother.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Her mother is kind.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_mother.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-brother.jpeg" alt="Imagen de hermano"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Brother</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_brother.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">My brother is 15 years old.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_brother.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-school.jpeg" alt="Imagen de escuela"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">School</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_school.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">My sister is at school.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_school.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-live.jpg" alt="Imagen de coche"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Live</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_live.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">We live in Manta.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_live.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-family.jpeg" alt="Imagen de familia"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Family</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_family.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Their family is from Guayaquil.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_family.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-home.jpeg" alt="Imagen de casa"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Home</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_home.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">This is my home. It is comfortable.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_home.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo titulo-vocabulario">📽️ VIDEO PRACTICE: FAMILY & AGES</h3>
+                    <div class="video-responsive">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/IZZEijaJLmI?si=eCjQvsMNpCsAXJcx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                 <h3 class="titulo-vocabulario">💻 INTERACTIVE TEST</h3>
+            </section>
+
+            <section id="unit-UT3" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 3: DAILY LIFE</h2>
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: DAILY LIFE</h3>
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-wakeup.jpeg" alt="Imagen de despertar"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Wake up</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_wakeup.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I wake up at six o'clock.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_wakeup.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-studies.jpeg" alt="Imagen de siempre"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Always</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_always.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">She always studies at night.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_always.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-chair.jpeg" alt="Imagen de nunca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Chair</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_chair.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">There is a chair here.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_chair.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-laptop.jpeg" alt="Imagen de nunca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Laptop</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_laptop.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">There are three laptops.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_laptop.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-nextto.jpg" alt="Imagen de nunca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Next to</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_nextto.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">The house is next to the park.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_nextto.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-clock.jpg" alt="Imagen de nunca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">O'clock</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_clock.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">It's nine o'clock.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_clock.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> 
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo titulo-vocabulario">📽️ VIDEO PRACTICE: WHAT DO YOU DO EVERY DAY?</h3>
+                    <div class="video-responsive">
+                       <iframe width="560" height="315" src="https://www.youtube.com/embed/bq6GBbh3uhU?si=4AQx6DF4nlYBynLB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+<h3 class="titulo-vocabulario">INTERACTIVE TEST </h3>
+            </section>
+
+            <section id="unit-UT4" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 4: FOODS AND DRINKS</h2>
+
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: FOODS AND DRINKS</h3>
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-water.jpeg" alt="Imagen de manzana"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Water</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_water.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I need some water, please.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_water.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-bread.jpg" alt="Imagen de pan"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Bread</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_bread.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Do you have any bread?</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_bread.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-menu.jpeg" alt="Imagen de leche"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Menu</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_menu.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Can I see the menu?</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_menu.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-coffee.jpg" alt="Imagen de leche"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Coffee</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_coffee.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I drink coffee every morning.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_coffee.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-delicious.jpeg" alt="Imagen de leche"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Delicius</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_delicious.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">The food here is delicious.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_delicious.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-sandwich.jpeg" alt="Imagen de leche"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Sandwich</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_sandwich.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I had a sandwich for lunch.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_sandwich.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo titulo-vocabulario">📽️ VIDEO PRACTICE: AT A RESTAURANT</h3>
+                    <div class="video-responsive">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/3OXBqIGJzkg?si=R1HUHMTpyGFxZOGQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <h3 class="titulo-vocabulario">💻 INTERACTIVE TEST</h3>
+                
+            </section>
+
+            <section id="unit-UT5" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 5: THINGS I HAVE (OBJECTS)</h2>
+
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: OBJECTS</h3>
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-phone.jpeg" alt="Imagen de teléfono"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Phone</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_phone.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I have a new phone.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_phone.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-keys.jpg" alt="Imagen de llaves"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Keys</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_keys.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Where are my keys?</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_keys.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-bag.jpeg" alt="Imagen de cartera"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Bag</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_bag.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">She has a beautiful bag.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_bag.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-bicycle.jpg" alt="Imagen de cartera"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Bicycle</span>
+                                <button class="boton-reproducir" onclick="playAudio('bicycle.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">That is my bicycle over there.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_bicycle.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-howmuch.jpg" alt="Imagen de cartera"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">How much</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_howmuch.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">How much is this sweater?</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_howmuch.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-shoes.jpg" alt="Imagen de cartera"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Shoes</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_shoes.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">The shoes cost fifty dollars.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_shoes.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo">📽️VIDEO PRACTICE: WHAT'S THIS?</h3>
+                    <div class="video-responsive">
+                       <iframe width="560" height="315" src="https://www.youtube.com/embed/ceOhxZjDt-g?si=vZuzLW3H_VjXRmDK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <h3 class="titulo-vocabulario">💻 INTERACTIVE TEST</h3>
+            </section>
+
+            <section id="unit-UT6" class="seccion-unidad seccion-unidad--oculta">
+                <h2 class="titulo-unidad titulo-user">UNIT 6: AROUND THE CITY (PLACES)</h2>
+
+
+                <h3 class="titulo-vocabulario">🗝️ KEY VOCABULARY: AT THE CITY</h3>
+                <div class="contenedor-tarjetas-vocabulario">
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-cinema.jpeg" alt="Imagen de parque"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Cinema</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_cinema.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I'm going to the cinema tonight.</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_frase_cinema.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-library.jpeg" alt="Imagen de cine"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Library</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_library.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">I need to go to the library.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_library.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-hobby.jpeg" alt="Imagen de biblioteca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Hobby</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_hobby.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">My favorite hobby is reading.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_hobby.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-freetime.jpeg"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Free time</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_freetime.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">What do you do in your free time?</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_freetime.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-turnright.jpg" alt="Imagen de biblioteca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Turn right</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_turnright.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Turn right at the traffic light.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_turnright.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tarjeta-vocabulario-flash">
+                        <div class="tarjeta-vocabulario-flash__imagen-container">
+                            <img src="assets/img-vocabulario/vocab-straight.jpg" alt="Imagen de biblioteca"
+                                class="tarjeta-vocabulario-flash__imagen">
+                        </div>
+                        <div class="tarjeta-vocabulario-flash__contenido">
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__palabra">Straight</span>
+                                <button class="boton-reproducir" onclick="playAudio('audio_straight.mp3')">🔊</button>
+                            </div>
+                            <div class="tarjeta-vocabulario-flash__item">
+                                <span class="tarjeta-vocabulario-flash__frase">Go straight for two blocks.</span>
+                                <button class="boton-reproducir"
+                                    onclick="playAudio('audio_frase_straight.mp3')">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tarjeta-video">
+                    <h3 class="tarjeta-video__titulo titulo-vocabulario">📽️ VIDEO PRACTICE: What is in your town?</h3>
+                    <div class="video-responsive">
+                       <iframe width="560" height="315" src="https://www.youtube.com/embed/on_1sS6Ii8M?si=nRDZFDeZ1BQkJXxQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+              <h3 class="titulo-vocabulario">💻 INTERACTIVE TEST</h3>
+            </section>
+
+
+             <section id="skills-section-admin" class="seccion-admin seccion-admin--hidden">
+                <h2 class="titulo-admin">SKILL PRACTICE</h2>
+                <div id="skills-content-admin"></div>
+            </section>
+
+            <section id="unit-WRITING" class="seccion-admin seccion-admin--hidden">
+                <h2 class="titulo-user">WRITING PRACTICE WITH AI 🤖🔥</h2>
+                <div class="tarjeta-leccion">
+                    <h2 class="tarjeta-leccion__titulo">Writing Practice</h2>
+                    <p class="tarjeta-leccion__texto">Write a sentence in English and the AI will correct it for you. 🤩
+                    </p>
+                    <div class="form-group">
+                        <label for="sentenceInput" class="input-label">Write your sentence here:</label>
+                        <textarea id="sentenceInput" rows="4" class="input-field"
+                            placeholder="E.g.: The cat sat on the table."></textarea>
+                    </div>
+                    <button id="correctButton" class="action-button">Check Sentence</button>
+                    <div id="alertPlaceholder"></div>
+                    <div id="feedbackContainer" class="feedback-container hidden">
+                        <div id="loadingIndicator" class="loading-indicator hidden">
+                            <div class="loading-spinner"></div>
+                            <span class="loading-text">Analyzing...</span>
+                        </div>
+                        <div id="feedbackContent" class="feedback-content"></div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="skills-inject" class="seccion-admin seccion-admin--hidden" data-skill="none">
+            
+            </section>
+
             <section id="estudiantes-section-admin" class="seccion-admin seccion-admin--hidden">
-                <h2 class="titulo-admin">Gestión de Estudiantes</h2>
+                <h2 class="titulo-admin">STUDENT MANAGEMENT</h2>
                 <div id="estudiantes-content-admin"></div>
             </section>
             <section id="progreso-section-admin" class="seccion-admin seccion-admin--hidden">
-                <h2 class="titulo-admin">Monitoreo de Progreso</h2>
+                <h2 class="titulo-admin">PROGRESS MONITORING</h2>
                 <div id="progreso-content-admin"></div>
             </section>
         </main>

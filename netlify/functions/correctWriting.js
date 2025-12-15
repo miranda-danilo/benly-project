@@ -1,10 +1,6 @@
  // netlify/functions/correctWriting.js
 
 
-
-
-
-
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // ---- LIMITADOR DE CARGA POR SEGUNDO ----

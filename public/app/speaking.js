@@ -290,6 +290,9 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
                         loadingIndicator.classList.add('hidden');
                     }
                 }
+
+
+
             }, 5000); // 5 segundos de grabación máximo
         }
     });

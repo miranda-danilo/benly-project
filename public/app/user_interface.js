@@ -8,7 +8,7 @@ import { setupReadingExercise } from "./reading.js";
 import { setupSpeakingExercise } from "./speaking.js";
 
 // --- Datos de Unidades y Quizzes ---
-const units = [
+export const units = [
     { id: 'UT1', title: 'INTRODUCTION AND BASIC GREETINGS', quiz: 'true_false' },
     { id: 'UT2', title: 'PEOPLE AND PLACES', quiz: 'true_false' },
     { id: 'UT3', title: 'DAILY LIFE', quiz: 'true_false' },
@@ -117,7 +117,7 @@ const quizData = {
 ]
 };
 
-const moduleInfo = [
+export const moduleInfo = [
     { id: 'UT1', title: 'UNIT 1', desc: 'INTRODUCTION AND BASIC GREETINGS', icon: '👋', img: 'https://img.freepik.com/foto-gratis/retrato-amigable-joven-feliz-que-despide-mano-decir-hola-saludandote-gesto-saludo-diciendo-adios-pie-sobre-pared-blanca_176420-39098.jpg?t=st=1756572182~exp=1756575782~hmac=2f8801a7a0dc2db3277d3cb2911074a2d58cb6dbf6b3517f1290eea4efae0b8f&w=740' },
     { id: 'UT2', title: 'UNIT 2', desc: 'PEOPLE AND PLACES', icon: '🏠', img: 'https://cdn.pixabay.com/photo/2018/09/06/18/30/sofia-3658934_1280.jpg' },
     { id: 'UT3', title: 'UNIT 3', desc: 'DAILY LIFE', icon: '⏰', img: 'https://images.pexels.com/photos/3771069/pexels-photo-3771069.jpeg' },
@@ -129,7 +129,7 @@ const moduleInfo = [
 
 
 // --- Variables Globales (o de ámbito superior) ---
-let userScores = {}; // Para almacenar los puntajes del usuario
+export let userScores = {}; // Para almacenar los puntajes del usuario
 
 
 // --- NUEVA FUNCIÓN GLOBAL PARA REPRODUCIR AUDIOS DE LAS TARJETAS ---
@@ -150,6 +150,30 @@ window.playAudio = (audioUrl) => {
     });
 };
 // ----------------------------------------------------------------------
+
+/**
+     * Reproduce un sonido según el tipo especificado.
+     * @param {'correct'|'wrong'|'win'|'fail'} type - Tipo de sonido a reproducir.
+     */
+     export const playSound = (type) => {
+        let audio;
+        switch (type) {
+            case "correct":
+                audio = new Audio("assets/correct-ding.mp3");
+                break;
+            case "wrong":
+                audio = new Audio("assets/chicharra-error-incorrecto-.mp3");
+                break;
+            case "win":
+                audio = new Audio("assets/win.mp3");
+                break;
+            case "fail":
+                audio = new Audio("assets/fail.mp3");
+                break;
+        }
+        if (audio) audio.play();
+    };
+
 
 export const setupUserPanelLogic = (panelElement, userRole) => {
     // --- Referencias a Elementos del DOM (Declaración Única) ---
@@ -214,29 +238,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         }
     }
 
-    /**
-     * Reproduce un sonido según el tipo especificado.
-     * @param {'correct'|'wrong'|'win'|'fail'} type - Tipo de sonido a reproducir.
-     */
-    const playSound = (type) => {
-        let audio;
-        switch (type) {
-            case "correct":
-                audio = new Audio("assets/correct-ding.mp3");
-                break;
-            case "wrong":
-                audio = new Audio("assets/chicharra-error-incorrecto-.mp3");
-                break;
-            case "win":
-                audio = new Audio("assets/win.mp3");
-                break;
-            case "fail":
-                audio = new Audio("assets/fail.mp3");
-                break;
-        }
-        if (audio) audio.play();
-    };
-
+    
     
 
 
@@ -551,7 +553,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
      * Renderiza el contenido de una unidad específica.
      * @param {string} unitId - ID de la unidad a renderizar.
      */
-    const renderUnitContent = async (unitId) => {
+     const renderUnitContent = async (unitId) => {
         showSection(document.getElementById(`unit-${unitId}`));
 
         const unitSection = document.getElementById(`unit-${unitId}`);
@@ -835,4 +837,11 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             }
         });
     }
+
+    return {
+        renderUnitContent: renderUnitContent,
+        renderModulesGrid: renderModulesGrid,
+        showSection: showSection
+    }
+
 };
