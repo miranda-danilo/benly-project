@@ -157,7 +157,7 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
 
     let currentCorrectAnswers = [];
 
-
+    console.log(verifyBtn)
 
 
     // Carga el puntaje inicial si existe
@@ -274,14 +274,18 @@ export const setupListeningExercise = (unitSection, playSound, userScores) => {
         let scoreHtml = '';
 
         userInputs.forEach((input, index) => {
-            const correctAnswer = currentCorrectAnswers[index];
+          
+            const correctAnswer = currentCorrectAnswers[index].word;
+        
             const inputEl = document.querySelectorAll('.input-blank')[index];
+           
             if (input === correctAnswer) {
                 correctCount++;
                 inputEl.style.color = 'green';
             } else {
                 inputEl.style.color = 'red';
             }
+
             inputEl.value = correctAnswer; // Muestra la respuesta correcta
             inputEl.disabled = true; // Deshabilita el campo
         });

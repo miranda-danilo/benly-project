@@ -32,7 +32,6 @@ const loginLink = document.getElementById("login-link");
 const registerLink = document.getElementById("register-link");
 const logoutLink = document.getElementById("logout-link");
 const headerNav = document.querySelector(".header__nav");
-const header = document.querySelector(".header");
 const footer = document.querySelector(".footer");
 
 // Referencias a los modales de la página principal
@@ -122,7 +121,6 @@ export const updateUI = async (user) => {
         logoutLink.classList.add("d-none");
         headerNav.classList.remove("d-none");
         footer.classList.remove("d-none");
-     /*      header.classList.remove("d-none"); */
 
 
         // Carga la página de inicio
@@ -144,8 +142,6 @@ export const updateUI = async (user) => {
  */
 export const stateChanged = () => {
     onAuthStateChanged(auth, async (user) => {
-
-
         if (user && !user.emailVerified) {
             // Si el usuario existe pero no está verificado, cierra la sesión
             /*       await signOut(auth); */
@@ -156,10 +152,6 @@ export const stateChanged = () => {
             updateUI(user);
             console.log("Sesion activa STATE CHANGED CHECK", user)
         }
-
-
-
-
     });
 
 
@@ -218,12 +210,4 @@ export const stateChanged = () => {
         });
     }
 
-    // Añade el manejador de eventos para el botón de cerrar sesión
-    /*   if (logoutLink) {
-          logoutLink.addEventListener("click", async (e) => {
-              e.preventDefault();
-              await signOut(auth);
-              showMessage("Sesión cerrada correctamente", "success");
-          });
-      } */
 };

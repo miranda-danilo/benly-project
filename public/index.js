@@ -1,10 +1,7 @@
 import { setupRegistrationForm } from "./app/registro.js";
-import { showMessage } from "./app/notificaciones.js";
 import { setupGoogleLogin } from "./app/inicio_sesion_google.js";
 import { setupSignInForm } from "./app/inicio_sesion_correo.js";
 import { stateChanged } from "./app/checkLogin.js";
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     // Llama a la función que configura el formulario de registro.
@@ -14,14 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSignInForm()
     stateChanged()
     
-});
 
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const burgerMenu = document.querySelector('.header__burger-menu');
+     const burgerMenu = document.querySelector('.header__burger-menu');
     const headerNav = document.querySelector('.header__nav');
     const headerLinks = document.querySelectorAll('.header__link');
+    
+    const loginButton = document.querySelector('.header__button--login');
+    const registerButton = document.querySelector('.header__button--register');
+    
+    const signInModal = document.getElementById('signin-modal');
+    const signUpModal = document.getElementById('signup-modal');
+
+    const closeLoginButton = document.querySelector('.close-modal-login');
+    const closeSignupButton = document.querySelector('.close-modal-signup');
+    
 
     // Toggle para el menú de hamburguesa
     burgerMenu.addEventListener('click', () => {
@@ -41,71 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Animaciones al hacer scroll
-    const animatedElements = document.querySelectorAll('.animate__animated');
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.visibility = 'visible';
-                const delay = entry.target.dataset.delay || '0s';
-                entry.target.style.animationDelay = delay;
-                entry.target.classList.add('visible'); // Clase para activar la animación
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    });
-
-    animatedElements.forEach(element => {
-        element.style.visibility = 'hidden';
-        element.classList.add('animate__fadeInUp'); // Ejemplo de animación
-        // Puedes asignar diferentes animaciones a diferentes elementos si lo deseas
-        // element.classList.add('animate__fadeInLeft');
-        // element.classList.add('animate__fadeInRight');
-        observer.observe(element);
-    });
-});
-
-
-// Agrega este código al final de tu archivo index.js
-document.addEventListener('DOMContentLoaded', () => {
-
-    const burgerMenu = document.querySelector('.header__burger-menu');
-    const headerNav = document.querySelector('.header__nav');
-    const headerLinks = document.querySelectorAll('.header__link');
-
-    // ... (Tu código existente aquí) ...
-
-    // --- Lógica para los Modales ---
-
-    const loginButton = document.querySelector('.header__button--login');
-    const registerButton = document.querySelector('.header__button--register');
-    
-    const signInModal = document.getElementById('signin-modal');
-    const signUpModal = document.getElementById('signup-modal');
-
-    const closeLoginButton = document.querySelector('.close-modal-login');
-    const closeSignupButton = document.querySelector('.close-modal-signup');
-    
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
+     // --- Lógica para los Modales ---
     
     // Abrir modal de inicio de sesión
     loginButton.addEventListener('click', (e) => {
@@ -141,4 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
             signUpModal.close();
         }
     });
+
 });
+
+
+/* document.addEventListener('DOMContentLoaded', () => {
+
+   
+}); */
+
+

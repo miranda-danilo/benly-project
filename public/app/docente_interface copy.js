@@ -188,16 +188,6 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
     };
 
 
-
-
-
-
-
-
-
-
-
-
     /**
      * Renderiza el grid de tarjetas de módulos.
      */
