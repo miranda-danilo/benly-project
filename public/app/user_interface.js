@@ -24,97 +24,97 @@ export const units = [
 ];
 
 const quizData = {
- 'UT1': [
-    { question: "The phrase 'How are you?' is used to ask about someone's name.", answer: "false" },
-    { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
-    { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
-    { question: "You use 'He is' when you talk about one boy or man.", answer: "true" }, // <- Ajustada para máxima claridad A1
-    { question: "'They are' is the correct verb form for one person.", answer: "false" },
-    { question: "Hello is a way to start a conversation.", answer: "true" },
-    { question: "You say 'Good afternoon' in the morning.", answer: "false" },
-    { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" }
-],
+    'UT1': [
+        { question: "The phrase 'How are you?' is used to ask about someone's name.", answer: "false" },
+        { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
+        { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
+        { question: "You use 'He is' when you talk about one boy or man.", answer: "true" }, // <- Ajustada para máxima claridad A1
+        { question: "'They are' is the correct verb form for one person.", answer: "false" },
+        { question: "Hello is a way to start a conversation.", answer: "true" },
+        { question: "You say 'Good afternoon' in the morning.", answer: "false" },
+        { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" }
+    ],
     'UT2': [
-    { question: "The word 'Mother' is a girl.", answer: "true" },
-    { question: "Brother and Sister are family.", answer: "true" },
-    { question: "The word 'My' means something belongs to you.", answer: "true" },
-    { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
-    { question: "A 'School' is a place where you sleep.", answer: "false" },
-    { question: "The word 'Live' is about where you are.", answer: "true" },
-    { question: "If you have a 'Family', you are alone.", answer: "false" },
-    { question: "'Home' is a type of house.", answer: "true" }
-],
+        { question: "The word 'Mother' is a girl.", answer: "true" },
+        { question: "Brother and Sister are family.", answer: "true" },
+        { question: "The word 'My' means something belongs to you.", answer: "true" },
+        { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
+        { question: "A 'School' is a place where you sleep.", answer: "false" },
+        { question: "The word 'Live' is about where you are.", answer: "true" },
+        { question: "If you have a 'Family', you are alone.", answer: "false" },
+        { question: "'Home' is a type of house.", answer: "true" }
+    ],
     'UT3': [
-    { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
-    { question: "The word 'Always' means you do something 0% of the time.", answer: "false" },
-    { question: "You use 'There are' to talk about one thing (singular).", answer: "false" },
-    { question: "The word 'Next to' is used to talk about a location.", answer: "true" },
-    { question: "'Eat breakfast' is the last meal of the day.", answer: "false" },
-    { question: "You use 'O'clock' to talk about the time.", answer: "true" },
-    { question: "The word 'Sometimes' means 'a few times'.", answer: "true" },
-    { question: "When you 'Wake up', you leave your bed.", answer: "true" }
-],
+        { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
+        { question: "The word 'Always' means you do something 0% of the time.", answer: "false" },
+        { question: "You use 'There are' to talk about one thing (singular).", answer: "false" },
+        { question: "The word 'Next to' is used to talk about a location.", answer: "true" },
+        { question: "'Eat breakfast' is the last meal of the day.", answer: "false" },
+        { question: "You use 'O'clock' to talk about the time.", answer: "true" },
+        { question: "The word 'Sometimes' means 'a few times'.", answer: "true" },
+        { question: "When you 'Wake up', you leave your bed.", answer: "true" }
+    ],
     'UT4': [
-    { question: "The word 'Water' is a type of drink.", answer: "true" },
-    { question: "You ask for the 'Menu' when you want to see what food they have.", answer: "true" },
-    { question: "A 'Sandwich' is usually two pieces of bread with food inside.", answer: "true" },
-    { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
-    { question: "A 'Salad' is usually made with meat and bread.", answer: "false" }, // <-- NUEVA PREGUNTA DE REEMPLAZO (SALAD)
-    { question: "The word 'Bread' is a food made with vegetables.", answer: "false" },
-    { question: "To ask for the check means you want to pay.", answer: "true" },
-    { question: "An 'Appetizer' is a large main meal.", answer: "false" }
-],
+        { question: "The word 'Water' is a type of drink.", answer: "true" },
+        { question: "You ask for the 'Menu' when you want to see what food they have.", answer: "true" },
+        { question: "A 'Sandwich' is usually two pieces of bread with food inside.", answer: "true" },
+        { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
+        { question: "A 'Salad' is usually made with meat and bread.", answer: "false" }, // <-- NUEVA PREGUNTA DE REEMPLAZO (SALAD)
+        { question: "The word 'Bread' is a food made with vegetables.", answer: "false" },
+        { question: "To ask for the check means you want to pay.", answer: "true" },
+        { question: "An 'Appetizer' is a large main meal.", answer: "false" }
+    ],
     'UT5': [
-    { question: "The 'Keys' are used to open a door.", answer: "true" },
-    { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
-    { question: "An 'old phone' is newer than a 'new phone'.", answer: "false" },
-    { question: "The word 'Bag' is a container to carry things.", answer: "true" },
-    { question: "The 'Shoes' are more expensive than a pencil.", answer: "true" }, // <-- NUEVA PREGUNTA DE LÓGICA (Reemplazo)
-    { question: "A 'Phone' is usually used for cooking.", answer: "false" },
-    { question: "'Shoes' are something you wear on your hands.", answer: "false" },
-    { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" }
-],
+        { question: "The 'Keys' are used to open a door.", answer: "true" },
+        { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
+        { question: "An 'old phone' is newer than a 'new phone'.", answer: "false" },
+        { question: "The word 'Bag' is a container to carry things.", answer: "true" },
+        { question: "The 'Shoes' are more expensive than a pencil.", answer: "true" }, // <-- NUEVA PREGUNTA DE LÓGICA (Reemplazo)
+        { question: "A 'Phone' is usually used for cooking.", answer: "false" },
+        { question: "'Shoes' are something you wear on your hands.", answer: "false" },
+        { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" }
+    ],
     'UT6': [
-    { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
-    { question: "You use 'Turn right' to go left.", answer: "false" },
-    { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
-    { question: "You can find many books at the 'Library'.", answer: "true" }, // <-- REEMPLAZO 1 (Vocabulario)
-    { question: "The phrase 'Free time' means you are busy working.", answer: "false" },
-    { question: "The word 'Cinema' is a place where you borrow books.", answer: "false" },
-    { question: "When you go 'Straight', you do not turn.", answer: "true" },
-    { question: "A 'Park' is a good place to do some exercise.", answer: "true" } // <-- REEMPLAZO 2 (Lógica de Lugares)
-],
+        { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
+        { question: "You use 'Turn right' to go left.", answer: "false" },
+        { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
+        { question: "You can find many books at the 'Library'.", answer: "true" }, // <-- REEMPLAZO 1 (Vocabulario)
+        { question: "The phrase 'Free time' means you are busy working.", answer: "false" },
+        { question: "The word 'Cinema' is a place where you borrow books.", answer: "false" },
+        { question: "When you go 'Straight', you do not turn.", answer: "true" },
+        { question: "A 'Park' is a good place to do some exercise.", answer: "true" } // <-- REEMPLAZO 2 (Lógica de Lugares)
+    ],
     // =========================================================
-// EXAMEN 1: UNIDADES 1, 2 Y 3 (Saludos, Familia, Rutinas)
-// =========================================================
-'EXAM1': [
-    { question: "You use 'O'clock' to talk about the time.", answer: "true" },
-    { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
-    { question: "If you have a 'Family', you are alone.", answer: "false" },
-    { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
-    { question: "'Home' is a type of house.", answer: "true" },
-    { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
-    { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" },
-    { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
-    { question: "The word 'Mother' is a girl.", answer: "true" },
-    { question: "The word 'Sometimes' means 'a few times'.", answer: "true" }
-],
+    // EXAMEN 1: UNIDADES 1, 2 Y 3 (Saludos, Familia, Rutinas)
+    // =========================================================
+    'EXAM1': [
+        { question: "You use 'O'clock' to talk about the time.", answer: "true" },
+        { question: "The greeting 'Bye' is usually said when people meet.", answer: "false" },
+        { question: "If you have a 'Family', you are alone.", answer: "false" },
+        { question: "The phrase 'Go to bed' means you wake up.", answer: "false" },
+        { question: "'Home' is a type of house.", answer: "true" },
+        { question: "It is normal to say 'Nice to meet you' when you meet someone for the first time.", answer: "true" },
+        { question: "Asking 'What's your name?' is a common way to introduce yourself.", answer: "true" },
+        { question: "You say 'Her book' if the book belongs to a boy.", answer: "false" },
+        { question: "The word 'Mother' is a girl.", answer: "true" },
+        { question: "The word 'Sometimes' means 'a few times'.", answer: "true" }
+    ],
 
-// =========================================================
-// EXAMEN 2: UNIDADES 4, 5 Y 6 (Comida, Objetos, Lugares)
-// =========================================================
-'EXAM2': [
-    { question: "A 'Salad' is usually made with meat and bread.", answer: "false" },
-    { question: "The 'Keys' are used to open a door.", answer: "true" },
-    { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
-    { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
-    { question: "A 'Phone' is usually used for cooking.", answer: "false" },
-    { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
-    { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" },
-    { question: "To ask for the check means you want to pay.", answer: "true" },
-    { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
-    { question: "The word 'Water' is a type of drink.", answer: "true" }
-]
+    // =========================================================
+    // EXAMEN 2: UNIDADES 4, 5 Y 6 (Comida, Objetos, Lugares)
+    // =========================================================
+    'EXAM2': [
+        { question: "A 'Salad' is usually made with meat and bread.", answer: "false" },
+        { question: "The 'Keys' are used to open a door.", answer: "true" },
+        { question: "If you want to know the price of something, you ask 'How much is it?'.", answer: "true" },
+        { question: "The word 'Hobby' is something you do in your free time for fun.", answer: "true" },
+        { question: "A 'Phone' is usually used for cooking.", answer: "false" },
+        { question: "If food is 'Delicious', it means it tastes bad.", answer: "false" },
+        { question: "A 'light box' is heavier than a 'heavy box'.", answer: "false" },
+        { question: "To ask for the check means you want to pay.", answer: "true" },
+        { question: "A 'Library' is a place where you can watch movies.", answer: "false" },
+        { question: "The word 'Water' is a type of drink.", answer: "true" }
+    ]
 };
 
 export const moduleInfo = [
@@ -140,9 +140,9 @@ window.playAudio = (audioUrl) => {
         window.currentAudio.pause();
         window.currentAudio.currentTime = 0;
     }
-    
+
     // Asume que los archivos de audio están en una carpeta 'assets/audios/'
-    const fullPath = `assets/audios-vocabulario/${audioUrl}`; 
+    const fullPath = `assets/audios-vocabulario/${audioUrl}`;
     window.currentAudio = new Audio(fullPath);
     window.currentAudio.play().catch(error => {
         console.error("Error al reproducir el audio:", error);
@@ -155,24 +155,24 @@ window.playAudio = (audioUrl) => {
      * Reproduce un sonido según el tipo especificado.
      * @param {'correct'|'wrong'|'win'|'fail'} type - Tipo de sonido a reproducir.
      */
-     export const playSound = (type) => {
-        let audio;
-        switch (type) {
-            case "correct":
-                audio = new Audio("assets/correct-ding.mp3");
-                break;
-            case "wrong":
-                audio = new Audio("assets/chicharra-error-incorrecto-.mp3");
-                break;
-            case "win":
-                audio = new Audio("assets/win.mp3");
-                break;
-            case "fail":
-                audio = new Audio("assets/fail.mp3");
-                break;
-        }
-        if (audio) audio.play();
-    };
+export const playSound = (type) => {
+    let audio;
+    switch (type) {
+        case "correct":
+            audio = new Audio("assets/correct-ding.mp3");
+            break;
+        case "wrong":
+            audio = new Audio("assets/chicharra-error-incorrecto-.mp3");
+            break;
+        case "win":
+            audio = new Audio("assets/win.mp3");
+            break;
+        case "fail":
+            audio = new Audio("assets/fail.mp3");
+            break;
+    }
+    if (audio) audio.play();
+};
 
 
 export const setupUserPanelLogic = (panelElement, userRole) => {
@@ -238,8 +238,8 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         }
     }
 
-    
-    
+
+
 
 
     /**
@@ -293,32 +293,32 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
     /**
      * Renderiza el grid de tarjetas de módulos.
      */
-   const renderModulesGrid = () => {
-    if (!modulesGrid) return;
-    modulesGrid.innerHTML = '';
-    const learningUnits = units.filter(unit => unit.id.startsWith('UT'));
-    
-    learningUnits.forEach(unit => {
-        const info = moduleInfo.find(m => m.id === unit.id) || {};
-        const card = document.createElement('div');
-        card.className = 'modulo-card';
-        
-        // ✨ NO INCLUYE EL BOTÓN 'boton-accion'
-        card.innerHTML = `
+    const renderModulesGrid = () => {
+        if (!modulesGrid) return;
+        modulesGrid.innerHTML = '';
+        const learningUnits = units.filter(unit => unit.id.startsWith('UT'));
+
+        learningUnits.forEach(unit => {
+            const info = moduleInfo.find(m => m.id === unit.id) || {};
+            const card = document.createElement('div');
+            card.className = 'modulo-card';
+
+            // ✨ NO INCLUYE EL BOTÓN 'boton-accion'
+            card.innerHTML = `
             <div class="modulo-card__title">${info.title || unit.title}</div>
             <div class="modulo-card__icon">${info.icon}</div>
             <div class="modulo-card__desc">${info.desc || ''}</div>
         `;
 
-        modulesGrid.appendChild(card);
-        
-        // 🚀 El click listener en la tarjeta hace la acción principal
-        card.addEventListener('click', () => {
-            renderUnitContent(unit.id);
+            modulesGrid.appendChild(card);
+
+            // 🚀 El click listener en la tarjeta hace la acción principal
+            card.addEventListener('click', () => {
+                renderUnitContent(unit.id);
+            });
         });
-    });
-    showSection(modulesSection);
-};
+        showSection(modulesSection);
+    };
 
     /**
      * Actualiza el estado de completado de las unidades en la interfaz.
@@ -365,7 +365,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
                     ...currentScores,
                     [unitId]: {
                         score: score,
-                        completada: score >= 7 // Asume que 7 es la nota de aprobación
+                        completada: score >= 10 // Asume que 10 es la nota de aprobación
                     }
                 };
                 await setDoc(docRef, { ...currentData, scores: newScores }, { merge: true });
@@ -438,6 +438,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         const totalQuestions = questions.length;
 
         const questionEl = document.getElementById(`question-${unitId}`);
+        
         const feedbackEl = document.getElementById(`feedback-${unitId}`);
         const quizBtns = document.querySelectorAll(`#quiz-container-${unitId} .boton-quiz`);
         const progressBar = document.getElementById(`quiz-progress-${unitId}`);
@@ -476,21 +477,34 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
                 quizBtns.forEach(btn => btn.disabled = false);
             } else {
                 const score = (correctAnswers / totalQuestions) * 10;
-                questionEl.textContent = `Examen completado. Tu puntaje es: ${score.toFixed(1)}/10`;
 
-                feedbackEl.textContent = isExam ? 'EXAMEN REALIZADO.' : (score >= 7 ? '¡Felicidades!' : 'Puedes mejorar tu puntaje.');
-                feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--sucesso', score >= 7);
-                feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--error', score < 7);
+
+                questionEl.classList.toggle('contenedor-quiz__retroalimentacion--sucesso', score >= 10);
+                questionEl.classList.toggle('contenedor-quiz__retroalimentacion--error', score < 10);
+                questionEl.textContent = `YOUR SCORE IS: ${score.toFixed(1)}/10`;
+
+
+
+
+                feedbackEl.textContent = isExam ? 'EXAMEN REALIZADO.' : (score >= 10 ? 'Congratulations!' : 'You can improve your score.');
+
+
+                feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--sucesso', score >= 10);
+
+
+                feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--error', score < 10);
+
+
                 quizBtns.forEach(btn => btn.disabled = true);
 
                 if (repeatBtn) repeatBtn.style.display = isExam ? "none" : "inline-block";
 
-                if (score >= 7) {
+                if (score >= 10) {
                     playSound("win");
-                    showAnimatedNotification('¡Lo lograste! 🎉🥳<br><span style="font-size:2rem;">✅</span>', true);
+                    showAnimatedNotification('YOU DID IT!! 🎉🥳<br><span style="font-size:2rem;">✅</span>', true);
                 } else {
                     playSound("fail");
-                    showAnimatedNotification('¡Sigue intentando! 😢<br><span style="font-size:2rem;">🚫</span>', false);
+                    showAnimatedNotification('KEEP TRYING! 😢<br><span style="font-size:2rem;">🚫</span>', false);
                 }
 
                 const user = auth.currentUser;
@@ -506,12 +520,12 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
 
                 if (userAnswer === correctAnswer) {
                     correctAnswers++;
-                    feedbackEl.textContent = "¡Correcto!";
+                    feedbackEl.textContent = "Correct!";
                     feedbackEl.classList.add('contenedor-quiz__retroalimentacion--sucesso');
                     feedbackEl.classList.remove('contenedor-quiz__retroalimentacion--error');
                     playSound("correct");
                 } else {
-                    feedbackEl.textContent = `Incorrecto. La respuesta correcta era: ${correctAnswer === "true" ? "Verdadero" : "Falso"}`;
+                    feedbackEl.textContent = `Incorrect. The correct answer was: ${correctAnswer === "true" ? "TRUE" : "FALSE"}`;
                     feedbackEl.classList.add('contenedor-quiz__retroalimentacion--error');
                     feedbackEl.classList.remove('contenedor-quiz__retroalimentacion--sucesso');
                     playSound("wrong");
@@ -526,6 +540,8 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
 
         if (repeatBtn) {
             repeatBtn.onclick = () => {
+                questionEl.classList.remove('contenedor-quiz__retroalimentacion--sucesso');
+                questionEl.classList.remove('contenedor-quiz__retroalimentacion--error');
                 currentQuestionIndex = 0;
                 correctAnswers = 0;
                 quizBtns.forEach(btn => btn.disabled = false);
@@ -537,11 +553,25 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
         // Cargar estado previo del quiz si existe
         const scoreData = userScores.scores?.[unitId];
         if (scoreData) {
-            questionEl.textContent = `QUIZ COMPLETADO. Tu puntaje es: ${scoreData.score.toFixed(1)}/10`;
-            feedbackEl.textContent = isExam ? 'EXAMEN REALIZADO.' : (scoreData.completada ? '¡Felicidades!' : 'Puedes mejorar tu puntaje.');
+
+            if(scoreData.score.toFixed(1) >=10){
+                questionEl.classList.add('contenedor-quiz__retroalimentacion--sucesso');
+            } else {
+                questionEl.classList.add('contenedor-quiz__retroalimentacion--error');
+            }
+
+            questionEl.textContent = `YOUR CURRENT SCORE IS: ${scoreData.score.toFixed(1)}/10`;
+
+            feedbackEl.textContent = isExam ? 'EXAMEN REALIZADO.' : (scoreData.completada ? 'CONGRATULATIONS!' : 'YOU CAN IMPROVE YOUR SCORE.');
+           
             feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--sucesso', scoreData.completada);
+           
             feedbackEl.classList.toggle('contenedor-quiz__retroalimentacion--error', !scoreData.completada);
+           
             quizBtns.forEach(btn => btn.disabled = true);
+           
+           
+           
             if (repeatBtn) repeatBtn.style.display = isExam ? "none" : "inline-block";
         } else {
             showQuestion();
@@ -552,7 +582,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
      * Renderiza el contenido de una unidad específica.
      * @param {string} unitId - ID de la unidad a renderizar.
      */
-     const renderUnitContent = async (unitId) => {
+    const renderUnitContent = async (unitId) => {
         showSection(document.getElementById(`unit-${unitId}`));
 
         const unitSection = document.getElementById(`unit-${unitId}`);
@@ -576,8 +606,8 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
 
             if (writingProgressDiv) {
                 writingProgressDiv.innerHTML = `
-            <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${score}/10
-            ${score >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de escritura!</span>' : ''}
+            <b style="color:#2563eb;">Your highest score is:</b> ${score}/10
+            ${score >= 10 ? '<br><span style="color:green;font-weight:bold;">Congratulations, you have completed the writing section!</span>' : ''}
         `;
             }
         } else if (unitId === 'LISTENING') {
@@ -607,7 +637,7 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             const quizDiv = document.createElement('div');
             quizDiv.className = 'tarjeta-actividad';
             const isExam = unitId === 'EXAM1' || unitId === 'EXAM2';
-            const infoText = isExam ? 'El examen solo se podrá dar una vez.‼️‼️' : 'Puedes repetir el quiz para mejorar tu puntaje.';
+            const infoText = isExam ? 'THE EXAM CAN ONLY BE TAKEN ONCE...‼️‼️' : 'You can repeat the quiz to improve your score.';
 
             let unitTitle = '';
             const unitInfoObj = units.find(m => m.id === unitId);
@@ -620,11 +650,11 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
                 <div id="quiz-container-${unitId}" class="contenedor-quiz">
                     <p class="contenedor-quiz__pregunta" id="question-${unitId}"></p>
                     <div class="contenedor-quiz__botones">
-                        <button class="boton-quiz boton-quiz--verdadero" data-answer="true">True</button>
-                        <button class="boton-quiz boton-quiz--falso" data-answer="false">False</button>
+                        <button class="boton-quiz boton-quiz--verdadero" data-answer="true">TRUE</button>
+                        <button class="boton-quiz boton-quiz--falso" data-answer="false">FALSE</button>
                     </div>
                     <p id="feedback-${unitId}" class="contenedor-quiz__retroalimentacion"></p>
-                    <button id="repeat-quiz-${unitId}" class="boton-quiz--repeat" style="display:none;">Repeat Quiz</button>
+                    <button id="repeat-quiz-${unitId}" class="boton-quiz--repeat" style="display:none;">REPEAT QUIZ</button>
                     <p style="margin-top:1rem;font-weight:bold;"><b>${infoText}</b></p>
                 </div>
             `;

@@ -259,8 +259,8 @@ function getWordCells(r, c, placedWords) {
  */
 export const setupReadingExercise = (unitSection, playSound, userScores) => {
     const content = `
-        <h2 class="titulo-user">Práctica de Lectura y Crucigrama</h2>
-        <p class="descripcion">Lee el texto y encuentra las palabras clave. Luego, úbicalas en el crucigrama.</p>
+        <h2 class="titulo-user">READING PRACTICE AND CROSSWORD PUZZLE 🤩🧩</h2>
+        <p class="descripcion">Read the text and find the keywords. Then, place them in the crossword puzzle.</p>
 
         <div class="opciones-reading">
             <select id="readingTopicSelect" class="select-field">
@@ -270,7 +270,7 @@ export const setupReadingExercise = (unitSection, playSound, userScores) => {
                 <option value="story3">Homework Before Sleep</option>
                 <option value="story4">Coffee and the Dog</option>
             </select>
-            <button id="loadReadingBtn" class="boton-primario">Cargar Crucigrama</button>
+            <button id="loadReadingBtn" class="boton-primario">Load puzzle crossword</button>
         </div>
 
 

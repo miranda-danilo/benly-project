@@ -331,6 +331,7 @@ margin-top: 1rem;
 font-size: 1.1rem;
 font-weight: 500;
 margin-bottom: 1rem;
+user-select: none;
 
 }
 
@@ -379,16 +380,27 @@ background-color: #DC2626;
 
 .contenedor-quiz__retroalimentacion {
 margin-top: 1rem;
-font-weight: 500;
+font-weight: 700;
 text-align: center;
-}
+font-size: 1.5rem;
+font-style: italic;
+letter-spacing: 0.1rem;}
+
+
 
 .contenedor-quiz__retroalimentacion--error {
 color: #EF4444;
+font-weight: 700;
+
+
+
 }
 
 .contenedor-quiz__retroalimentacion--sucesso {
 color: #22C55E;
+font-weight: 700;
+
+
 }
 
 .boton-accion {

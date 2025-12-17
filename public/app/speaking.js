@@ -152,45 +152,45 @@ function calculateScore(reference, userText) {
  */
 export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
     const content = `
-        <h2 class="titulo-user">Práctica de Habla y Pronunciación</h2>
-        <p class="descripcion">Mejora tu pronunciación repitiendo frases en inglés.</p>
+        <h2 class="titulo-user">SPEAKING AND PRONUNCIATION PRACTICE 😎🗣️</h2>
+        <p class="descripcion">Improve your pronunciation by repeating common phrases in English.</p>
         
         <div class="speaking-section">
             <div class="opciones-speaking">
                 <select id="speakingTopicSelect" class="select-field">
                     <option value="">-- SELECT A TOPIC 👆 --</option>
-                    <option value="greetings">Saludos Básicos</option>
-                    <option value="introductions">Presentaciones</option>
-                    <option value="questions">Preguntas Frecuentes</option>
+                    <option value="greetings">Basic Greetings</option>
+                    <option value="introductions">Introductions</option>
+                    <option value="questions">Frequent Questions</option>
                 </select>
             </div>
             
             <div id="speaking-area" class="speaking-area">
                 <div class="speaking-card">
-                    <p class="speaking-phrase-title">Frase a Practicar:</p>
-                    <p id="phraseTextSpeaking" class="speaking-phrase">Selecciona un tema para comenzar.</p>
+                    <p class="speaking-phrase-title">Phrase to Practice:</p>
+                    <p id="phraseTextSpeaking" class="speaking-phrase">Select a topic to begin.</p>
                 </div>
                 
                 <div class="audio-controls-speaking">
-                    <button id="audio-play-speaking" class="boton-audio-player disabled-speaking" disabled>▶️ Reproducir</button>
-                    <button id="audio-pause-speaking" class="boton-audio boton-audio--pause hidden">⏸️ Pausar</button>
-                    <button id="audio-stop-speaking" class="boton-audio boton-audio--stop hidden">⏹️ Parar</button>
+                    <button id="audio-play-speaking" class="boton-audio-player disabled-speaking" disabled>▶️ Play</button>
+                    <button id="audio-pause-speaking" class="boton-audio boton-audio--pause hidden">⏸️ Pause</button>
+                    <button id="audio-stop-speaking" class="boton-audio boton-audio--stop hidden">⏹️ Stop</button>
                 </div>
 
                 <div class="speaking-buttons">
                     <button id="recordBtnSpeaking" class="action-button record-button disabled-speaking" disabled>
-                        <i class="fas fa-microphone"></i> Grabar
+                        <i class="fas fa-microphone"></i> Record
                     </button>
                     <button id="submitBtnSpeaking" class="action-button next-button hidden">
-                        Enviar Audio
+                        Submit Audio
                     </button>
-                    <button id="nextPhraseBtnSpeaking" class="action-button next-button hidden">Siguiente</button>
+                    <button id="nextPhraseBtnSpeaking" class="action-button next-button hidden">Next</button>
                 </div>
 
                 <div id="feedbackContainerSpeaking" class="feedback-container hidden">
                     <div id="loadingIndicatorSpeaking" class="loading-indicator hidden">
                         <div class="loading-spinner"></div>
-                        <span class="loading-text">Evaluando...</span>
+                        <span class="loading-text">Evaluating...</span>
                     </div>
                     <div id="feedbackContentSpeaking"></div>
                 </div>
@@ -225,8 +225,8 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
         const score = speakingScore ? speakingScore.score : 0;
        /*  scoreDisplay.innerHTML = `<h3 class="font-bold text-lg">Tu puntaje: ${score.toFixed(1)}/10</h3>`; */
        scoreDisplay.innerHTML = `
-                <b style="color:#2563eb;">Tu puntaje mayor es de:</b> ${score.toFixed(1)}/10
-                ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">¡Felicidades, has completado la sección de Speaking!</span>' : ''}
+                <b style="color:#2563eb;">Your highest score is:</b> ${score.toFixed(1)}/10
+                ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">Congratulations, you have completed the speaking section!</span>' : ''}
             `;
 
 
@@ -283,15 +283,13 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
                     isRecording = false;
                     
                     // AÑADIR ESTE CÓDIGO para restablecer la interfaz después de un fallo silencioso
-                    if (submitBtn.classList.contains('hidden')) {
+               /*      if (submitBtn.classList.contains('hidden')) {
                         showMessage("Tiempo de grabación agotado. No se detectó voz o hubo un error de conexión.", "warning");
                         recordBtn.textContent = "Grabar"; // Restablece la UI
                         recordBtn.disabled = false;
                         loadingIndicator.classList.add('hidden');
-                    }
+                    } */
                 }
-
-
 
             }, 5000); // 5 segundos de grabación máximo
         }
@@ -324,23 +322,23 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
 
         if (score >= 7) {
             feedbackMessage = `
-                <p class="feedback-message--correct">¡Muy bien! ✅</p>
-                <p class="feedback-explanation">Tu pronunciación fue excelente.</p>
-                <p class="feedback-explanation">Tu puntaje en esta frase: ${score.toFixed(1)}/10</p>
+                <p class="feedback-message--correct">¡Very good! ✅</p>
+                <p class="feedback-explanation">Your pronunciation was excellent.</p>
+                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
             `;
             playSound("win");
         } else if (score >= 4) {
             feedbackMessage = `
-                <p class="feedback-message--warning">¡Casi! 🤔</p>
-                <p class="feedback-explanation">Tu pronunciación es buena, pero puedes mejorar. Intenta de nuevo.</p>
-                <p class="feedback-explanation">Tu puntaje en esta frase: ${score.toFixed(1)}/10</p>
+                <p class="feedback-message--warning">Almost! 🤔</p>
+                <p class="feedback-explanation">Your pronunciation is good, but you can improve. Try again.</p>
+                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
             `;
             playSound("wrong");
         } else {
             feedbackMessage = `
-                <p class="feedback-message--incorrect">¡Inténtalo de nuevo! ❌</p>
-                <p class="feedback-explanation">La pronunciación no fue la esperada. Escucha la frase y repite.</p>
-                <p class="feedback-explanation">Tu puntaje en esta frase: ${score.toFixed(1)}/10</p>
+                <p class="feedback-message--incorrect">Please try again! ❌</p>
+                <p class="feedback-explanation">The pronunciation was not as expected. Listen to the phrase and repeat.</p>
+                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
             `;
             playSound("fail");
         }
