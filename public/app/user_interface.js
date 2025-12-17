@@ -677,11 +677,13 @@ export const setupUserPanelLogic = (panelElement, userRole) => {
             units.forEach(unit => {
                 let scoreData = userScores.scores?.[unit.id];
                 const score = scoreData ? scoreData.score : "-";
-                const estado = scoreData && scoreData.completada ? "Completada" : "Pendiente";
+                const estado = scoreData && scoreData.completada ? "COMPLETED" : "INCOMPLETE";
                 const estadoClass = scoreData && scoreData.completada ? "estado-aprobado" : "estado-reprobado";
                 const tr = document.createElement("tr");
+                
+                console.log("unit", unit)
                 tr.innerHTML = `
-                    <td>${unit.title}</td>
+                    <td>📗 ${unit.id} - ${unit.title}</td>
                     <td><b>${score !== "-" ? score.toFixed(1) : "-"}</b></td>
                     <td class="${estadoClass}">${score !== "-" ? estado : "-"}</td>
                 `;
