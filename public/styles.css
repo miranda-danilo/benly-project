@@ -171,7 +171,7 @@ p {
     border-radius: 20px;
     text-decoration: none;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     font-size: 0.9rem;
 }
 
@@ -197,8 +197,8 @@ p {
 }
 
 .header__button--register:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+   background-color: #49b300;
+    
 }
 
 .header__button--logout:hover {
@@ -424,6 +424,11 @@ p {
     color: var(--primary-color);
 }
 
+.testimonial-card__author--degree {
+    font-weight: 700;
+    color: #222;
+    font-size: 0.9rem;
+}
 /* -------------------- FAQ SECTION -------------------- */
 .faq {
     text-align: center;

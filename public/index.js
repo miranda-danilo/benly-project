@@ -3,7 +3,7 @@ import { setupGoogleLogin } from "./app/inicio_sesion_google.js";
 import { setupSignInForm } from "./app/inicio_sesion_correo.js";
 import { stateChanged } from "./app/checkLogin.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Llama a la función que configura el formulario de registro.
     // Esto asegura que el listener se añade una vez que el formulario existe en el DOM.
     setupRegistrationForm();
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const loginButton = document.querySelector('.header__button--login');
     const registerButton = document.querySelector('.header__button--register');
-    
+   
     const signInModal = document.getElementById('signin-modal');
     const signUpModal = document.getElementById('signup-modal');
 
@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
         signUpModal.showModal();
     });
 
+     
+
     // Cerrar modal de inicio de sesión
     closeLoginButton.addEventListener('click', () => {
         signInModal.close();
@@ -83,10 +85,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-
-/* document.addEventListener('DOMContentLoaded', () => {
-
-   
-}); */
 
 

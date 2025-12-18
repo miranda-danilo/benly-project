@@ -2,195 +2,93 @@ import { auth, db } from "./conexion_firebase.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { showMessage } from "./notificaciones.js";
 
-// Datos de ejemplo para la práctica de habla
 const speakingData = {
     'greetings': {
         title: "Saludos Básicos",
-        phrases: [
-            "Hello, how are you?",
-            "Nice to meet you.",
-            "Good morning.",
-            "Goodbye, see you later.",
-            "How's it going?"
-        ]
+        phrases: ["Hello, how are you?", "Nice to meet you.", "Good morning.", "Goodbye, see you later.", "How's it going?"]
     },
     'introductions': {
         title: "Presentaciones",
-        phrases: [
-            "My name is Joe.",
-            "I am from Ecuador.",
-            "I like to play soccer.",
-            "How old are you?",
-            "What do you do for a living?"
-        ]
+        phrases: ["My name is Joe.", "I am from Ecuador.", "I like to play soccer.", "How old are you?", "What do you do for a living?"]
     },
     'questions': {
         title: "Preguntas Frecuentes",
-        phrases: [
-            "Where are you from?",
-            "What is your name?",
-            "What time is it?",
-            "How do you spell that?",
-            "Can you help me, please?"
-        ]
+        phrases: ["Where are you from?", "What is your name?", "What time is it?", "How do you spell that?", "Can you help me, please?"]
     }
 };
 
 let recognition = null;
 let isRecording = false;
-let utterance = null;
-let textToSpeak = "";
 
-// Función de Normalización (¡La Solución al problema de puntuación!)
-// ------------------------------------------------------------------
-/**
- * Normaliza un texto eliminando puntuación, acentos y espacios extra.
- * Esto hace que la comparación sea más robusta contra los resultados crudos
- * del SpeechRecognition API.
- * @param {string} texto - El texto a normalizar.
- * @returns {string} - El texto normalizado.
- */
+// --- UTILIDADES ---
 function normalizarParaComparacion(texto) {
-    // 1. Convertir a minúsculas
-    let normalizado = texto.toLowerCase();
-
-    // 2. Eliminar puntuación (comas, puntos, signos de interrogación, apóstrofes, etc.)
-    // La expresión regular es más amplia para cubrir todos los casos de la lista
-    normalizado = normalizado.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"¡¿]/g, "");
-
-    // 3. Eliminar acentos (para español, aunque aquí es inglés, es buena práctica)
-    normalizado = normalizado.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    // 4. Eliminar espacios duplicados y trim
-    normalizado = normalizado.replace(/\s+/g, ' ').trim();
-
-    return normalizado;
+    return texto.toLowerCase()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"¡¿]/g, "")
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, ' ').trim();
 }
-// ------------------------------------------------------------------
 
-// Inicializa el SpeechRecognition API
-const initSpeechRecognition = () => {
-    // Si ya existe una instancia, la retorna
-    if (recognition) {
-        return recognition;
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-        showMessage("Tu navegador no soporta la API de reconocimiento de voz. Por favor, usa Chrome.", "error");
-        return null;
-    }
-
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    return recognition;
-};
-
-
-/**
- * Calcula un puntaje de similitud entre dos textos.
- * @param {string} reference - El texto de referencia.
- * @param {string} userText - El texto del usuario.
- * @returns {number} - El puntaje de similitud (0-10).
- */
 function calculateScore(reference, userText) {
-    /* const refWords = reference.toLowerCase().split(/\s+/);
-    const userWords = userText.toLowerCase().split(/\s+/);
-    let correctWords = 0;
-    
-    // Contar las palabras correctas
-    userWords.forEach(userWord => {
-        if (refWords.includes(userWord)) {
-            correctWords++;
-        }
-    });
-
-    const score = (correctWords / refWords.length) * 10;
-    return Math.min(score, 10); */ // Asegura que el puntaje no sea mayor a 10
-// APLICAR NORMALIZACIÓN A AMBOS TEXTOS
     const refNormalizado = normalizarParaComparacion(reference);
     const userNormalizado = normalizarParaComparacion(userText);
-    
-    // Si ambos están vacíos después de la normalización, no hay palabras para comparar
-    if (!refNormalizado) return 0;
+    if (!refNormalizado || !userNormalizado) return 0;
 
     const refWords = refNormalizado.split(/\s+/);
     const userWords = userNormalizado.split(/\s+/);
-    let correctWords = 0;
-    
-    // Creamos un conjunto de palabras de referencia para una búsqueda eficiente
     const refWordsSet = new Set(refWords);
     
-    // Contar las palabras correctas (palabras del usuario que están en la referencia)
-    userWords.forEach(userWord => {
-        if (refWordsSet.has(userWord)) {
-            correctWords++;
-            // Nota: Podrías necesitar una lógica más compleja si quieres evitar
-            // contar la misma palabra varias veces si no están en la posición correcta.
-            // Para una comparación simple de "palabras que aparecen", esto es suficiente.
-        }
+    let correctWords = 0;
+    userWords.forEach(word => {
+        if (refWordsSet.has(word)) correctWords++;
     });
 
-    // Penalizamos si el usuario dice más palabras de las que debería (opcional)
-    // const maxWords = Math.max(refWords.length, userWords.length);
-    
-    // Cálculo de la puntuación basado en las palabras de referencia
-    const score = (correctWords / refWords.length) * 10;
-    return Math.min(score, 10); // Asegura que el puntaje no sea mayor a 10
+    return Math.min((correctWords / refWords.length) * 10, 10);
 }
 
+const initSpeechRecognition = () => {
+    if (recognition) return recognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        showMessage("Tu navegador no soporta el reconocimiento de voz. Usa Chrome.", "error");
+        return null;
+    }
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false; 
+    recognition.interimResults = false;
+    return recognition;
+};
 
-/**
- * Maneja la lógica de la sección de speaking.
- * @param {HTMLElement} unitSection - La sección de la unidad en el DOM.
- * @param {function} playSound - La función para reproducir sonidos.
- * @param {object} userScores - El objeto de puntajes del usuario.
- */
+// --- LÓGICA PRINCIPAL ---
 export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
-    const content = `
-        <h2 class="titulo-user">SPEAKING AND PRONUNCIATION PRACTICE 😎🗣️</h2>
-        <p class="descripcion">Improve your pronunciation by repeating common phrases in English.</p>
-        
+    unitSection.innerHTML = `
+        <h2 class="titulo-user">SPEAKING PRACTICE 😎🗣️</h2>
+         <p class="descripcion">Improve your pronunciation by repeating common phrases in English.</p>
         <div class="speaking-section">
-            <div class="opciones-speaking">
-                <select id="speakingTopicSelect" class="select-field">
-                    <option value="">-- SELECT A TOPIC 👆 --</option>
-                    <option value="greetings">Basic Greetings</option>
-                    <option value="introductions">Introductions</option>
-                    <option value="questions">Frequent Questions</option>
-                </select>
-            </div>
-            
+            <select id="speakingTopicSelect" class="select-field select-field--speaking">
+                <option value="">-- SELECT A TOPIC 👆 --</option>
+                <option value="greetings">Basic Greetings</option>
+                <option value="introductions">Introductions</option>
+                <option value="questions">Frequent Questions</option>
+            </select>
             <div id="speaking-area" class="speaking-area">
                 <div class="speaking-card">
-                    <p class="speaking-phrase-title">Phrase to Practice:</p>
                     <p id="phraseTextSpeaking" class="speaking-phrase">Select a topic to begin.</p>
                 </div>
-                
                 <div class="audio-controls-speaking">
-                    <button id="audio-play-speaking" class="boton-audio-player disabled-speaking" disabled>▶️ Play</button>
-                    <button id="audio-pause-speaking" class="boton-audio boton-audio--pause hidden">⏸️ Pause</button>
-                    <button id="audio-stop-speaking" class="boton-audio boton-audio--stop hidden">⏹️ Stop</button>
+                    <button id="audio-play-speaking" class="boton-audio-player disabled-speaking" disabled>▶️ Listen</button>
                 </div>
-
                 <div class="speaking-buttons">
                     <button id="recordBtnSpeaking" class="action-button record-button disabled-speaking" disabled>
                         <i class="fas fa-microphone"></i> Record
                     </button>
-                    <button id="submitBtnSpeaking" class="action-button next-button hidden">
-                        Submit Audio
-                    </button>
+                    <button id="submitBtnSpeaking" class="action-button next-button hidden">Submit Audio</button>
                     <button id="nextPhraseBtnSpeaking" class="action-button next-button hidden">Next</button>
                 </div>
-
                 <div id="feedbackContainerSpeaking" class="feedback-container hidden">
                     <div id="loadingIndicatorSpeaking" class="loading-indicator hidden">
                         <div class="loading-spinner"></div>
-                        <span class="loading-text">Evaluating...</span>
+                        <span>Listening...</span>
                     </div>
                     <div id="feedbackContentSpeaking"></div>
                 </div>
@@ -198,8 +96,6 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
             <div id="speakingScoreDisplay" class="score-display"></div>
         </div>
     `;
-
-    unitSection.innerHTML = content;
 
     const topicSelect = document.getElementById('speakingTopicSelect');
     const phraseTextEl = document.getElementById('phraseTextSpeaking');
@@ -211,148 +107,98 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
     const feedbackContent = document.getElementById('feedbackContentSpeaking');
     const scoreDisplay = document.getElementById('speakingScoreDisplay');
     const audioPlayBtn = document.getElementById('audio-play-speaking');
-    const audioPauseBtn = document.getElementById('audio-pause-speaking');
-    const audioStopBtn = document.getElementById('audio-stop-speaking');
-    
+
     let currentPhrases = [];
     let currentPhraseIndex = 0;
-    let recognition = initSpeechRecognition();
     let recordedText = '';
+    const recognition = initSpeechRecognition();
 
-
-    const displayCurrentScore = () => {
-        const speakingScore = userScores.scores?.SPEAKING;
-        const score = speakingScore ? speakingScore.score : 0;
-       /*  scoreDisplay.innerHTML = `<h3 class="font-bold text-lg">Tu puntaje: ${score.toFixed(1)}/10</h3>`; */
-       scoreDisplay.innerHTML = `
-                <b style="color:#2563eb;">Your highest score is:</b> ${score.toFixed(1)}/10
-                ${score.toFixed(1) >= 10 ? '<br><span style="color:green;font-weight:bold;">Congratulations, you have completed the speaking section!</span>' : ''}
-            `;
-
-
+    const updateScoreUI = () => {
+        const score = userScores.scores?.SPEAKING?.score || 0;
+        scoreDisplay.innerHTML = `<b style="color:#2563eb;">Highest Score:</b> ${score.toFixed(1)}/10`;
     };
+    updateScoreUI();
 
-    displayCurrentScore();
+    // --- CONFIGURACIÓN RECOGNITION (Eventos optimizados) ---
+    if (recognition) {
+        recognition.onstart = () => {
+            isRecording = true;
+            recordBtn.classList.add('recording-active');
+            recordBtn.innerHTML = '<i class="fas fa-stop"></i> Listening...';
+            loadingIndicator.classList.remove('hidden');
+        };
 
+        recognition.onresult = (event) => {
+            recordedText = event.results[0][0].transcript;
+            submitBtn.classList.remove('hidden');
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech Error:", event.error);
+            if(event.error !== 'no-speech') showMessage(`Error: ${event.error}`, "error");
+            resetRecordButton();
+        };
+
+        recognition.onend = () => {
+            isRecording = false;
+            resetRecordButton();
+            loadingIndicator.classList.add('hidden');
+        };
+    }
+
+    function resetRecordButton() {
+        recordBtn.disabled = false;
+        recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Record';
+        recordBtn.classList.remove('recording-active');
+    }
+
+    // --- EVENTOS ---
     topicSelect.addEventListener('change', () => {
-        const selectedTopic = topicSelect.value;
-        if (selectedTopic && speakingData[selectedTopic]) {
-            currentPhrases = speakingData[selectedTopic].phrases;
+        const selected = speakingData[topicSelect.value];
+        if (selected) {
+            currentPhrases = selected.phrases;
             currentPhraseIndex = 0;
-            phraseTextEl.textContent = currentPhrases[currentPhraseIndex];
-            
-            // Habilita los botones de grabación y reproducción
+            phraseTextEl.textContent = currentPhrases[0];
             recordBtn.disabled = false;
             audioPlayBtn.disabled = false;
-            
-            // Elimina la clase disabled para mostrar los colores originales
             recordBtn.classList.remove('disabled-speaking');
             audioPlayBtn.classList.remove('disabled-speaking');
-
-            // Oculta los demás botones y contenedores
-            nextPhraseBtn.classList.add('hidden');
-            submitBtn.classList.add('hidden');
-            feedbackContainer.classList.add('hidden');
-        } else {
-            // Limpia la frase y deshabilita los botones si no se selecciona un tema válido
-            phraseTextEl.textContent = "Selecciona un tema para comenzar.";
-            recordBtn.disabled = true;
-            audioPlayBtn.disabled = true;
-            recordBtn.classList.add('disabled-speaking');
-            audioPlayBtn.classList.add('disabled-speaking');
         }
     });
 
     recordBtn.addEventListener('click', () => {
-        if (!recognition) return;
-        
-        if (!isRecording) {
+        if (!recognition || isRecording) return;
+        recordedText = '';
+        feedbackContainer.classList.add('hidden');
+        submitBtn.classList.add('hidden');
+        try {
             recognition.start();
-            isRecording = true;
-            recordBtn.textContent = "Escuchando...";
-            recordBtn.disabled = true;
-            submitBtn.classList.add('hidden');
-            nextPhraseBtn.classList.add('hidden');
-            feedbackContainer.classList.add('hidden');
-            loadingIndicator.classList.remove('hidden');
-
-            // Timeout para detener la grabación después de unos segundos
-            setTimeout(() => {
-                if(isRecording) {
-                    recognition.stop();
-                    isRecording = false;
-                    
-                    // AÑADIR ESTE CÓDIGO para restablecer la interfaz después de un fallo silencioso
-               /*      if (submitBtn.classList.contains('hidden')) {
-                        showMessage("Tiempo de grabación agotado. No se detectó voz o hubo un error de conexión.", "warning");
-                        recordBtn.textContent = "Grabar"; // Restablece la UI
-                        recordBtn.disabled = false;
-                        loadingIndicator.classList.add('hidden');
-                    } */
-                }
-
-            }, 5000); // 5 segundos de grabación máximo
+        } catch (e) {
+            recognition.stop();
         }
     });
 
-    recognition.onresult = (event) => {
-        recordedText = event.results[0][0].transcript;
-        recordBtn.textContent = "Grabar";
-        recordBtn.disabled = false;
-        loadingIndicator.classList.add('hidden');
-        submitBtn.classList.remove('hidden');
-    };
-
-    recognition.onerror = (event) => {
-        loadingIndicator.classList.add('hidden');
-        showMessage(`Error en el reconocimiento de voz: ${event.error}`, "error");
-        recordBtn.textContent = "Grabar";
-        recordBtn.disabled = false;
-        isRecording = false;
-    };
-
-    submitBtn.addEventListener('click', () => {
+    submitBtn.addEventListener('click', async () => {
         const phrase = currentPhrases[currentPhraseIndex];
         const score = calculateScore(phrase, recordedText);
-        console.log(`Frase de referencia: "${phrase}" ; frase del usuario: "${recordedText}"`);
-
-        feedbackContainer.classList.remove('hidden');
-
-        let feedbackMessage = '';
-
-        if (score >= 7) {
-            feedbackMessage = `
-                <p class="feedback-message--correct">¡Very good! ✅</p>
-                <p class="feedback-explanation">Your pronunciation was excellent.</p>
-                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
-            `;
-            playSound("win");
-        } else if (score >= 4) {
-            feedbackMessage = `
-                <p class="feedback-message--warning">Almost! 🤔</p>
-                <p class="feedback-explanation">Your pronunciation is good, but you can improve. Try again.</p>
-                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
-            `;
-            playSound("wrong");
-        } else {
-            feedbackMessage = `
-                <p class="feedback-message--incorrect">Please try again! ❌</p>
-                <p class="feedback-explanation">The pronunciation was not as expected. Listen to the phrase and repeat.</p>
-                <p class="feedback-explanation">Your score for this phrase: ${score.toFixed(1)}/10</p>
-            `;
-            playSound("fail");
-        }
         
-        feedbackContent.innerHTML = feedbackMessage;
+        feedbackContainer.classList.remove('hidden');
+        let style = score >= 7 ? 'correct' : score >= 4 ? 'warning' : 'incorrect';
+        let icon = score >= 7 ? '✅' : score >= 4 ? '🤔' : '❌';
+
+        feedbackContent.innerHTML = `
+            <p class="feedback-message--${style}">${icon} Score: ${score.toFixed(1)}/10</p>
+            <p class="feedback-explanation">You said: "<i>${recordedText || "(nothing detected)"}</i>"</p>
+        `;
+
+        playSound(score >= 7 ? "win" : score >= 4 ? "wrong" : "fail");
 
         const user = auth.currentUser;
-        if (user) {
-            saveSpeakingScore(user.uid, score);
-        }
+        if (user) await saveSpeakingScore(user.uid, score);
         
         submitBtn.classList.add('hidden');
         nextPhraseBtn.classList.remove('hidden');
-        displayCurrentScore();
+        updateScoreUI();
     });
 
     nextPhraseBtn.addEventListener('click', () => {
@@ -360,66 +206,31 @@ export const setupSpeakingExercise = (unitSection, playSound, userScores) => {
         phraseTextEl.textContent = currentPhrases[currentPhraseIndex];
         feedbackContainer.classList.add('hidden');
         nextPhraseBtn.classList.add('hidden');
-        submitBtn.classList.add('hidden');
         recordBtn.disabled = false;
     });
 
-
-
-    // Lógica para el reproductor de audio
- audioPlayBtn.addEventListener('click', () =>  {
+    audioPlayBtn.addEventListener('click', () => {
         window.speechSynthesis.cancel();
-        textToSpeak = phraseTextEl.textContent;
-        utterance = new SpeechSynthesisUtterance(textToSpeak);
+        const utterance = new SpeechSynthesisUtterance(phraseTextEl.textContent);
         utterance.lang = 'en-US';
-        console.log("reproduciendo:", textToSpeak);
+        utterance.rate = 0.9;
         window.speechSynthesis.speak(utterance);
-        console.log("reproducido:", textToSpeak);
-
     });
-
-
-
-
-
 };
 
-/**
- * Guarda el puntaje de la unidad SPEAKING en Firestore.
- * @param {string} userId - ID del usuario.
- * @param {number} score - Puntaje obtenido.
- */
 async function saveSpeakingScore(userId, score) {
-    if (!userId) {
-        showMessage("No se pudo guardar el puntaje. Usuario no autenticado.", "error");
-        return;
-    }
-
     try {
         const docRef = doc(db, `usuarios/${userId}`);
         const docSnap = await getDoc(docRef);
         const currentData = docSnap.exists() ? docSnap.data() : {};
         const currentScores = currentData.scores || {};
         const prevScore = currentScores['SPEAKING']?.score || 0;
-        
+
         if (score > prevScore) {
-             const newScoreEntry = {
-                score: score,
-                completada: score >= 7,
-            };
-            
             await setDoc(docRef, {
                 ...currentData,
-                scores: {
-                    ...currentScores,
-                    ['SPEAKING']: newScoreEntry
-                }
+                scores: { ...currentScores, 'SPEAKING': { score, completada: score >= 7 } }
             }, { merge: true });
-
-            showMessage("Puntaje de habla guardado con éxito.", "success");
         }
-    } catch (error) {
-        console.error("Error al guardar el puntaje de habla:", error);
-        showMessage("Error al guardar el puntaje de habla.", "error");
-    }
+    } catch (e) { console.error("Save error:", e); }
 }

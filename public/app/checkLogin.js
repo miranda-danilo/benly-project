@@ -8,7 +8,6 @@ import { setupAdminPanelLogic } from "./docente_interface.js";
 import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 
-
 // Asumiendo que `getHTML` carga contenido dinámicamente
 // Esta es la versión de la función que hemos optimizado antes
 const getHTML = async (options) => {
@@ -77,7 +76,7 @@ export const updateUI = async (user) => {
         logoutLink.classList.remove("d-none");
         headerNav.classList.add("d-none");
         footer.classList.add("d-none");
-     /*    header.classList.add("d-none"); */
+        /*    header.classList.add("d-none"); */
 
         // Determina el rol y carga el contenido del panel
         const role = await fetchUserRole(user.uid);
@@ -92,7 +91,7 @@ export const updateUI = async (user) => {
                 // buscar sus propios elementos hijos (como #user-email)
 
                 // Llama a la lógica correspondiente según el rol del usuario
-                
+
                 console.log("El rol del usuario es:", role);
                 if (role === 'admin') {
                     const adminPanel = mainContent.querySelector("#admin-panel");
@@ -132,6 +131,9 @@ export const updateUI = async (user) => {
                 console.error(err);
             }
         });
+
+        
+
     }
 };
 
@@ -168,7 +170,7 @@ export const stateChanged = () => {
                 await signOut(auth);
 
                 const menuAdmin = document.getElementById("mobile-hamburger-btn");
-               /* menuAdmin.style.background = "red"; */
+                /* menuAdmin.style.background = "red"; */
                 menuAdmin.style.display = "none";
                 // Asegúrate de que los modales están cerrados
                 if (loginModal) {
@@ -186,7 +188,7 @@ export const stateChanged = () => {
         });
     }
 
-     // NUEVA LÓGICA: Manejar el clic en el enlace de "Olvidaste tu contraseña"
+    // NUEVA LÓGICA: Manejar el clic en el enlace de "Olvidaste tu contraseña"
     if (forgotPasswordLink) {
         forgotPasswordLink.addEventListener("click", async (e) => {
             e.preventDefault();
@@ -198,7 +200,7 @@ export const stateChanged = () => {
                     showMessage(`Se ha enviado un correo electrónico de restablecimiento a ${email}.`, "success");
                     // Opcional: cierra el modal después de enviar el correo
                     if (loginModal) {
-                      loginModal.close();
+                        loginModal.close();
                     }
                 } catch (error) {
                     console.error("Error al enviar el correo de restablecimiento:", error);

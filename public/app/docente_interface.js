@@ -46,7 +46,112 @@ const modules = [
  */
 // La función exportToExcelCSV ha sido eliminada.
 
+// --- NUEVA FUNCIÓN PARA EXPORTAR A EXCEL ---
+// --- FUNCIÓN DE EXPORTACIÓN CON ESTRUCTURA FIJA Y CÁLCULOS ---
+async function exportarCursoExcel(curso) {
+    try {
+        const usuariosRef = collection(db, 'usuarios');
+        const snapshot = await getDocs(usuariosRef);
+        
+        const estudiantesDelCurso = [];
+        
+        // Definición de estructura fija según pedido
+        const grupoUnidades = ["UT1", "UT2", "UT3", "UT4", "UT5", "UT6"];
+        const grupoSkills = ["WRITING", "READING", "LISTENING", "SPEAKING"];
+        const grupoExamenes = ["EXAM1", "EXAM2"];
+        const todasLasColumnas = [...grupoUnidades, ...grupoSkills, ...grupoExamenes];
 
+        snapshot.forEach(docu => {
+            const data = docu.data();
+            if (data.curso === curso) {
+                estudiantesDelCurso.push({
+                    nombre: data.name || data.email || "Sin nombre",
+                    scores: data.scores || {}
+                });
+            }
+        });
+
+        // 2. Construcción del template HTML/XML para Excel
+        let excelTemplate = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+            <meta charset="utf-8">
+            <style>
+                table { border: 1pt solid #000000; border-collapse: collapse; }
+                th, td { border: 1pt solid #000000; text-align: center; font-family: Arial, sans-serif; }
+                .header-main { background-color: #1e3a8a; color: #ffffff; font-weight: bold; }
+                .header-unidades { background-color: #dbeafe; color: #1e40af; font-weight: bold; }
+                .header-skills { background-color: #fef9c3; color: #854d0e; font-weight: bold; }
+                .header-exams { background-color: #fee2e2; color: #991b1b; font-weight: bold; }
+                .header-total { background-color: #107c41; color: #ffffff; font-weight: bold; }
+                .cell-name { text-align: left; background-color: #f8fafc; font-weight: bold; padding-left: 5px; }
+                .cell-score { mso-number-format: "0\\.00"; }
+                .final-grade { font-weight: bold; background-color: #f0fdf4; }
+            </style>
+        </head>
+        <body>
+            <table>
+                <!-- FILA 1: ENCABEZADOS PRINCIPALES -->
+                <tr>
+                    <th rowspan="2" class="header-main">ESTUDIANTES</th>
+                    <th colspan="6" class="header-unidades">UNIDADES (6 Pts)</th>
+                    <th colspan="4" class="header-skills">SKILLS (2 Pts)</th>
+                    <th colspan="2" class="header-exams">EXAMS (2 Pts)</th>
+                    <th rowspan="2" class="header-total">PROMEDIO FINAL</th>
+                </tr>
+                <!-- FILA 2: SUB-COLUMNAS -->
+                <tr>
+                    ${grupoUnidades.map(u => `<th class="header-unidades">${u}</th>`).join('')}
+                    ${grupoSkills.map(s => `<th class="header-skills">${s}</th>`).join('')}
+                    ${grupoExamenes.map(e => `<th class="header-exams">${e}</th>`).join('')}
+                </tr>
+                <!-- DATOS Y CÁLCULOS -->
+                ${estudiantesDelCurso.map(est => {
+                    // Lógica de cálculo de promedios
+                    const getScore = (key) => parseFloat(est.scores[key]?.score || 0);
+                    
+                    // 1. Promedio Unidades (Base 10 -> Escala 6)
+                    const sumaUnidades = grupoUnidades.reduce((acc, curr) => acc + getScore(curr), 0);
+                    const promUnidades = (sumaUnidades / grupoUnidades.length) * 0.6;
+                    
+                    // 2. Promedio Skills (Base 10 -> Escala 2)
+                    const sumaSkills = grupoSkills.reduce((acc, curr) => acc + getScore(curr), 0);
+                    const promSkills = (sumaSkills / grupoSkills.length) * 0.2;
+
+                    // 3. Exámenes (Cada uno vale 1 punto si la base es 10)
+                    const notaEx1 = getScore("EXAM1") * 0.1;
+                    const notaEx2 = getScore("EXAM2") * 0.1;
+
+                    const promedioFinal = promUnidades + promSkills + notaEx1 + notaEx2;
+
+                    return `
+                    <tr>
+                        <td class="cell-name">${est.nombre}</td>
+                        ${grupoUnidades.map(u => `<td class="cell-score">${getScore(u)}</td>`).join('')}
+                        ${grupoSkills.map(s => `<td class="cell-score">${getScore(s)}</td>`).join('')}
+                        ${grupoExamenes.map(e => `<td class="cell-score">${getScore(e)}</td>`).join('')}
+                        <td class="cell-score final-grade">${promedioFinal.toFixed(2)}</td>
+                    </tr>`;
+                }).join('')}
+            </table>
+        </body>
+        </html>`;
+
+        const blob = new Blob([excelTemplate], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Reporte_Final_${curso.replace(/\s+/g, '_')}.xls`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showMessage("Reporte generado con éxito", "success");
+    } catch (error) {
+        console.error("Error exportando:", error);
+        showMessage("Error al generar reporte", "error");
+    }
+}
 export function setupAdminPanelLogic(panelElement, adminRole) {
 
     // PASO 1: Obtener la referencia a las funciones del panel de usuario
@@ -294,7 +399,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
     // ----------- GESTIÓN DE ESTUDIANTES (MODIFICADO) -----------
     async function renderEstudiantesContent() {
         estudiantesContent.innerHTML = `
-            <input type="text" id="search-student-input" placeholder="Buscar estudiante por nombre..." 
+            <input type="text" id="search-student-input" placeholder="Search for student by name..." 
                    style="padding: 10px; margin-bottom: 20px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
             <p style="color:#2563eb;">Cargando estudiantes...</p>
         `;
@@ -311,10 +416,10 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
             let html = `<div style="overflow-x:auto;"><table class="admin-table" id="student-table">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th>Name</th>
                         <th>Email</th>
-                        <th>Curso</th>
-                        <th>Acciones</th>
+                        <th>Course</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -331,7 +436,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                         </select>
                     </td>
                     <td>
-                        <button class="boton-eliminar-estudiante" data-uid="${data.id}">Eliminar</button>
+                        <button class="boton-eliminar-estudiante" data-uid="${data.id}">Delete</button>
                     </td>
                 </tr>`;
             });
@@ -388,18 +493,25 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
     async function renderProgresoContent() {
         progresoContent.innerHTML = `
             <div style="display:flex; align-items: center; margin-bottom: 20px;">
-                <label for="curso-progreso" style="font-weight:700; color:#2563eb; margin-right: 10px;">Selecciona curso:</label>
+                <label for="curso-progreso" style="font-weight:700; color:#2563eb; margin-right: 10px;">SELECT A COURSE::</label>
                 <select id="curso-progreso" style="border:1px solid #58CC02; padding: 5px;">
                     <option value="Primero A">Primero A</option>
                     <option value="Primero B">Primero B</option>
                 </select>
             </div>
+            <button id="btn-descargar-excel" class="boton-accion" style="background-color: #107c41; color: white; display: flex; align-items: center; gap: 8px;">
+                    <span>📊</span> DOWNLOAD EXCEL (.xlsx)
+                </button>
             <div id="progreso-lista-estudiantes"></div>
             <div id="progreso-detalle-admin"></div>
         `;
         const selectCurso = document.getElementById('curso-progreso');
 
 
+        const btnExcel = document.getElementById('btn-descargar-excel');
+
+        // Evento para el botón de Excel
+        btnExcel.onclick = () => exportarCursoExcel(selectCurso.value);
         /**
          * [FUNCIÓN DE RECOPILACIÓN ELIMINADA PORQUE YA NO SE EXPORTA]
          */
@@ -421,20 +533,20 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
             const progresoListaElement = document.getElementById('progreso-lista-estudiantes');
             progresoListaElement.innerHTML = `
-                <input type="text" id="search-progreso-input" placeholder="Buscar estudiante por nombre..." 
+                <input type="text" id="search-progreso-input" placeholder="Search for student by name..." 
                        style="padding: 10px; margin-bottom: 10px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
             `;
 
 
             const renderProgresoTable = (filteredStudents) => {
                 let htmlTable = `<div style="overflow-x:auto;"><table class="admin-table" id="progreso-table">
-                    <thead><tr><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead><tbody>`;
+                    <thead><tr><th>Name</th><th>Email</th><th>Actions</th></tr></thead><tbody>`;
 
                 filteredStudents.forEach(data => {
                     htmlTable += `<tr>
                         <td>${data.name || '-'}</td>
                         <td>${data.email || '-'}</td>
-                        <td><button class="boton-ver-detalle" data-uid="${data.id}">Ver progreso</button></td>
+                        <td><button class="boton-ver-detalle" data-uid="${data.id}">View progress</button></td>
                     </tr>`;
                 });
                 htmlTable += '</tbody></table></div>';
@@ -453,9 +565,9 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                         if (!docSnap.exists()) return;
                         const data = docSnap.data();
                         const scores = data.scores || {};
-                        let detalle = `<h3 style="color:#2563eb;">Calificaciones de ${data.name || data.email}</h3>
+                        let detalle = `<br><hr><h3 style="color:#2563eb; padding-top:1rem; text-align:center;">🎖️ Grades from ${data.name || data.email}</h3>
                             <div style="overflow-x:auto;"><table class="admin-table">
-                            <thead><tr><th>Unidad</th><th>Puntaje</th><th>Estado</th></tr></thead><tbody>`;
+                            <thead><tr><th>Unit</th><th>Score</th><th>Status</th></tr></thead><tbody>`;
                         Object.entries(scores).forEach(([unidad, obj]) => {
                             // Aplicar color de fondo verde claro para el estado 'Completada'
                             const rowStyle = obj.completada ? 'style="background-color:#d1fae5;"' : '';
@@ -463,11 +575,11 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                                 <td>${unidad}</td>
                                 <td>${obj.score ?? '-'}</td>
                                 <td class="${obj.completada ? 'estado-aprobado' : 'estado-reprobado'}">
-                                    ${obj.completada ? 'Completada' : 'Pendiente'}
+                                    ${obj.completada ? 'COMPLETED' : 'INCOMPLETE'}
                                 </td>
                             </tr>`;
                         });
-                        detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;">Cerrar</button>';
+                        detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;">Close</button>';
                         document.getElementById('progreso-detalle-admin').innerHTML = detalle;
                         document.getElementById('cerrar-detalle-progreso').onclick = () => document.getElementById('progreso-detalle-admin').innerHTML = "";
                     });
@@ -525,3 +637,4 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
 
 }
+
