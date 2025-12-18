@@ -429,10 +429,11 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                     <td>${data.name || '-'}</td>
                     <td>${data.email || '-'}</td>
                     <td>
-                        <select class="curso-select" data-uid="${data.id}">
+                       <select class="curso-select" data-uid="${data.id}">
                             <option value="">Sin curso</option>
                             <option value="Primero A"${data.curso === 'Primero A' ? ' selected' : ''}>Primero A</option>
                             <option value="Primero B"${data.curso === 'Primero B' ? ' selected' : ''}>Primero B</option>
+                            <option value="Primero C"${data.curso === 'Primero C' ? ' selected' : ''}>Primero C</option>
                         </select>
                     </td>
                     <td>
@@ -497,13 +498,15 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                 <select id="curso-progreso" style="border:1px solid #58CC02; padding: 5px;">
                     <option value="Primero A">Primero A</option>
                     <option value="Primero B">Primero B</option>
+                    <option value="Primero C">Primero C</option>
                 </select>
             </div>
-            <button id="btn-descargar-excel" class="boton-accion" style="background-color: #107c41; color: white; display: flex; align-items: center; gap: 8px;">
+            <div id="progreso-detalle-admin"></div>
+            <button id="btn-descargar-excel" class="boton-accion" style="padding-bottom:1rem; background-color: #107c41; color: white; display: flex; align-items: center; gap: 8px;">
                     <span>📊</span> DOWNLOAD EXCEL (.xlsx)
                 </button>
             <div id="progreso-lista-estudiantes"></div>
-            <div id="progreso-detalle-admin"></div>
+            
         `;
         const selectCurso = document.getElementById('curso-progreso');
 
@@ -579,7 +582,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                                 </td>
                             </tr>`;
                         });
-                        detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;">Close</button>';
+                        detalle += '</tbody></table></div><button id="cerrar-detalle-progreso" class="boton-accion" style="background:#2563eb;color:#fff;width:40%;text-align:center;display:block;">Close</button>';
                         document.getElementById('progreso-detalle-admin').innerHTML = detalle;
                         document.getElementById('cerrar-detalle-progreso').onclick = () => document.getElementById('progreso-detalle-admin').innerHTML = "";
                     });
