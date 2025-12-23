@@ -757,10 +757,7 @@ p {
       
     }
 
-    .testimonial-card:last-child {
-        grid-column: span 2;
- 
-    }
+    
 
 
 
