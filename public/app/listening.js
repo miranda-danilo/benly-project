@@ -11,7 +11,7 @@ const listeningData = {
         title: "Anna's Story",
         text: "Anna lives with her parents in Marrickville. Every morning she studies English at the TAFE college in Petersham. In the evening she usually helps her mother with the cooking and the housework, but on Wednesday evening she goes to an Italian cooking class. On Saturday night she goes to the movies with her boyfriend. On Sunday she goes by train to Parramatta to see her aunt and uncle.",
         targetIndices: [1, 15, 23, 37, 53],
-        audioUrl: 'assets/anna.wav',
+        audioUrl: 'assets/audios-listening/anna.wav',
         targetWordAudios: [
             'assets/audios-listening/lives.mp3',   // Audio para la palabra en índice 1
             'assets/audios-listening/college.mp3',  // Audio para la palabra en índice 15
@@ -24,7 +24,7 @@ const listeningData = {
         title: "My Family",
         text: "My family lives in Melbourne. There are six people in my family. My mother and father live in a large house. The house has four bedrooms and a big backyard. There are flowers in the front yard. My older brother, Alan, is married with two children. My younger brother, Bill, and my sister, Sue, live at home. My father works in an office in Belmore. He is a manager. My mother works at home and looks after the house. I am very lucky to have a wonderful family.",
         targetIndices: [8, 25, 42, 59, 86],
-        audioUrl: 'assets/my-family.wav',
+        audioUrl: 'assets/audios-listening/my-family.wav',
          targetWordAudios: [
             'assets/audios-listening/people.mp3',   // Audio para la palabra en índice 1
             'assets/audios-listening/bedrooms.mp3',  // Audio para la palabra en índice 15
@@ -37,7 +37,7 @@ const listeningData = {
         title: "At the University",
         text: "I'm Mark. I am a student of Information Technology. Today was a good day for me. The weather was very nice. It was sunny and warm. My bus was on time. It was fast. My teacher was very happy because I was on time for my class. He was friendly. My first class was Databases. It was at 8:00 AM. I learned to save information. Then I had my Programming class. My laptop was good. I typed my code. The program was okay. I finished my work. I checked my email too. At 12 o'clock, my classes finished. I left the university. The sun was still shining. I walked home. It was a great day.",
         targetIndices: [8, 33, 54, 86, 101],
-        audioUrl: 'assets/at-university.wav',
+        audioUrl: 'assets/audios-listening/at-university.wav',
            targetWordAudios: [
             'assets/audios-listening/technology.mp3',   // Audio para la palabra en índice 1
             'assets/audios-listening/fast.mp3',  // Audio para la palabra en índice 15
@@ -50,7 +50,7 @@ const listeningData = {
         title: "Next Weekend",
         text: "Next weekend I'm going to have a great time. On Saturday morning, I'm going to buy some new jeans and a pair of shoes. In the afternoon, I'm going to visit a friend in Punchbowl. At 8 o'clock, I'm going to go to a French restaurant with five friends. On Sunday, I'm going to have an interesting day. I'm going to go to the museum with a friend. After that, I'm going to eat out at an Indian restaurant. I'm going to go to bed late.",
         targetIndices: [10, 30, 40, 56, 73],
-        audioUrl: 'assets/next-weekend.wav',
+        audioUrl: 'assets/audios-listening/next-weekend.wav',
         targetWordAudios: [
             'assets/audios-listening/saturday.mp3',   // Audio para la palabra en índice 1
             'assets/audios-listening/visit.mp3',  // Audio para la palabra en índice 15
