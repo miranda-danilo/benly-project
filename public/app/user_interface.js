@@ -146,7 +146,7 @@ window.playAudio = (audioUrl) => {
     window.currentAudio = new Audio(fullPath);
     window.currentAudio.play().catch(error => {
         console.error("Error al reproducir el audio:", error);
-        showMessage("No se pudo reproducir el audio. Verifica la URL.", "error");
+        /* showMessage("No se pudo reproducir el audio. Verifica la URL.", "error"); */
     });
 };
 // ----------------------------------------------------------------------
