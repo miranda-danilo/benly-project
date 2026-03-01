@@ -396,36 +396,50 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
         })
     }
 
-    // ----------- GESTIÓN DE ESTUDIANTES (MODIFICADO) -----------
-    async function renderEstudiantesContent() {
-        estudiantesContent.innerHTML = `
-            <input type="text" id="search-student-input" placeholder="Search for student by name..." 
-                   style="padding: 10px; margin-bottom: 20px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
-            <p style="color:#2563eb;">Cargando estudiantes...</p>
-        `;
+ // ----------- GESTIÓN DE ESTUDIANTES (MODIFICADO PARA FILTRAR ADMINS) -----------
+async function renderEstudiantesContent() {
+    estudiantesContent.innerHTML = `
+        <input type="text" id="search-student-input" placeholder="Buscar estudiante por nombre..." 
+               style="padding: 10px; margin-bottom: 20px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+        <p style="color:#2563eb;" id="loading-msg">Cargando estudiantes...</p>
+    `;
 
-        const usuariosRef = collection(db, 'usuarios');
-        const snapshot = await getDocs(usuariosRef);
-        const estudiantesData = []; // Array para guardar los datos y usarlos en la búsqueda
-        snapshot.forEach(docu => {
-            estudiantesData.push({ id: docu.id, ...docu.data() });
-        });
+    const usuariosRef = collection(db, 'usuarios');
+    const snapshot = await getDocs(usuariosRef);
+    const estudiantesData = []; 
 
-        // Función para renderizar la tabla con los datos filtrados
-        const renderTable = (filteredData) => {
-            let html = `<div style="overflow-x:auto;"><table class="admin-table" id="student-table">
+    snapshot.forEach(docu => {
+        const data = docu.data();
+        
+        // FILTRO CRUCIAL: Solo agregamos al array si el rol NO es 'admin'
+        // Esto oculta a Marlon, Roberth y cualquier otro administrador.
+        if (data.role !== 'admin') {
+            estudiantesData.push({ id: docu.id, ...data });
+        }
+    });
+
+    // Función para renderizar la tabla con los datos filtrados
+    const renderTable = (filteredData) => {
+        // Eliminamos tablas previas si existen para evitar duplicados al filtrar
+        const oldTable = estudiantesContent.querySelector('.table-container');
+        if (oldTable) oldTable.remove();
+
+        let html = `
+        <div class="table-container" style="overflow-x:auto;">
+            <table class="admin-table" id="student-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Nombre</th>
                         <th>Email</th>
-                        <th>Course</th>
-                        <th>Actions</th>
+                        <th>Curso</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>`;
-            
-            filteredData.forEach(data => {
-                html += `<tr data-name="${(data.name || '').toLowerCase()}">
+        
+        filteredData.forEach(data => {
+            html += `
+                <tr data-name="${(data.name || '').toLowerCase()}">
                     <td>${data.name || '-'}</td>
                     <td>${data.email || '-'}</td>
                     <td>
@@ -437,58 +451,63 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
                         </select>
                     </td>
                     <td>
-                        <button class="boton-eliminar-estudiante" data-uid="${data.id}">Delete</button>
+                        <button class="boton-eliminar-estudiante" data-uid="${data.id}" style="background-color: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Eliminar</button>
                     </td>
                 </tr>`;
-            });
-            html += '</tbody></table></div>';
-            
-            // Reemplazar solo la tabla, manteniendo el input
-            const existingTable = document.getElementById('student-table');
-            if (existingTable) {
-                existingTable.parentElement.remove(); // Elimina el div overflow y la tabla
-            }
-            
-            // El placeholder de carga se reemplaza por la tabla renderizada
-            const loadingP = estudiantesContent.querySelector('p');
-            if (loadingP && loadingP.textContent === 'Cargando estudiantes...') {
-                loadingP.remove();
-            }
-            estudiantesContent.insertAdjacentHTML('beforeend', html);
-
-
-            // Re-adjuntar listeners de actualización de curso y eliminación
-            estudiantesContent.querySelectorAll('.curso-select').forEach(select => {
-                select.addEventListener('change', async () => {
-                    const uid = select.dataset.uid;
-                    const curso = select.value;
-                    await updateDoc(doc(db, 'usuarios', uid), { curso });
-                    select.style.background = "#d1fae5";
-                });
-            });
-            estudiantesContent.querySelectorAll('.boton-eliminar-estudiante').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    if (confirm('¿Eliminar estudiante? Esta acción no se puede deshacer.')) {
-                        await deleteDoc(doc(db, 'usuarios', btn.dataset.uid));
-                        renderEstudiantesContent(); // Recargar la lista
-                    }
-                });
-            });
-        };
-        
-        // Renderizado inicial
-        renderTable(estudiantesData);
-
-        // Lógica de filtrado dinámico
-        const searchInput = document.getElementById('search-student-input');
-        searchInput.addEventListener('input', (e) => {
-            const searchText = e.target.value.toLowerCase().trim();
-            const filteredStudents = estudiantesData.filter(student => 
-                (student.name || '').toLowerCase().includes(searchText)
-            );
-            renderTable(filteredStudents);
         });
-    }
+        
+        html += '</tbody></table></div>';
+        
+        // Quitar mensaje de carga
+        const loadingP = document.getElementById('loading-msg');
+        if (loadingP) loadingP.remove();
+
+        estudiantesContent.insertAdjacentHTML('beforeend', html);
+
+        // Listeners para actualización de curso
+        estudiantesContent.querySelectorAll('.curso-select').forEach(select => {
+            select.addEventListener('change', async () => {
+                const uid = select.dataset.uid;
+                const curso = select.value;
+                try {
+                    await updateDoc(doc(db, 'usuarios', uid), { curso });
+                    select.style.border = "2px solid #10b981"; // Verde éxito
+                } catch (error) {
+                    console.error("Error al actualizar curso:", error);
+                }
+            });
+        });
+
+        // Listeners para eliminación
+        estudiantesContent.querySelectorAll('.boton-eliminar-estudiante').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const nombreEstudiante = btn.closest('tr').querySelector('td').innerText;
+                if (confirm(`¿Estás seguro de eliminar a ${nombreEstudiante}? Esta acción no se puede deshacer.`)) {
+                    try {
+                        await deleteDoc(doc(db, 'usuarios', btn.dataset.uid));
+                        renderEstudiantesContent(); // Recargar lista completa
+                    } catch (error) {
+                        console.error("Error al eliminar:", error);
+                    }
+                }
+            });
+        });
+    };
+    
+    // Renderizado inicial con todos los estudiantes (excluyendo admins)
+    renderTable(estudiantesData);
+
+    // Lógica de búsqueda/filtrado dinámico
+    const searchInput = document.getElementById('search-student-input');
+    searchInput.addEventListener('input', (e) => {
+        const searchText = e.target.value.toLowerCase().trim();
+        const filteredStudents = estudiantesData.filter(student => 
+            (student.name || '').toLowerCase().includes(searchText) || 
+            (student.email || '').toLowerCase().includes(searchText)
+        );
+        renderTable(filteredStudents);
+    });
+}
 
     // ----------- MONITOREAR PROGRESO (MODIFICADO SIN EXPORTACIÓN) -----------
     async function renderProgresoContent() {
