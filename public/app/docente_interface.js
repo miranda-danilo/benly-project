@@ -626,8 +626,6 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
 
             if (adminRoleSpan) adminRoleSpan.textContent = "TEACHER ✏️📗" || "admin";
 
-
-
             renderMenu();
             renderModulosGrid();
             showSection(moduloSection);

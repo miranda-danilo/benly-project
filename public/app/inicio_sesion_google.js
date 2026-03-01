@@ -36,11 +36,12 @@ export const setupGoogleLogin = () => {
                     const name = user.displayName;
 
 
-                    if(email.contains("@unesum.edu.ec")){
-                        showMessage("Bienvenido, " + name + "!");
-                    } else {
+
+                    // Usamos endsWith para asegurar que el dominio sea exactamente el final
+                    if (!email.endsWith("@unesum.edu.ec")) {
+                     // Es vital cerrar la sesión si el correo no es válido
                         await auth.signOut();
-                        showMessage("El correo debe ser institucional (@unesum.edu.ec)", "error");
+                        showMessage("Acceso denegado. Debes usar tu correo institucional (@unesum.edu.ec)", "error");
                         return;
                     }
 
