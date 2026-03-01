@@ -36,6 +36,15 @@ export const setupGoogleLogin = () => {
                     const name = user.displayName;
 
 
+                    if(email.contains("@unesum.edu.ec")){
+                        showMessage("Bienvenido, " + name + "!");
+                    } else {
+                        await auth.signOut();
+                        showMessage("El correo debe ser institucional (@unesum.edu.ec)", "error");
+                        return;
+                    }
+
+
                     // ⚠️ Tu lógica para asignar el rol
                     let roleUser = "user";
                     if (email === "miranda-roberth0691@unesum.edu.ec" || email === "marlon.barcia@unesum.edu.ec") {
