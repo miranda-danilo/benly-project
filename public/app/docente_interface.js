@@ -264,7 +264,7 @@ export function setupAdminPanelLogic(panelElement, adminRole) {
             e.preventDefault();
             renderProgresoContent();
             showSection(progresoSection);
-            moduleList.querySelectorAll('.modulo-link-admin').forEach(lnk => lnq.classList.remove('modulo-link-admin--activo'));
+            moduleList.querySelectorAll('.modulo-link-admin').forEach(lnk => lnk.classList.remove('modulo-link-admin--activo'));
             liProgreso.querySelector('a').classList.add('modulo-link-admin--activo');
         });
     }

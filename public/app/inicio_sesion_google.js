@@ -61,7 +61,7 @@ export const setupGoogleLogin = () => {
                     // Por ahora, usamos una lógica simple.
 
                     // Muestra un mensaje de éxito
-                    showMessage(`¡Bienvenido, ${user.displayName}!`);
+                    showMessage(`Welcome, ${user.displayName}!`);
                     console.log("Usuario autenticado y guardado en Firestore:", user);
 
                 } catch (error) {
